@@ -29,6 +29,7 @@ class PertenenciaCRUD {
     final db = await AADB.instance.database;
     final List<Map<String, dynamic>> maps =
         await db.query(tabla, where: 'id > $n', orderBy: 'nombre');
+  
 
     return List.generate(maps.length, (i) {
       return Pertenencia.fromJson(maps[i]);
