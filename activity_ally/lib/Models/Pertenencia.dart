@@ -2,27 +2,17 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:activity_ally/Views/Info.dart';
 
-class Pertenencia extends StatefulWidget {
-  int id;
-  //String dueno;
+class Pertenencia {
+  int? id;
   String nombre;
-  //String categoria;
-  //String marca;
-  //String modelo;
-  //String color; // Assuming color is represented as a String
-  
   bool status;
   String descripcion;
   String foto;
 
   Pertenencia({
-    required this.id,
+    this.id,
     //required this.dueno,
     required this.nombre,
-    //this.categoria = '',
-    //this.marca = '',
-    //this.modelo = '',
-    //this.color = '',
     this.status = true,
     this.descripcion = '',
     this.foto = '',
@@ -31,13 +21,8 @@ class Pertenencia extends StatefulWidget {
   factory Pertenencia.fromJson(Map<String, dynamic> json) {
     return Pertenencia(
       id: json['id'],
-      //dueno: json['dueno'],
       nombre: json['nombre'],
-      //categoria: json['categoria'],
-      //marca: json['marca'],
-      //modelo: json['modelo'],
-      //color: json['color'],
-      status: json['status'],
+      status: json['status'] != "false",
       descripcion: json['descripcion'],
       foto: json['foto'],
     );
@@ -46,22 +31,18 @@ class Pertenencia extends StatefulWidget {
   Map<String, dynamic> toJson() {
     return {
       'id': id,
-     // 'dueno': dueno,
       'nombre': nombre,
-      //'categoria': categoria,
-      //'marca': marca,
-      //'modelo': modelo,
-      //'color': color,
       'status': status,
       'descripcion': descripcion,
       'foto': foto,
     };
   }
 
-  @override
-  State<StatefulWidget> createState() => _Pertenencia();
+  //@override
+ // State<StatefulWidget> createState() => _Pertenencia();
 }
 
+/*
 class _Pertenencia extends State<Pertenencia> {
   @override
   Widget build(BuildContext context) {
@@ -110,7 +91,7 @@ class _Pertenencia extends State<Pertenencia> {
                 ],
               ),
               Column(
-                /*
+                  /*
                 children: [
                   _createPersonInfoRow(
                       key: widget.color, value: 'color', context: context),
@@ -125,7 +106,7 @@ class _Pertenencia extends State<Pertenencia> {
                   _createPersonInfoRow(
                       key: widget.modelo, value: 'modelo', context: context),
                 ],*/
-              )
+                  )
             ],
           ),
         ),
@@ -158,3 +139,4 @@ class _Pertenencia extends State<Pertenencia> {
     );
   }
 }
+  */
