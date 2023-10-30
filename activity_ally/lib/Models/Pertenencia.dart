@@ -23,7 +23,7 @@ class Pertenencia extends StatefulWidget {
     //this.marca = '',
     //this.modelo = '',
     //this.color = '',
-    required this.status,
+    this.status = true,
     this.descripcion = '',
     this.foto = '',
   });
