@@ -1,5 +1,5 @@
 class Activity {
-  int id;
+  int? id;
   String title;
   DateTime date;
   int duration;
@@ -8,7 +8,7 @@ class Activity {
   DateTime? finishDate; // Added finishDate attribute
 
   Activity({
-    required this.id,
+    this.id,
     required this.title,
     required this.date,
     required this.duration,
