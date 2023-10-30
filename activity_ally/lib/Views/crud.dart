@@ -1,13 +1,13 @@
-
 import 'package:activity_ally/Api/AADB.dart';
 import 'package:activity_ally/Api/PertenenciaCRUD.dart';
 import 'package:activity_ally/Models/Pertenencia.dart';
 import 'package:flutter/material.dart';
 import 'package:path/path.dart';
 import 'dart:io';
+
 class crud extends StatefulWidget {
   const crud({super.key});
-  
+
   @override
   State<crud> createState() => _crudState();
 }
@@ -16,24 +16,21 @@ class _crudState extends State<crud> {
   final String pe = '$Path';
   late Future<List<Pertenencia>> objetos;
 
-
   @override
   void initState() {
     super.initState();
     List<Pertenencia> samplePertenencias = [
-  Pertenencia(
-    id: 1,
-    nombre: 'Pertenencia 1',
-    status: true,
-    descripcion: 'Description for Pertenencia 1',
-    foto: 'picture1.jpg',
-  ),
-  ];
-  //PertenenciaCRUD pcrud = PertenenciaCRUD();
-  AADB.instance.insert(samplePertenencias[0]);
+      Pertenencia(
+        nombre: 'Matenme3',
+        status: true,
+        descripcion: 'Description for matenme',
+      ),
+    ];
+    //PertenenciaCRUD pcrud = PertenenciaCRUD();
+    AADB.instance.insert(samplePertenencias[0]);
 
-  objetos = AADB.instance.getAllItems();
- }
+    objetos = AADB.instance.getAllItems();
+  }
 
   @override
   Widget build(BuildContext context) {

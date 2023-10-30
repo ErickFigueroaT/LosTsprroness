@@ -3,20 +3,20 @@ import 'package:flutter/material.dart';
 import 'package:activity_ally/Views/Info.dart';
 
 class Pertenencia extends StatefulWidget {
-  int id;
+  int? id;
   //String dueno;
   String nombre;
   //String categoria;
   //String marca;
   //String modelo;
   //String color; // Assuming color is represented as a String
-  
+
   bool status;
   String descripcion;
   String foto;
 
   Pertenencia({
-    required this.id,
+    this.id,
     //required this.dueno,
     required this.nombre,
     //this.categoria = '',
@@ -37,7 +37,7 @@ class Pertenencia extends StatefulWidget {
       //marca: json['marca'],
       //modelo: json['modelo'],
       //color: json['color'],
-      status: json['status'],
+      status: json['status'] != "false",
       descripcion: json['descripcion'],
       foto: json['foto'],
     );
@@ -46,7 +46,7 @@ class Pertenencia extends StatefulWidget {
   Map<String, dynamic> toJson() {
     return {
       'id': id,
-     // 'dueno': dueno,
+      // 'dueno': dueno,
       'nombre': nombre,
       //'categoria': categoria,
       //'marca': marca,
@@ -110,7 +110,7 @@ class _Pertenencia extends State<Pertenencia> {
                 ],
               ),
               Column(
-                /*
+                  /*
                 children: [
                   _createPersonInfoRow(
                       key: widget.color, value: 'color', context: context),
@@ -125,7 +125,7 @@ class _Pertenencia extends State<Pertenencia> {
                   _createPersonInfoRow(
                       key: widget.modelo, value: 'modelo', context: context),
                 ],*/
-              )
+                  )
             ],
           ),
         ),

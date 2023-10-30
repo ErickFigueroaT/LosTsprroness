@@ -1,5 +1,5 @@
-
 import 'package:flutter/material.dart';
+
 class Plantilla extends StatefulWidget {
   const Plantilla({super.key});
 
@@ -8,17 +8,14 @@ class Plantilla extends StatefulWidget {
 }
 
 class _PlantillaState extends State<Plantilla> {
-
-
   @override
   void initState() {
     super.initState();
-
   }
 
   @override
   Widget build(BuildContext context) {
-        return Scaffold(
+    return Scaffold(
       appBar: AppBar(
         title: const Text("Publicaciones"),
       ),
