@@ -1,26 +1,31 @@
 import 'package:flutter/material.dart';
-
 class Info extends StatelessWidget {
-  final String foto;
-  final String nombre;
-  //final String color;
-  //final String marca;
-  //final String modelo;
+  final String titulo;
   final String descripcion;
-  const Info({
-    //required this.color,
-    //required this.marca,
-    //required this.modelo,
-    required this.nombre,
-    required this.foto,
-    required this.descripcion,
-    Key? key,
-  }) : super(key: key);
+  final int id;
+  final bool estado;
+  const Info(
+      {required this.titulo,
+      required this.descripcion,
+      required this.id,
+      required this.estado,
+      Key? key})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    String estadoActual = "";
+    String statusObject() {
+      if (estado) {
+        estadoActual = "OK";
+      } else {
+        estadoActual = "Perdido";
+      }
+      return estadoActual;
+    }
+
     return Scaffold(
-      appBar: AppBar(title: Text(nombre)),
+      appBar: AppBar(title: Text(titulo)),
       body: Container(
         padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 40),
         margin: const EdgeInsets.all(20),
@@ -29,12 +34,12 @@ class Info extends StatelessWidget {
             borderRadius: BorderRadius.circular(20),
             border: Border.all(color: Colors.grey, width: 2)),
         child: Column(children: [
-          SizedBox(
+          /*SizedBox(
               child: Image(
-            image: NetworkImage(foto),
+            image: NetworkImage(pictureUrl),
             height: 400,
             width: 200,
-          )),
+          )),*/
           Row(mainAxisAlignment: MainAxisAlignment.start, children: [
             Container(
               child: const Text(
@@ -43,54 +48,67 @@ class Info extends StatelessWidget {
               ),
             ),
             Container(
-              child: Text(nombre, style: const TextStyle(fontSize: 20)),
+              child: Text(titulo, style: const TextStyle(fontSize: 20)),
             )
           ]),
-            /*
-          Row(mainAxisAlignment: MainAxisAlignment.start, children: [
-            Container(
-              child: const Text(
-                'Color: ',
-                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-              ),
-            ),
-            Container(
-              child: Text(color, style: const TextStyle(fontSize: 20)),
-          ]),
-            )
-          Row(mainAxisAlignment: MainAxisAlignment.start, children: [
-            Container(
-              child: const Text(
-                'Marca: ',
-                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-              ),
-            ),
-            Container(
-              child: Text(marca, style: const TextStyle(fontSize: 20)),
-            )
-          ]),
-          Row(mainAxisAlignment: MainAxisAlignment.start, children: [
-            Container(
-              child: const Text(
-                'Modelo: ',
-                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-              ),
-            ),
-            Container(
-              child: Text(modelo, style: const TextStyle(fontSize: 20)),
-            )
-          ]),*/
-          Row(mainAxisAlignment: MainAxisAlignment.start, children: [
-            Container(
+          Wrap(
+            children: [
+            
+            Flexible(
               child: const Text(
                 'Descripcion: ',
                 style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
               ),
             ),
-            Container(
+            Flexible(
               child: Text(descripcion, style: const TextStyle(fontSize: 20)),
+            ),
+
+          ]),
+          Row(mainAxisAlignment: MainAxisAlignment.start, children: [
+            Container(
+              child: const Text(
+                'Estado: ',
+                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+              ),
+            ),
+            Container(
+              child: Text(statusObject(),
+                  style: TextStyle(
+                      fontSize: 20,
+                      color: estado == false ? Colors.red : Colors.green)),
             )
-          ])
+          ]),
+          Row(
+            children: [
+              ElevatedButton(
+                onPressed: () {
+                  /*var form = formkey.currentState;
+                    if (form!.validate()) {
+                      form.save();
+                      Navigator.of(context).pop(Objeto(
+                          id: plus(), titulo: titulo, descripcion: descripcion));
+                    }*/
+                },
+                style:
+                    ElevatedButton.styleFrom(padding: const EdgeInsets.all(15)),
+                child: const Text("Editar"),
+              ),
+              ElevatedButton(
+                onPressed: () {
+                  /*var form = formkey.currentState;
+                    if (form!.validate()) {
+                      form.save();
+                      Navigator.of(context).pop(Objeto(
+                          id: plus(), titulo: titulo, descripcion: descripcion));
+                    }*/
+                },
+                style:
+                    ElevatedButton.styleFrom(padding: const EdgeInsets.all(15)),
+                child: const Text("Eliminar"),
+              ),
+            ],
+          )
         ]),
       ),
     );
