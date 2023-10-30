@@ -30,70 +30,34 @@ class AADB {
 
   Future _onCreateDB(Database db, int version) async {
     await db.execute('''
---tabla pertenencia
-CREATE TABLE possession (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    nombre TEXT,
-    status TEXT,
-    descripcion TEXT,
-    foto TEXT
-);
+      --tabla pertenencia
+      CREATE TABLE possession (
+          id INTEGER PRIMARY KEY AUTOINCREMENT,
+          nombre TEXT,
+          status TEXT,
+          descripcion TEXT,
+          foto TEXT
+      );
 
--- Create the activity table
-CREATE TABLE activity (
-    id INTEGER PRIMARY KEY AUTOINCREMENT, 
-    title TEXT,
-    date DATE,
-    duration INTEGER,
-    location TEXT,
-    description TEXT,
-    finish_date DATE
-);
+      -- Create the activity table
+      CREATE TABLE activity (
+          id INTEGER PRIMARY KEY AUTOINCREMENT, 
+          title TEXT,
+          date DATE,
+          duration INTEGER,
+          location TEXT,
+          description TEXT,
+          finish_date DATE
+      );
 
-CREATE TABLE checklist (
-    activity_id INTEGER,
-    possession_id INTEGER,
-    FOREIGN KEY (activity_id) REFERENCES activity(id),
-    FOREIGN KEY (possession_id) REFERENCES possession(id),
-    PRIMARY KEY (activity_id, possession_id)
-);
+      CREATE TABLE checklist (
+          activity_id INTEGER,
+          possession_id INTEGER,
+          FOREIGN KEY (activity_id) REFERENCES activity(id),
+          FOREIGN KEY (possession_id) REFERENCES possession(id),
+          PRIMARY KEY (activity_id, possession_id)
+      );
 
       ''');
-  }
-
-  final String tabla = 'possession';
-
-  Future<void> insert(Pertenencia item) async {
-    final db = await instance.database;
-    await db.insert(tabla, item.toJson(),
-        conflictAlgorithm: ConflictAlgorithm.replace);
-  }
-
-  Future<List<Pertenencia>> getAllItems() async {
-    final db = await instance.database;
-    final List<Map<String, dynamic>> maps = await db.query(tabla);
-
-    return List.generate(maps.length, (i) {
-      return Pertenencia.fromJson(maps[i]);
-    });
-  }
-
-  Future<int> delete(int id) async {
-    final db = await instance.database;
-    return await db.delete(
-      tabla,
-      where: "id = ?",
-      whereArgs: [id],
-    );
-  }
-
-  Future<int> update(Pertenencia item) async {
-    final db = await instance.database;
-    return await db.update(
-      tabla,
-      item.toJson(),
-      where: "id=?",
-      whereArgs: [item.id],
-    );
   }
 }
