@@ -12,9 +12,8 @@ class Pagina extends StatefulWidget {
 }
 
 class _PaginaState extends State<Pagina> {
- 
   late Future<List<Pertenencia>> objetos;
-  
+
   void initState() {
     super.initState();
     objetos = PertenenciaCRUD.instance.getAllItems();
@@ -44,12 +43,9 @@ class _PaginaState extends State<Pagina> {
       );
     }
     */
-    
 
     return Scaffold(
       appBar: AppBar(title: const Text('Prueba')),
-      //body: contenido,
-
       body: Padding(
         padding: const EdgeInsets.all(10),
         child: FutureBuilder<List<Pertenencia>>(
@@ -70,16 +66,13 @@ class _PaginaState extends State<Pagina> {
                       titulo: item.nombre,
                       estado: item.status,
                       descripcion: item.descripcion,
-
-                      //foto: item.foto
-                      );
+                      foto: item.foto!);
                 },
               );
             }
           },
         ),
       ),
-
       floatingActionButton: FloatingActionButton(
         onPressed: () async {
           final nuevo = await Navigator.of(context).push<Pertenencia>(
@@ -88,6 +81,7 @@ class _PaginaState extends State<Pagina> {
             return;
           }
           PertenenciaCRUD.instance.insert(nuevo);
+
           //objetos.add(nuevo);
         },
         //backgroundColor: Colors.indigo,
