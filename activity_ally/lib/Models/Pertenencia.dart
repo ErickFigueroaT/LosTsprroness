@@ -1,21 +1,22 @@
 import 'dart:convert';
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:activity_ally/Views/Info.dart';
 
 class Pertenencia {
-  int? id;
+  int id;
   String nombre;
   bool status;
   String descripcion;
-  String foto;
+  String? foto;
 
   Pertenencia({
-    this.id,
+    required this.id,
     //required this.dueno,
     required this.nombre,
     this.status = true,
     this.descripcion = '',
-    this.foto = '',
+    this.foto,
   });
 
   factory Pertenencia.fromJson(Map<String, dynamic> json) {
@@ -34,10 +35,18 @@ class Pertenencia {
       'nombre': nombre,
       'status': status,
       'descripcion': descripcion,
-      'foto': foto,
+      'foto': foto.toString(),
     };
   }
 
+  Map<String, dynamic> toSqlite() {
+    return {
+      'nombre': nombre,
+      'status': status,
+      'descripcion': descripcion,
+      'foto': foto.toString(),
+    };
+  }
   //@override
  // State<StatefulWidget> createState() => _Pertenencia();
 }

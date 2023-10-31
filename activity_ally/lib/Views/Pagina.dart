@@ -66,7 +66,7 @@ body: Padding(
                 itemBuilder: (context, index) {
                   final item = pertenencias[index];
                   return Ficha(
-                      id: 0 ,
+                      id: item.id,
                       titulo: item.nombre,
                       estado: item.status,
                       descripcion: item.descripcion,

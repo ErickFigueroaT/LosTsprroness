@@ -12,7 +12,7 @@ class PertenenciaCRUD {
 
   Future<void> insert(Pertenencia item) async {
     final db = await AADB.instance.database;
-    await db.insert(tabla, item.toJson(),
+    await db.insert(tabla, item.toSqlite(),
         conflictAlgorithm: ConflictAlgorithm.replace);
   }
 
