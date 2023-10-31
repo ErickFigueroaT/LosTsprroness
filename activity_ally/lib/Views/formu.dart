@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'dart:io';
 import 'package:activity_ally/Models/Pertenencia.dart';
 import 'package:activity_ally/Views/widgets/image_input.dart';
 
@@ -68,10 +69,11 @@ class _FormuState extends State<Formu> {
                 if (form!.validate()) {
                   form.save();
                   Navigator.of(context).pop(Pertenencia(
-                      //id: plus(),
+                      id: 0,
                       nombre: nombre,
                       status: true,
                       descripcion: descripcion,
+                      //foto: File(''),
                       ));
                 }
               },

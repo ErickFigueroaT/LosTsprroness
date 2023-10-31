@@ -25,6 +25,7 @@ class _ImageInputState extends State<ImageInput> {
 
     setState(() {
       seleccion = File(pickedImage.path);
+      //print(pickedImage.path);
     });
   }
 

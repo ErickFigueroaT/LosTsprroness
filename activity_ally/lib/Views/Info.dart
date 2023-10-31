@@ -1,3 +1,4 @@
+import 'package:activity_ally/Api/PertenenciaCRUD.dart';
 import 'package:flutter/material.dart';
 class Info extends StatelessWidget {
   final String titulo;
@@ -96,6 +97,8 @@ class Info extends StatelessWidget {
               ),
               ElevatedButton(
                 onPressed: () {
+                  PertenenciaCRUD.instance.delete(id);
+                  Navigator.of(context).pop();
                   /*var form = formkey.currentState;
                     if (form!.validate()) {
                       form.save();
