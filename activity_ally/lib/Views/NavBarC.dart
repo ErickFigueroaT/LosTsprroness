@@ -5,6 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:activity_ally/Views/Plantilla.dart';
 import 'package:activity_ally/Views/VistaActividad.dart';
 
+import 'package:activity_ally/Views/Checklist.dart';
+
 class NavBarC extends StatefulWidget {
   const NavBarC({super.key});
 
@@ -14,7 +16,9 @@ class NavBarC extends StatefulWidget {
 
 class _NavBarCState extends State<NavBarC> {
   PageController _pageController = PageController();
+
   List<Widget> __screens = [Plantilla(), Plantilla(), VistaActividad(), Pagina()];
+
 
   void _onPageChanged(int index) {
     setState(() {
