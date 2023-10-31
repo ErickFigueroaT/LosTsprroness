@@ -15,7 +15,7 @@ class _ImageInputState extends State<ImageInput> {
   void elegirImagen() async {
     final imagePicker = ImagePicker();
     final pickedImage = await imagePicker.pickImage(
-      source: ImageSource.gallery,
+      source: ImageSource.camera,
       maxWidth: 600,
     );
 
@@ -31,7 +31,9 @@ class _ImageInputState extends State<ImageInput> {
   @override
   Widget build(BuildContext context) {
     Widget content = TextButton.icon(
-        onPressed: () {},
+        onPressed: () {
+          elegirImagen();
+        },
         icon: const Icon(Icons.camera),
         label: const Text('Elegir imagen'));
 
