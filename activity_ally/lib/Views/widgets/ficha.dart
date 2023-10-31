@@ -1,5 +1,5 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
-import 'package:activity_ally/Models/Pertenencia.dart';
 import 'package:activity_ally/Views/Info.dart';
 
 class Ficha extends StatefulWidget {
@@ -7,13 +7,13 @@ class Ficha extends StatefulWidget {
   final String descripcion;
   final String titulo;
   final bool estado;
+  final File foto;
   const Ficha(
       {required this.id,
       required this.titulo,
       required this.descripcion,
       required this.estado,
-      Key? key})
-      : super(key: key);
+      required this.foto});
 
   @override
   State<Ficha> createState() => _FichaState();
@@ -29,10 +29,12 @@ class _FichaState extends State<Ficha> {
               context,
               MaterialPageRoute(
                   builder: ((context) => Info(
-                      titulo: widget.titulo,
-                      descripcion: widget.descripcion,
-                      id: widget.id,
-                      estado: widget.estado))));
+                        titulo: widget.titulo,
+                        descripcion: widget.descripcion,
+                        id: widget.id,
+                        estado: widget.estado,
+                        foto: widget.foto,
+                      ))));
         },
         splashColor: Colors.blueGrey,
         child: Container(
@@ -47,10 +49,10 @@ class _FichaState extends State<Ficha> {
                 children: [
                   Container(
                     height: 200,
-                    decoration: const BoxDecoration(
-                      borderRadius:
-                          BorderRadius.vertical(top: Radius.circular(16)),
-                    ),
+                    decoration: BoxDecoration(
+                        borderRadius: const BorderRadius.vertical(
+                            top: Radius.circular(16)),
+                        image: DecorationImage(image: FileImage(widget.foto))),
                   ),
                   Container(
                     width: double.infinity,

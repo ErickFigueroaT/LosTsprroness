@@ -8,11 +8,11 @@ class Pertenencia {
   String nombre;
   bool status;
   String descripcion;
-  String? foto;
+  //String? foto;
+  File? foto;
 
   Pertenencia({
     required this.id,
-    //required this.dueno,
     required this.nombre,
     this.status = true,
     this.descripcion = '',
@@ -25,7 +25,7 @@ class Pertenencia {
       nombre: json['nombre'],
       status: json['status'] != "false",
       descripcion: json['descripcion'],
-      foto: json['foto'],
+      foto: File(json['foto']),
     );
   }
 
@@ -35,7 +35,7 @@ class Pertenencia {
       'nombre': nombre,
       'status': status,
       'descripcion': descripcion,
-      'foto': foto.toString(),
+      'foto': foto!.path
     };
   }
 
@@ -44,11 +44,11 @@ class Pertenencia {
       'nombre': nombre,
       'status': status,
       'descripcion': descripcion,
-      'foto': foto.toString(),
+      'foto': foto!.path
     };
   }
   //@override
- // State<StatefulWidget> createState() => _Pertenencia();
+  // State<StatefulWidget> createState() => _Pertenencia();
 }
 
 /*
