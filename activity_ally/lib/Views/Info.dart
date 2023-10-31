@@ -55,7 +55,7 @@ class Info extends StatelessWidget {
               child: Text(titulo, style: const TextStyle(fontSize: 20)),
             )
           ]),
-          Wrap(children: [
+          Row(mainAxisAlignment: MainAxisAlignment.start, children: [
             const Flexible(
               child: Text(
                 'Descripcion: ',
