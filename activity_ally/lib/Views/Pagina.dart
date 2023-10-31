@@ -50,7 +50,7 @@ class _PaginaState extends State<Pagina> {
       appBar: AppBar(title: const Text('Prueba')),
       //body: contenido,
 
-body: Padding(
+      body: Padding(
         padding: const EdgeInsets.all(10),
         child: FutureBuilder<List<Pertenencia>>(
           future: objetos,
