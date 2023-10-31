@@ -13,6 +13,7 @@ class Pagina extends StatefulWidget {
 
 class _PaginaState extends State<Pagina> {
   late Future<List<Pertenencia>> objetos;
+  late List<Pertenencia> pertenencias;
 
   void initState() {
     super.initState();
@@ -56,7 +57,7 @@ class _PaginaState extends State<Pagina> {
             } else if (snapshot.hasError) {
               return Text('Error: ${snapshot.error}');
             } else {
-              List<Pertenencia> pertenencias = snapshot.data!;
+              pertenencias = snapshot.data!;
               return ListView.builder(
                 itemCount: pertenencias.length,
                 itemBuilder: (context, index) {
@@ -80,6 +81,8 @@ class _PaginaState extends State<Pagina> {
           if (nuevo == null) {
             return;
           }
+          setState(() => pertenencias.add(nuevo));
+          //pertenencias.add(nuevo);
           PertenenciaCRUD.instance.insert(nuevo);
 
           //objetos.add(nuevo);
