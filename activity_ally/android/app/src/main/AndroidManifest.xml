@@ -5,6 +5,7 @@
         android:icon="@mipmap/ic_launcher">
         <activity
             android:name=".MainActivity"
+            android:requestLegacyExternalStorage="true"
             android:exported="true"
             android:launchMode="singleTop"
             android:theme="@style/LaunchTheme"
@@ -39,6 +40,9 @@
                 <action android:name="com.htc.intent.action.QUICKBOOT_POWERON"/>
             </intent-filter>
         </receiver>
+
+        
+
 
     </application>
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
