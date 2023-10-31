@@ -92,13 +92,34 @@ class _ActivityFormState extends State<ActivityForm> {
                 }
               },
             ),
+            const SizedBox(height: 10),
+            TextFormField(
+              decoration: const InputDecoration(
+                  border: OutlineInputBorder(), hintText: "Ubicacion"),
+              onSaved: (value) {
+                title = value!;
+              },
+              //validator: (value) {
+              //  if (value == null || value.isEmpty) {
+              //    return 'Introduce un lugar';
+              //  }
+              //},
+            ),
+
+
+
             const SizedBox(height: 30),
             ElevatedButton(
               onPressed: () {
                 var form = formkey.currentState;
                 if (form!.validate()) {
                   form.save();
-                  final fecha_hora = new DateTime(fecha!.year, fecha!.month, fecha!.day, hora!.hour, hora!.minute, 0, 0, 0);
+                  final fecha_hora;
+                  if(fecha != null && hora != null)
+                    fecha_hora = new DateTime(fecha!.year, fecha!.month, fecha!.day, hora!.hour, hora!.minute, 0, 0, 0);
+                  else{
+                    fecha_hora = new DateTime(hoy!.year, hoy!.month, hoy!.day, hours, 0, 0, 0, 0);
+                  }
                   Navigator.of(context).pop(Activity(
                       id: 0,
                       title: title,
