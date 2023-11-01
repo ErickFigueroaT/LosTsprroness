@@ -13,7 +13,7 @@ class Formu extends StatefulWidget {
 class _FormuState extends State<Formu> {
   //Pertenencia Pertenencia = Pertenencia(id: 0, nombre: '', descripcion: '');
   //List<Pertenencia> Pertenencias = [];
-  File? seleccion;
+  String? seleccion;
 
   final formkey = GlobalKey<FormState>();
   int id = 0;
@@ -38,7 +38,7 @@ class _FormuState extends State<Formu> {
           children: [
             ImageInput(
               onPickImage: (image) {
-                seleccion = image;
+                seleccion = image.path;
               },
             ),
             const SizedBox(height: 10),
