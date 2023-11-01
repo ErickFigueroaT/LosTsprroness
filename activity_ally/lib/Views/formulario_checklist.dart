@@ -1,4 +1,3 @@
-import 'package:activity_ally/Models/Checklist_modelo.dart';
 import 'package:activity_ally/Models/ChecklistModelo.dart';
 import 'package:activity_ally/Api/ChecklistCRUD.dart';
 

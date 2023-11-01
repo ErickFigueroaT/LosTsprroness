@@ -25,25 +25,6 @@ class _PaginaState extends State<Pagina> {
     Widget contenido = const Center(
       child: Text('No has agregado objetos aun'),
     );
-    /*
-
-    if (objetos.isNotEmpty) {
-      contenido = Padding(
-        padding: const EdgeInsets.all(10),
-        child: ListView.builder(
-          itemCount: objetos.length,
-          itemBuilder: (context, index) {
-            final item = objetos[index];
-            return Ficha(
-                id: 0,//item.id? => 0,
-                titulo: item.nombre,
-                descripcion: item.descripcion,
-                estado: item.status);
-          },
-        ),
-      );
-    }
-    */
 
     return Scaffold(
       appBar: AppBar(title: const Text('Prueba')),
@@ -81,7 +62,7 @@ class _PaginaState extends State<Pagina> {
           if (nuevo == null) {
             return;
           }
-          setState(() => pertenencias.insert(0,nuevo));
+          setState(() => pertenencias.insert(0, nuevo));
           //pertenencias.add(nuevo);
           PertenenciaCRUD.instance.insert(nuevo);
 
