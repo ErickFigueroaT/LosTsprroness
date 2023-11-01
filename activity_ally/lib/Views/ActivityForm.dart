@@ -1,14 +1,10 @@
 import 'package:activity_ally/Models/Activity.dart';
 import 'package:flutter/material.dart';
 import 'dart:io';
-//import 'package:activity_ally/Models/Pertenencia.dart';
-//import 'package:activity_ally/Views/widgets/image_input.dart';
+import 'package:flutter/cupertino.dart';
 
 class ActivityForm extends StatefulWidget {
   const ActivityForm({super.key});
-
-
-
 
   @override
   State<ActivityForm> createState() => _ActivityFormState();
@@ -21,6 +17,8 @@ class _ActivityFormState extends State<ActivityForm> {
   int id = 0;
   var title = '';
   var description = '';
+  var location = '';
+  DateTime duracion =  DateTime(2000, 1, 10, 00, 00);
   DateTime? fecha;
   TimeOfDay? hora;
   
@@ -28,20 +26,15 @@ class _ActivityFormState extends State<ActivityForm> {
   var hours = DateTime.now().add(Duration(hours: 1)).hour;
   var minutes = '00';
 
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Add')),
+      appBar: AppBar(title: const Text('Nueva actividad')),
       body: Center(
           child: Form(
         key: formkey,
         child: ListView(
-          //mainAxisSize: MainAxisSize.min,
-          //crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            //const ImageInput(),
-            //const SizedBox(height: 10),
             TextFormField(
               decoration: const InputDecoration(
                   border: OutlineInputBorder(), hintText: "nombre"),
@@ -75,8 +68,29 @@ class _ActivityFormState extends State<ActivityForm> {
                   },
                 ),
             
-
-
+          
+                  const Text('Duracion'),
+                  CupertinoButton(
+                    // Display a CupertinoDatePicker in time picker mode.
+                    onPressed: () => _showDialog(
+                      CupertinoDatePicker(
+                        initialDateTime: duracion,
+                        mode: CupertinoDatePickerMode.time,
+                        use24hFormat: true,
+                        // This is called when the user changes the time.
+                        onDateTimeChanged: (DateTime newTime) {
+                          setState(() => duracion = newTime);
+                        },
+                      ),
+                    ),
+                    child: Text(
+                      '${duracion.hour}:${duracion.minute}',
+                      style: const TextStyle(
+                        fontSize: 22.0,
+                      ),
+                    ),
+                    
+                  ),
 
             const SizedBox(height: 10),
             TextFormField(
@@ -106,13 +120,22 @@ class _ActivityFormState extends State<ActivityForm> {
               //},
             ),
 
-
-
             const SizedBox(height: 30),
             ElevatedButton(
               onPressed: () {
                 var form = formkey.currentState;
                 if (form!.validate()) {
+                  final minutos = (duracion.hour * 60) + duracion.minute; 
+                  if (minutos <= 0){
+
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text('Agrega una duracion aproximada'),
+                        backgroundColor: Colors.red, // Set snackbar color to red
+                      ),
+                    );
+                    return ;
+                  }
                   form.save();
                   final fecha_hora;
                   if(fecha != null && hora != null)
@@ -125,7 +148,8 @@ class _ActivityFormState extends State<ActivityForm> {
                       title: title,
                       date: fecha_hora,
                       description: description,
-                      duration: 5
+                      duration: minutos,
+                      location: location,
                       ));
                 }
               },
@@ -151,4 +175,25 @@ class _ActivityFormState extends State<ActivityForm> {
     context: context, 
     initialTime: TimeOfDay(hour: hours, minute: hoy.minute));
 
+  void _showDialog(Widget child) {
+    showCupertinoModalPopup<void>(
+      context: context,
+      builder: (BuildContext context) => Container(
+        height: 216,
+        padding: const EdgeInsets.only(top: 6.0),
+        // The Bottom margin is provided to align the popup above the system
+        // navigation bar.
+        margin: EdgeInsets.only(
+          bottom: MediaQuery.of(context).viewInsets.bottom,
+        ),
+        // Provide a background color for the popup.
+        color: CupertinoColors.systemBackground.resolveFrom(context),
+        // Use a SafeArea widget to avoid system overlaps.
+        child: SafeArea(
+          top: false,
+          child: child,
+        ),
+      ),
+    );
+  }
 }
