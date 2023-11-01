@@ -12,7 +12,7 @@ class _PlantillaState extends State<Plantilla> {
   void initState() {
     super.initState();
   }
-
+  //eso tilin
   @override
   Widget build(BuildContext context) {
     return Scaffold(

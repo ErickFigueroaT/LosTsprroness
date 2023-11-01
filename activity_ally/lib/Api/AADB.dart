@@ -11,7 +11,7 @@ class AADB {
   static Database? _database;
 
   AADB._init();
-
+    final String pertenencia = '''
       --tabla pertenencia
       CREATE TABLE possession (
           id INTEGER PRIMARY KEY AUTOINCREMENT,

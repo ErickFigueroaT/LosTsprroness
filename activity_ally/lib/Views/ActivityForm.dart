@@ -11,8 +11,6 @@ class ActivityForm extends StatefulWidget {
 }
 
 class _ActivityFormState extends State<ActivityForm> {
-  //Pertenencia Pertenencia = Pertenencia(id: 0, nombre: '', descripcion: '');
-  //List<Pertenencia> Pertenencias = [];
   final formkey = GlobalKey<FormState>();
   int id = 0;
   var title = '';
@@ -113,13 +111,7 @@ class _ActivityFormState extends State<ActivityForm> {
               onSaved: (value) {
                 title = value!;
               },
-              //validator: (value) {
-              //  if (value == null || value.isEmpty) {
-              //    return 'Introduce un lugar';
-              //  }
-              //},
             ),
-
             const SizedBox(height: 30),
             ElevatedButton(
               onPressed: () {
@@ -181,14 +173,10 @@ class _ActivityFormState extends State<ActivityForm> {
       builder: (BuildContext context) => Container(
         height: 216,
         padding: const EdgeInsets.only(top: 6.0),
-        // The Bottom margin is provided to align the popup above the system
-        // navigation bar.
         margin: EdgeInsets.only(
           bottom: MediaQuery.of(context).viewInsets.bottom,
         ),
-        // Provide a background color for the popup.
         color: CupertinoColors.systemBackground.resolveFrom(context),
-        // Use a SafeArea widget to avoid system overlaps.
         child: SafeArea(
           top: false,
           child: child,
