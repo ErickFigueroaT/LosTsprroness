@@ -67,7 +67,7 @@ class _PaginaState extends State<Pagina> {
                       titulo: item.nombre,
                       estado: item.status,
                       descripcion: item.descripcion,
-                      foto: item.foto!);
+                      foto: item.foto);
                 },
               );
             }

@@ -9,7 +9,7 @@ class Pertenencia {
   bool status;
   String descripcion;
   //String? foto;
-  File? foto;
+  String? foto;
 
   Pertenencia({
     required this.id,
@@ -25,7 +25,7 @@ class Pertenencia {
       nombre: json['nombre'],
       status: json['status'] != "false",
       descripcion: json['descripcion'],
-      foto: File(json['foto']),
+      foto: (json['foto']),
     );
   }
 
@@ -35,7 +35,7 @@ class Pertenencia {
       'nombre': nombre,
       'status': status,
       'descripcion': descripcion,
-      'foto': foto!.path
+      'foto': foto
     };
   }
 
@@ -44,7 +44,7 @@ class Pertenencia {
       'nombre': nombre,
       'status': status,
       'descripcion': descripcion,
-      'foto': foto!.path
+      'foto': foto
     };
   }
   //@override

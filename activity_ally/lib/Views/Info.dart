@@ -8,7 +8,7 @@ class Info extends StatelessWidget {
   final String descripcion;
   final int id;
   final bool estado;
-  final File foto;
+  final String? foto;
   const Info(
       {required this.titulo,
       required this.descripcion,
@@ -18,6 +18,13 @@ class Info extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+      var image;
+      if (foto == null){
+        image = new AssetImage('res/placeholder.jpg');
+      }
+      else{
+        image = FileImage(File(foto!));
+      }
     String estadoActual = "";
     String statusObject() {
       if (estado) {
@@ -40,7 +47,7 @@ class Info extends StatelessWidget {
         child: Column(children: [
           SizedBox(
               child: Image(
-            image: FileImage(foto),
+            image: image,
             height: 400,
             width: 200,
           )),

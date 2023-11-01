@@ -7,7 +7,7 @@ class Ficha extends StatefulWidget {
   final String descripcion;
   final String titulo;
   final bool estado;
-  final File foto;
+  final String? foto;
   const Ficha(
       {required this.id,
       required this.titulo,
@@ -22,6 +22,13 @@ class Ficha extends StatefulWidget {
 class _FichaState extends State<Ficha> {
   @override
   Widget build(BuildContext context) {
+    var image;
+      if (widget.foto == null){
+        image = new AssetImage('res/placeholder.jpg');
+      }
+      else{
+        image = FileImage(File(widget.foto!));
+      }
     return Material(
       child: InkWell(
         onTap: () {
@@ -52,7 +59,7 @@ class _FichaState extends State<Ficha> {
                     decoration: BoxDecoration(
                         borderRadius: const BorderRadius.vertical(
                             top: Radius.circular(16)),
-                        image: DecorationImage(image: FileImage(widget.foto))),
+                        image: DecorationImage(image: image)),//FileImage(widget.foto))),
                   ),
                   Container(
                     width: double.infinity,
