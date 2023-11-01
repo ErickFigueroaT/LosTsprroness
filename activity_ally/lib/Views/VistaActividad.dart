@@ -1,12 +1,13 @@
 import 'package:activity_ally/Api/ActivityCRUD.dart';
 import 'package:activity_ally/Models/Activity.dart';
 import 'package:activity_ally/Views/ActivityForm.dart';
+import 'package:activity_ally/Views/widgets/ficha_actividad.dart';
 import 'package:activity_ally/services/Notificacion.dart';
 import 'package:flutter/material.dart';
+
 //import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 class VistaActividad extends StatefulWidget {
   const VistaActividad({super.key});
-  
 
   @override
   State<VistaActividad> createState() => _VistaActividadState();
@@ -22,17 +23,15 @@ class _VistaActividadState extends State<VistaActividad> {
     notificaciones = Notificacion();
     notificaciones.initialize();
     actividades = ActivityCRUD.instance.getAllItems();
-    
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-
         title: const Text("Actividades"),
       ),
-       body: Padding(
+      body: Padding(
         padding: const EdgeInsets.all(10),
         child: FutureBuilder<List<Activity>>(
           future: actividades,
@@ -47,7 +46,14 @@ class _VistaActividadState extends State<VistaActividad> {
                 itemCount: _actividades.length,
                 itemBuilder: (context, index) {
                   final item = _actividades[index];
-                  return Text(item.date.toString());
+                  return FichaActividad(
+                    title: item.title,
+                    id: item.id,
+                    date: item.date,
+                    duration: item.duration,
+                    location: item.location,
+                    description: item.description,
+                  );
                 },
               );
             }
@@ -84,11 +90,12 @@ class _VistaActividadState extends State<VistaActividad> {
       ),
     );
   }
+
   void anadir() async {
     DateTime time = DateTime.now().add(Duration(minutes: 2));
     //ActivityCRUD.instance.insert(Activity(title: 'Actividad', date: time, duration: 10));
     print(time);
-    await notificaciones.showNotification(id: 1, title: 'Activity ally', body: 'este es un recordatorio');
-
+    await notificaciones.showNotification(
+        id: 1, title: 'Activity ally', body: 'este es un recordatorio');
   }
 }
