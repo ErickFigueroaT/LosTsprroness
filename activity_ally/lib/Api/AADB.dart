@@ -12,7 +12,6 @@ class AADB {
 
   AADB._init();
 
-      final String pertenencia = '''
       --tabla pertenencia
       CREATE TABLE possession (
           id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -44,6 +43,16 @@ class AADB {
           PRIMARY KEY (activity_id, possession_id)
       );
       ''';
+      
+      final String checklist_items = '''
+      CREATE TABLE checklist_items (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        nombre TEXT,
+        completado INTEGER
+      );
+    ''';
+
+
 
   //final String tableCartItems = 'cart_items';
 
@@ -58,12 +67,15 @@ class AADB {
     final dbPath = await getDatabasesPath();
     final path = join(dbPath, filePath);
 
-    return await openDatabase(path, version: 4, onCreate: _onCreateDB);
+    return await openDatabase(path, version: 6, onCreate: _onCreateDB);
+
   }
 
   Future _onCreateDB(Database db, int version) async {
     await db.execute(pertenencia);
     await db.execute(actividad);
     await db.execute(checklist);
+    await db.execute(checklist_items);
+
   }
 }

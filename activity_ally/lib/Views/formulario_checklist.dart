@@ -1,4 +1,7 @@
 import 'package:activity_ally/Models/Checklist_modelo.dart';
+import 'package:activity_ally/Models/ChecklistModelo.dart';
+import 'package:activity_ally/Api/ChecklistCRUD.dart';
+
 import 'package:flutter/material.dart';
 
 class FormularioPage extends StatefulWidget {
@@ -42,19 +45,36 @@ class _FormularioPageState extends State<FormularioPage> {
     );
   }
 
-  _crearBotonAgregar(BuildContext context) {
+  _crearBotonGuardar(BuildContext context) async {
+    if (idForm.currentState != null && idForm.currentState!.validate()) {
+      idForm.currentState!.save();
+      nuevaTarea['estado'] = false; // Puedes establecer el estado inicial aquí
+
+      final checklistItem = ChecklistItem(
+        id: 0, // Deja que la base de datos genere el ID automáticamente
+        nombre: nuevaTarea['nombre'],
+        completado: nuevaTarea['estado'],
+      );
+
+      // Llamar al CRUD para insertar el nuevo elemento en la base de datos
+      final checklistCRUD = ChecklistCRUD.instance;
+      final result = await checklistCRUD.insertChecklistItem(checklistItem);
+
+      if (result != -1) {
+        // La inserción se realizó con éxito
+        Navigator.pop(context);
+      }
+    }
+  }
+
+// En tu método build, utiliza el botón "Guardar" para llamar al _crearBotonGuardar.
+  _crearBotonAgregar(context) {
     return Container(
       margin: EdgeInsets.only(top: 20),
       child: MaterialButton(
-          onPressed: () {
-            idForm.currentState?.save();
-            nuevaTarea['estado'] = false;
-
-            Tareas().agregarTarea(nuevaTarea);
-
-            Navigator.pop(context);
-          },
-          child: Text("Crear")),
+        onPressed: () => _crearBotonGuardar(context),
+        child: Text("Guardar"),
+      ),
     );
   }
 }
