@@ -12,6 +12,50 @@ class AADB {
 
   AADB._init();
 
+<<<<<<< Updated upstream
+=======
+  final String pertenencia = '''
+      --tabla pertenencia
+      CREATE TABLE possession (
+          id INTEGER PRIMARY KEY AUTOINCREMENT,
+          nombre TEXT,
+          status TEXT,
+          descripcion TEXT,
+          foto TEXT
+      );
+    ''';
+  final String actividad = '''
+       -- Create the activity table
+      CREATE TABLE activity (
+          id INTEGER PRIMARY KEY AUTOINCREMENT, 
+          title TEXT,
+          date DATE,
+          duration INTEGER,
+          location TEXT,
+          description TEXT,
+          finish_date DATE
+      );
+    ''';
+
+  final String checklist = '''
+      CREATE TABLE checklist (
+          activity_id INTEGER,
+          possession_id INTEGER,
+          FOREIGN KEY (activity_id) REFERENCES activity(id),
+          FOREIGN KEY (possession_id) REFERENCES possession(id),
+          PRIMARY KEY (activity_id, possession_id)
+      );
+      ''';
+
+  final String checklist_items = '''
+      CREATE TABLE checklist_items (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        nombre TEXT,
+        completado INTEGER
+      );
+    ''';
+
+>>>>>>> Stashed changes
   //final String tableCartItems = 'cart_items';
 
   Future<Database> get database async {
@@ -25,6 +69,7 @@ class AADB {
     final dbPath = await getDatabasesPath();
     final path = join(dbPath, filePath);
 
+<<<<<<< Updated upstream
     return await openDatabase(path, version: 3, onCreate: _onCreateDB);
   }
 
@@ -59,5 +104,15 @@ class AADB {
       );
 
       ''');
+=======
+    return await openDatabase(path, version: 6, onCreate: _onCreateDB);
+  }
+
+  Future _onCreateDB(Database db, int version) async {
+    await db.execute(pertenencia);
+    await db.execute(actividad);
+    await db.execute(checklist);
+    await db.execute(checklist_items);
+>>>>>>> Stashed changes
   }
 }
