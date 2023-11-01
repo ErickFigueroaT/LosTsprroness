@@ -12,9 +12,9 @@ class Pagina extends StatefulWidget {
 }
 
 class _PaginaState extends State<Pagina> {
- 
   late Future<List<Pertenencia>> objetos;
-  
+  late List<Pertenencia> pertenencias;
+
   void initState() {
     super.initState();
     objetos = PertenenciaCRUD.instance.getAllItems();
@@ -44,13 +44,10 @@ class _PaginaState extends State<Pagina> {
       );
     }
     */
-    
 
     return Scaffold(
       appBar: AppBar(title: const Text('Prueba')),
-      //body: contenido,
-
-body: Padding(
+      body: Padding(
         padding: const EdgeInsets.all(10),
         child: FutureBuilder<List<Pertenencia>>(
           future: objetos,
@@ -60,26 +57,23 @@ body: Padding(
             } else if (snapshot.hasError) {
               return Text('Error: ${snapshot.error}');
             } else {
-              List<Pertenencia> pertenencias = snapshot.data!;
+              pertenencias = snapshot.data!;
               return ListView.builder(
                 itemCount: pertenencias.length,
                 itemBuilder: (context, index) {
                   final item = pertenencias[index];
                   return Ficha(
-                      id: 0 ,
+                      id: item.id,
                       titulo: item.nombre,
                       estado: item.status,
                       descripcion: item.descripcion,
-
-                      //foto: item.foto
-                      );
+                      foto: item.foto!);
                 },
               );
             }
           },
         ),
       ),
-
       floatingActionButton: FloatingActionButton(
         onPressed: () async {
           final nuevo = await Navigator.of(context).push<Pertenencia>(
@@ -87,7 +81,10 @@ body: Padding(
           if (nuevo == null) {
             return;
           }
+          setState(() => pertenencias.insert(0,nuevo));
+          //pertenencias.add(nuevo);
           PertenenciaCRUD.instance.insert(nuevo);
+
           //objetos.add(nuevo);
         },
         //backgroundColor: Colors.indigo,

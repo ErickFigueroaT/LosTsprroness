@@ -17,12 +17,14 @@ class NavBarC extends StatefulWidget {
 class _NavBarCState extends State<NavBarC> {
   PageController _pageController = PageController();
 
+
   List<Widget> __screens = [
     Plantilla(),
     ListadoPage(),
     VistaActividad(),
     Pagina()
   ];
+
 
   void _onPageChanged(int index) {
     setState(() {

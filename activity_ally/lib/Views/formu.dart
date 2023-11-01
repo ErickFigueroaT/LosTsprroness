@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'dart:io';
 import 'package:activity_ally/Models/Pertenencia.dart';
 import 'package:activity_ally/Views/widgets/image_input.dart';
 
@@ -12,6 +13,8 @@ class Formu extends StatefulWidget {
 class _FormuState extends State<Formu> {
   //Pertenencia Pertenencia = Pertenencia(id: 0, nombre: '', descripcion: '');
   //List<Pertenencia> Pertenencias = [];
+  File? seleccion;
+
   final formkey = GlobalKey<FormState>();
   int id = 0;
   var nombre = '';
@@ -33,7 +36,11 @@ class _FormuState extends State<Formu> {
           //mainAxisSize: MainAxisSize.min,
           //crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            const ImageInput(),
+            ImageInput(
+              onPickImage: (image) {
+                seleccion = image;
+              },
+            ),
             const SizedBox(height: 10),
             TextFormField(
               decoration: const InputDecoration(
@@ -68,11 +75,12 @@ class _FormuState extends State<Formu> {
                 if (form!.validate()) {
                   form.save();
                   Navigator.of(context).pop(Pertenencia(
-                      //id: plus(),
-                      nombre: nombre,
-                      status: true,
-                      descripcion: descripcion,
-                      ));
+                    id: 0,
+                    nombre: nombre,
+                    status: true,
+                    descripcion: descripcion,
+                    foto: seleccion,
+                  ));
                 }
               },
               style:

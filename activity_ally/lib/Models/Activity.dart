@@ -1,5 +1,5 @@
 class Activity {
-  int? id;
+  int id;
   String title;
   DateTime date;
   int duration;
@@ -8,7 +8,7 @@ class Activity {
   DateTime? finishDate; // Added finishDate attribute
 
   Activity({
-    this.id,
+    required this.id,
     required this.title,
     required this.date,
     required this.duration,
@@ -33,7 +33,7 @@ class Activity {
 
   Map<String, dynamic> toJson() {
     return {
-      'id': id,
+      //'id': id,
       'title': title,
       'date': date.toIso8601String(),
       'duration': duration,

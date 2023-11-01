@@ -1,16 +1,20 @@
+import 'dart:io';
+
+import 'package:activity_ally/Api/PertenenciaCRUD.dart';
 import 'package:flutter/material.dart';
+
 class Info extends StatelessWidget {
   final String titulo;
   final String descripcion;
   final int id;
   final bool estado;
+  final File foto;
   const Info(
       {required this.titulo,
       required this.descripcion,
       required this.id,
       required this.estado,
-      Key? key})
-      : super(key: key);
+      required this.foto});
 
   @override
   Widget build(BuildContext context) {
@@ -34,12 +38,12 @@ class Info extends StatelessWidget {
             borderRadius: BorderRadius.circular(20),
             border: Border.all(color: Colors.grey, width: 2)),
         child: Column(children: [
-          /*SizedBox(
+          SizedBox(
               child: Image(
-            image: NetworkImage(pictureUrl),
+            image: FileImage(foto),
             height: 400,
             width: 200,
-          )),*/
+          )),
           Row(mainAxisAlignment: MainAxisAlignment.start, children: [
             Container(
               child: const Text(
@@ -51,11 +55,9 @@ class Info extends StatelessWidget {
               child: Text(titulo, style: const TextStyle(fontSize: 20)),
             )
           ]),
-          Wrap(
-            children: [
-            
-            Flexible(
-              child: const Text(
+          Row(mainAxisAlignment: MainAxisAlignment.start, children: [
+            const Flexible(
+              child: Text(
                 'Descripcion: ',
                 style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
               ),
@@ -63,7 +65,6 @@ class Info extends StatelessWidget {
             Flexible(
               child: Text(descripcion, style: const TextStyle(fontSize: 20)),
             ),
-
           ]),
           Row(mainAxisAlignment: MainAxisAlignment.start, children: [
             Container(
@@ -96,6 +97,8 @@ class Info extends StatelessWidget {
               ),
               ElevatedButton(
                 onPressed: () {
+                  PertenenciaCRUD.instance.delete(id);
+                  Navigator.of(context).pop();
                   /*var form = formkey.currentState;
                     if (form!.validate()) {
                       form.save();
