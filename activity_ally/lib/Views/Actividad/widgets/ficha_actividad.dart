@@ -1,4 +1,4 @@
-import 'package:activity_ally/Views/info_actividad.dart';
+import 'package:activity_ally/Views/Actividad/widgets/info_actividad.dart';
 import 'package:flutter/material.dart';
 
 class FichaActividad extends StatefulWidget {

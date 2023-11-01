@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'dart:io';
 import 'package:activity_ally/Models/Pertenencia.dart';
-import 'package:activity_ally/Views/widgets/image_input.dart';
+import 'package:activity_ally/Views/Mochila/widgets/image_input.dart';
 
 class Formu extends StatefulWidget {
   const Formu({super.key});

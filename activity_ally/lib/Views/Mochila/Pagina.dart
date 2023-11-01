@@ -1,8 +1,8 @@
 import 'package:activity_ally/Api/PertenenciaCRUD.dart';
 import 'package:flutter/material.dart';
 import 'package:activity_ally/Models/Pertenencia.dart';
-import 'package:activity_ally/Views/formu.dart';
-import 'package:activity_ally/Views/widgets/ficha.dart';
+import 'package:activity_ally/Views/Mochila/formu.dart';
+import 'package:activity_ally/Views/Mochila/widgets/ficha.dart';
 
 class Pagina extends StatefulWidget {
   const Pagina({super.key});
