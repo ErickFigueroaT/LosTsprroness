@@ -1,11 +1,11 @@
-import 'package:activity_ally/Views/Pagina.dart';
+import 'package:activity_ally/Views/Mochila/Pagina.dart';
 //import 'package:activity_ally/Views/crud.dart';
 import 'package:flutter/material.dart';
 
 import 'package:activity_ally/Views/Plantilla.dart';
-import 'package:activity_ally/Views/VistaActividad.dart';
+import 'package:activity_ally/Views/Actividad/VistaActividad.dart';
 
-import 'package:activity_ally/Views/Checklist.dart';
+import 'package:activity_ally/Views/checklist/Checklist.dart';
 
 class NavBarC extends StatefulWidget {
   const NavBarC({super.key});

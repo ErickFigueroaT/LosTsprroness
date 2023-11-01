@@ -1,4 +1,4 @@
-import 'package:activity_ally/Views/formulario_checklist.dart';
+import 'package:activity_ally/Views/checklist/formulario_checklist.dart';
 import 'package:flutter/material.dart';
 import 'package:activity_ally/Models/ChecklistModelo.dart';
 import 'package:activity_ally/Api/ChecklistCRUD.dart';

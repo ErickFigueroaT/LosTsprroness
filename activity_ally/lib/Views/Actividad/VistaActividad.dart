@@ -1,7 +1,7 @@
 import 'package:activity_ally/Api/ActivityCRUD.dart';
 import 'package:activity_ally/Models/Activity.dart';
-import 'package:activity_ally/Views/ActivityForm.dart';
-import 'package:activity_ally/Views/widgets/ficha_actividad.dart';
+import 'package:activity_ally/Views/Actividad/ActivityForm.dart';
+import 'package:activity_ally/Views/Actividad/widgets/ficha_actividad.dart';
 import 'package:activity_ally/services/Notificacion.dart';
 import 'package:flutter/material.dart';
 
@@ -16,6 +16,7 @@ class VistaActividad extends StatefulWidget {
 class _VistaActividadState extends State<VistaActividad> {
   late final Notificacion notificaciones;
   late Future<List<Activity>> actividades;
+  late List<Activity> _actividades;
 
   @override
   void initState() {
@@ -41,7 +42,7 @@ class _VistaActividadState extends State<VistaActividad> {
             } else if (snapshot.hasError) {
               return Text('Error: ${snapshot.error}');
             } else {
-              List<Activity> _actividades = snapshot.data!;
+              _actividades = snapshot.data!;
               return ListView.builder(
                 itemCount: _actividades.length,
                 itemBuilder: (context, index) {
@@ -60,21 +61,7 @@ class _VistaActividadState extends State<VistaActividad> {
           },
         ),
       ),
-      /*
-          body: Container(
-            child: ListView(
-              children: [
-                ElevatedButton(
-                  onPressed: () {
-                    
-                    anadir();
-                  },
-                  child: Text('New'),
-                ),
-              ],
-            )
-
-          ),*/
+  
       floatingActionButton: FloatingActionButton(
         onPressed: () async {
           final nuevo = await Navigator.of(context).push<Activity>(
@@ -82,6 +69,8 @@ class _VistaActividadState extends State<VistaActividad> {
           if (nuevo == null) {
             return;
           }
+          setState(() => _actividades.insert(0, nuevo));
+          //pertenencias.add(nuevo);
           ActivityCRUD.instance.insert(nuevo);
           //objetos.add(nuevo);
         },
