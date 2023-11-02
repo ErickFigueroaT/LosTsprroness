@@ -1,4 +1,5 @@
 import 'package:activity_ally/Api/ActivityCRUD.dart';
+import 'package:activity_ally/Views/Actividad/Temporizador.dart';
 import 'package:flutter/material.dart';
 
 class InfoActividad extends StatelessWidget {
@@ -22,6 +23,10 @@ class InfoActividad extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    //int horas = duration/60 ;
+    //int minutos = 0 ;
+    //int segundos = 0 ;
+
     return Scaffold(
       appBar: AppBar(title: Text(title)),
       body: Container(
@@ -58,7 +63,7 @@ class InfoActividad extends StatelessWidget {
           Row(mainAxisAlignment: MainAxisAlignment.start, children: [
             Container(
               child: const Text(
-                'Duracion: ',
+                'Estimacion: ',
                 style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
               ),
             ),
@@ -89,10 +94,18 @@ class InfoActividad extends StatelessWidget {
               child: Text(description!, style: const TextStyle(fontSize: 20)),
             ),
           ]),
+          const SizedBox(height: 50),
           Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               ElevatedButton(
-                onPressed: () {},
+                onPressed: () async {
+                  final nuevo = await Navigator.of(context).push<int>(
+                      MaterialPageRoute(builder: (context) => Temporizador()));
+                  if (nuevo == null) {
+                    return;
+                  }
+                },
                 style:
                     ElevatedButton.styleFrom(padding: const EdgeInsets.all(15)),
                 child: const Text("Comenzar"),
