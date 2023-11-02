@@ -18,13 +18,12 @@ class Info extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-      var image;
-      if (foto == null){
-        image = new AssetImage('res/placeholder.jpg');
-      }
-      else{
-        image = FileImage(File(foto!));
-      }
+    var image;
+    if (foto == null) {
+      image = new AssetImage('res/placeholder.jpg');
+    } else {
+      image = FileImage(File(foto!));
+    }
     String estadoActual = "";
     String statusObject() {
       if (estado) {
@@ -87,7 +86,9 @@ class Info extends StatelessWidget {
                       color: estado == false ? Colors.red : Colors.green)),
             )
           ]),
+          const SizedBox(height: 20),
           Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               ElevatedButton(
                 onPressed: () {
