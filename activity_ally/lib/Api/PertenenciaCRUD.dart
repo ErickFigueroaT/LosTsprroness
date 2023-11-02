@@ -10,9 +10,9 @@ class PertenenciaCRUD {
 
   PertenenciaCRUD._init();
 
-  Future<void> insert(Pertenencia item) async {
+  Future<int> insert(Pertenencia item) async {
     final db = await AADB.instance.database;
-    await db.insert(tabla, item.toSqlite(),
+    return await db.insert(tabla, item.toSqlite(),
         conflictAlgorithm: ConflictAlgorithm.replace);
   }
 
@@ -29,12 +29,18 @@ class PertenenciaCRUD {
     final db = await AADB.instance.database;
     final List<Map<String, dynamic>> maps =
         await db.query(tabla, where: 'id > $n', orderBy: 'nombre');
-  
-
     return List.generate(maps.length, (i) {
       return Pertenencia.fromJson(maps[i]);
     });
   }
+
+   Future<Pertenencia> getItemById(int id) async {
+    final db = await AADB.instance.database;
+    final List<Map<String, dynamic>> maps =
+        await db.query(tabla, where: 'id = $id');
+      return Pertenencia.fromJson(maps[0]);    
+  }
+
 
   Future<int> delete(int id) async {
     final db = await AADB.instance.database;
