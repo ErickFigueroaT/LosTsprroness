@@ -5,7 +5,9 @@ class Activity {
   int duration;
   String? location;
   String? description;
-  DateTime? finishDate; // Added finishDate attribute
+  DateTime? finishDate;
+  DateTime? startDate; // Added startDate attribute
+  int? duration_r; // Added duration_r attribute
 
   Activity({
     required this.id,
@@ -14,7 +16,9 @@ class Activity {
     required this.duration,
     this.location,
     this.description,
-    this.finishDate, // Added finishDate parameter in constructor
+    this.finishDate,
+    this.startDate, // Added startDate parameter in constructor
+    this.duration_r, // Added duration_r parameter in constructor
   });
 
   factory Activity.fromJson(Map<String, dynamic> json) {
@@ -27,7 +31,11 @@ class Activity {
       description: json['description'],
       finishDate: json['finish_date'] != null
           ? DateTime.parse(json['finish_date'])
-          : null, // Parse finish_date if it exists
+          : null,
+      startDate: json['start_date'] != null
+          ? DateTime.parse(json['start_date'])
+          : null, // Parse start_date if it exists
+      duration_r: json['duration_r'], // Parse duration_r if it exists
     );
   }
 
@@ -39,7 +47,9 @@ class Activity {
       'duration': duration,
       'location': location,
       'description': description,
-      'finish_date': finishDate?.toIso8601String(), // Include finishDate in JSON if it exists
+      'finish_date': finishDate?.toIso8601String(),
+      'start_date': startDate?.toIso8601String(), // Include startDate in JSON if it exists
+      'duration_r': duration_r, // Include duration_r in JSON if it exists
     };
   }
 }

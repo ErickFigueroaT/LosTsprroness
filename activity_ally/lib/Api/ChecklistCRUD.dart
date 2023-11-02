@@ -28,21 +28,20 @@ class ChecklistCRUD {
       whereArgs: [act_id, obj_id],);
       return maps.isNotEmpty;
   }
-  
+
   Future<List<Pertenencia>> getChecklistActivityItems(int id) async {
     final db = await AADB.instance.database;
-    final List<Map<String, dynamic>> maps = await db.query(tabla, where: 'activity_id = $id');
-      List<Pertenencia> ps = [];
-      for (int i =0; i<maps.length; i++) {
-        Future<Pertenencia> objeto = PertenenciaCRUD.instance.getItemById(maps[i]['possession_id']);
-        objeto.then((value) {
-          ps.add(value);
-          }).catchError((error) {
-          print('Error fetching FichaObjetoP: $error');
-        });
-      }
-      return ps;
-      //print('${maps[i]['activity_id']}p:${maps[i]['possession_id']}');
+    final List<Map<String, dynamic>> maps = 
+    await db.rawQuery('''
+      SELECT * 
+      FROM $tabla
+      JOIN possession ON $tabla.possession_id = possession.id
+      WHERE activity_id = $id
+      '''
+    );
+    return List.generate(maps.length, (i) {
+        return Pertenencia.fromJson(maps[i]);
+      });
   }
 
   Future<int> insertChecklistItem(ChecklistItem item) async {

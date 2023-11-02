@@ -24,13 +24,15 @@ class AADB {
     final String actividad = '''
        -- Create the activity table
       CREATE TABLE activity (
-          id INTEGER PRIMARY KEY AUTOINCREMENT, 
-          title TEXT,
-          date DATE,
-          duration INTEGER,
-          location TEXT,
-          description TEXT,
-          finish_date DATE
+        id INTEGER PRIMARY KEY AUTOINCREMENT, 
+        title TEXT,
+        date DATE,
+        duration INTEGER,
+        location TEXT,
+        description TEXT,
+        finish_date DATE,
+        start_date DATE,
+        duration_r INTEGER
       );
     ''';
 
@@ -67,7 +69,7 @@ class AADB {
     final dbPath = await getDatabasesPath();
     final path = join(dbPath, filePath);
 
-    return await openDatabase(path, version: 6, onCreate: _onCreateDB);
+    return await openDatabase(path, version: 7, onCreate: _onCreateDB);
 
   }
 

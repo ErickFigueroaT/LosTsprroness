@@ -21,12 +21,14 @@ class _TemporizadorState extends State<Temporizador> {
 
   void addTime() {
     final addSeconds = 1;
-
+    if (mounted){
     setState(() {
       final seconds = duration.inSeconds + addSeconds;
 
       duration = Duration(seconds: seconds);
     });
+      
+    }
   }
 
   void startTimer() {
