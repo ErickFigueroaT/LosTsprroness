@@ -9,15 +9,15 @@ class ActivityCRUD {
 
   ActivityCRUD._init();
 
-  Future<void> insert(Activity item) async {
+  Future<int> insert(Activity item) async {
     final db = await AADB.instance.database;
-    await db.insert(tabla, item.toJson(),
+    return await db.insert(tabla, item.toJson(),
         conflictAlgorithm: ConflictAlgorithm.replace);
   }
 
   Future<List<Activity>> getAllItems() async {
     final db = await AADB.instance.database;
-    final List<Map<String, dynamic>> maps = await db.query(tabla);
+    final List<Map<String, dynamic>> maps = await db.query(tabla, orderBy: "id desc");
 
     return List.generate(maps.length, (i) {
       return Activity.fromJson(maps[i]);
