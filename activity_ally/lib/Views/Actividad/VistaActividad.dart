@@ -45,13 +45,7 @@ class _VistaActividadState extends State<VistaActividad> {
                 itemBuilder: (context, index) {
                   final item = _actividades[index];
                   return FichaActividad(
-                    title: item.title,
-                    id: item.id,
-                    date: item.date,
-                    duration: item.duration,
-                    location: item.location,
-                    description: item.description,
-                    duration_r: item.duration_r,
+                    actividad: item,
                   );
                 },
               );

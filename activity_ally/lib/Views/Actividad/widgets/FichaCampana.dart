@@ -28,6 +28,7 @@ class _FichaCampanaState extends State<FichaCampana> {
 
   @override
   Widget build(BuildContext context) {
+    bool bell = widget.actividad.date.isBefore(DateTime.now()) || widget.actividad.duration_r == 0;
     return Material(
       child: InkWell(
         onTap: () {
@@ -35,12 +36,7 @@ class _FichaCampanaState extends State<FichaCampana> {
               context,
               MaterialPageRoute(
                   builder: ((context) => InfoActividad(
-                        title: widget.actividad.title,
-                        id: widget.actividad.id,
-                        description: widget.actividad.description,
-                        location: widget.actividad.location,
-                        date: widget.actividad.date,
-                        duration: widget.actividad.duration,
+                        actividad: widget.actividad,
                       ))));
         },
         splashColor: Colors.blueGrey,
@@ -59,7 +55,7 @@ class _FichaCampanaState extends State<FichaCampana> {
                       title: Text(widget.actividad.title,
                           style: const TextStyle(fontSize: 20)),
                       subtitle: Text(widget.actividad.date.toString()),
-                      trailing: widget.actividad.date.isBefore(DateTime.now()) ? null : IconButton(
+                      trailing: bell ? null : IconButton(
                         icon: widget.actividad.notify ? Icon(Icons.notifications_active) : Icon(Icons.notifications),
                         onPressed: () {
                           if(widget.actividad.date.isAfter(DateTime.now())){

@@ -1,8 +1,14 @@
 import 'dart:async';
+import 'package:activity_ally/Api/ActivityCRUD.dart';
+import 'package:activity_ally/Models/Activity.dart';
 import 'package:flutter/material.dart';
 
 class Temporizador extends StatefulWidget {
   //const Temporizador({super.key});
+
+final Activity actividad;
+
+const Temporizador({required this.actividad});
 
   @override
   State<Temporizador> createState() => _TemporizadorState();
@@ -47,9 +53,12 @@ class _TemporizadorState extends State<Temporizador> {
           const SizedBox(height: 50),
           ElevatedButton(
             onPressed: () {
+              widget.actividad.duration_r = duration.inSeconds;
+              ActivityCRUD.instance.update(widget.actividad);
+              widget.actividad.finishDate = DateTime.now();
               setState(() => duration = const Duration());
               setState(() => timer?.cancel());
-              Navigator.of(context).pop(total);
+              Navigator.of(context).pop(widget.actividad.duration_r);
             },
             style: ElevatedButton.styleFrom(padding: const EdgeInsets.all(15)),
             child: const Text("Terminar"),
