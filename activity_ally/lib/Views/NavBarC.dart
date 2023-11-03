@@ -21,7 +21,7 @@ class _NavBarCState extends State<NavBarC> {
 
   List<Widget> __screens = [
     vistaRecordatorio(),
-    ListadoPage(),
+    //ListadoPage(),
     VistaActividad(),
     Pagina()
   ];
@@ -60,10 +60,12 @@ class _NavBarCState extends State<NavBarC> {
             icon: Icon(Icons.home),
             label: 'Inicio',
           ),
+          /*
           BottomNavigationBarItem(
             icon: Icon(Icons.edit_notifications),
             label: 'Recordatorios',
           ),
+          */
           BottomNavigationBarItem(
             icon: Icon(Icons.post_add),
             label: 'Actividades',

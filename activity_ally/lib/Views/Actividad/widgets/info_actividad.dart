@@ -1,6 +1,8 @@
 import 'package:activity_ally/Api/ActivityCRUD.dart';
 import 'package:activity_ally/Models/Activity.dart';
 import 'package:activity_ally/Views/Actividad/Temporizador.dart';
+import 'package:activity_ally/Views/checklist/Checklist.dart';
+import 'package:activity_ally/Views/checklist/objetos_check.dart';
 import 'package:flutter/material.dart';
 
 class InfoActividad extends StatefulWidget {
@@ -128,6 +130,13 @@ class _InfoActividadState extends State<InfoActividad> {
                 child: const Text("Eliminar"),
               ),
             ],
+          ),
+          const SizedBox(height: 20),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              botonObjetos(),
+            ],
           )
         ]),
       ),
@@ -146,6 +155,21 @@ class _InfoActividadState extends State<InfoActividad> {
     }
   }
 
+  botonObjetos() {
+    if (duracionReal == 0) {
+      return ElevatedButton(
+        onPressed: agregar,
+        style: ElevatedButton.styleFrom(padding: const EdgeInsets.all(15)),
+        child: const Text("Objetos"),
+      );
+    } else {
+      return const Text('');
+    }
+  }
+  void agregar() async {
+    Navigator.push(context, MaterialPageRoute(builder: (context) => objetos_check(id: widget.actividad.id,)));
+  }
+ 
   void actualizar() async {
     widget.actividad.startDate = DateTime.now();
     ActivityCRUD.instance.update(widget.actividad);
@@ -154,7 +178,11 @@ class _InfoActividadState extends State<InfoActividad> {
     if(nuevo != null){
         setState(() {
         duracionReal = nuevo;
-      }); 
+      });
+      final nuevo2 = await Navigator.push(
+              context, MaterialPageRoute(builder: (context) => ListadoPage(act_id: 
+              widget.actividad.id,)));
+              
     }
     //setState(() => duracionReal = nuevo!);
   }

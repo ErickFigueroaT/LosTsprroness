@@ -6,9 +6,14 @@ import 'package:activity_ally/Models/ChecklistModelo.dart';
 import 'package:activity_ally/Api/ChecklistCRUD.dart';
 
 class ListadoPage extends StatefulWidget {
-  const ListadoPage({Key key = const Key('my_key')}) : super(key: key);
+  //const ListadoPage({Key key = const Key('my_key')}) : super(key: key);
 
   static final nombrePagina = "Checklist";
+  final int act_id;
+
+
+  const ListadoPage({required this.act_id});
+
 
   @override
   _ListadoPageState createState() => _ListadoPageState();
@@ -20,7 +25,7 @@ class _ListadoPageState extends State<ListadoPage> {
   late List<Pertenencia> pertenencias;
 
   void initState() {
-    objetos = ChecklistCRUD.instance.getChecklistActivityItems(1);
+    objetos = ChecklistCRUD.instance.getChecklistActivityItems(widget.act_id);
     super.initState();
   }
 
@@ -55,11 +60,12 @@ class _ListadoPageState extends State<ListadoPage> {
                   // return CircularProgressIndicator(); // Muestra un indicador de carga en caso de que checklistItems sea nulo.
                   //}
                   final item = pertenencias[index];
+                  //bool newValue = false;
                   return ListTile(
                     contentPadding: EdgeInsets.all(8.0),
                     title: Text(item.nombre),
                     trailing: Checkbox(
-                      value: false,//item.completado,
+                      value: item.status,//item.completado,
                       onChanged: (bool? newValue) {
                         // Actualiza el estado del elemento en la base de datos
                         //item.completado = newValue!;
@@ -78,18 +84,18 @@ class _ListadoPageState extends State<ListadoPage> {
       floatingActionButton: Column(
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
+          /*
           FloatingActionButton(
             heroTag: 'agregar',
-
-            
             onPressed: () => Navigator.push(context,
                 MaterialPageRoute(builder: (context) =>  objetos_check(id: 1,))),//FormularioPage())),
             child: Icon(Icons.add),
-          ),
+          ),*/
           SizedBox(height: 10),
           FloatingActionButton(
             heroTag: 'paloma',
             onPressed: () {
+              Navigator.of(context).pop(true);
               // Acción a realizar al pulsar el botón "Finalizar"
             },
             child: Icon(Icons.done),
