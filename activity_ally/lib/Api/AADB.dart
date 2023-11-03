@@ -32,7 +32,8 @@ class AADB {
         description TEXT,
         finish_date DATE,
         start_date DATE,
-        duration_r INTEGER
+        duration_r INTEGER,
+        notify TEXT
       );
     ''';
 
@@ -69,7 +70,7 @@ class AADB {
     final dbPath = await getDatabasesPath();
     final path = join(dbPath, filePath);
 
-    return await openDatabase(path, version: 7, onCreate: _onCreateDB);
+    return await openDatabase(path, version: 8, onCreate: _onCreateDB);
 
   }
 

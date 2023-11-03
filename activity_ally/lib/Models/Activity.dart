@@ -6,8 +6,9 @@ class Activity {
   String? location;
   String? description;
   DateTime? finishDate;
-  DateTime? startDate; // Added startDate attribute
-  int? duration_r; // Added duration_r attribute
+  DateTime? startDate;
+  int? duration_r;
+  bool notify; // Added notify attribute
 
   Activity({
     required this.id,
@@ -17,8 +18,9 @@ class Activity {
     this.location,
     this.description,
     this.finishDate,
-    this.startDate, // Added startDate parameter in constructor
-    this.duration_r, // Added duration_r parameter in constructor
+    this.startDate,
+    this.duration_r,
+    this.notify = false, // Added notify parameter in constructor
   });
 
   factory Activity.fromJson(Map<String, dynamic> json) {
@@ -34,22 +36,23 @@ class Activity {
           : null,
       startDate: json['start_date'] != null
           ? DateTime.parse(json['start_date'])
-          : null, // Parse start_date if it exists
-      duration_r: json['duration_r'], // Parse duration_r if it exists
+          : null,
+      duration_r: json['duration_r'],
+      notify: json['notify'] != "0" , // Parse notify if it exists
     );
   }
 
   Map<String, dynamic> toJson() {
     return {
-      //'id': id,
       'title': title,
       'date': date.toIso8601String(),
       'duration': duration,
       'location': location,
       'description': description,
       'finish_date': finishDate?.toIso8601String(),
-      'start_date': startDate?.toIso8601String(), // Include startDate in JSON if it exists
-      'duration_r': duration_r, // Include duration_r in JSON if it exists
+      'start_date': startDate?.toIso8601String(),
+      'duration_r': duration_r,
+      'notify': notify, // Include notify in JSON
     };
   }
 }

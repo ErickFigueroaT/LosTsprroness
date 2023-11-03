@@ -1,7 +1,8 @@
+import 'package:activity_ally/Models/Activity.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-import 'package:timezone/timezone.dart';
-import 'package:timezone/data/latest.dart';
+import 'package:timezone/timezone.dart' as tz;
+import 'package:timezone/data/latest.dart'as tz;
 
 class Notificacion{
   
@@ -10,6 +11,7 @@ class Notificacion{
   final LNS = FlutterLocalNotificationsPlugin();
   
   Future<void> initialize() async{
+    tz.initializeTimeZones();
     const AndroidInitializationSettings
       ais = AndroidInitializationSettings('@mipmap/ic_launcher');
 
@@ -38,6 +40,18 @@ class Notificacion{
       await LNS.show(id, title, body, details);
     
   }
+  //uiLocalNotificationDateInterpretation
+
+   Future<void> NotificacionProgramada(Activity actividad) async{
+      final details = await _notificationDetails();
+      if (actividad.date.isAfter(DateTime.now())){
+        await LNS.zonedSchedule(actividad.id, actividad.title, actividad.description, 
+        tz.TZDateTime.from(actividad.date.add(Duration(seconds: 0)), tz.local), details,
+        androidAllowWhileIdle:  true,
+        uiLocalNotificationDateInterpretation: UILocalNotificationDateInterpretation.absoluteTime,
+        );
+      }
+  }
 
   void onDidReciveLocalNotification(int id, String? body, String? payload){
     print('id, $id');
@@ -47,6 +61,17 @@ class Notificacion{
     print('payload, $payload');
   }
 
+  Future<bool> checkScheduledNotification(int notificationId) async {
+    
+    List<PendingNotificationRequest> pendingNotifications = await LNS.pendingNotificationRequests();
+
+    return pendingNotifications.any((notification) => notification.id == notificationId);
+  }
+
+  Future<void> cancela(int id) async{
+      LNS.cancel(id);
+
+  }
   
 
 }

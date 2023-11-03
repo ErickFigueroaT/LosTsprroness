@@ -23,7 +23,7 @@ class Pertenencia {
     return Pertenencia(
       id: json['id'],
       nombre: json['nombre'],
-      status: json['status'] != "false",
+      status: json['status'] != "0",
       descripcion: json['descripcion'],
       foto: (json['foto']),
     );

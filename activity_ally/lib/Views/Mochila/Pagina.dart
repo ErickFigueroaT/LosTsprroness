@@ -62,9 +62,11 @@ class _PaginaState extends State<Pagina> {
           if (nuevo == null) {
             return;
           }
+          //PertenenciaCRUD.instance.insert(nuevo);
+          int new_id = await PertenenciaCRUD.instance.insert(nuevo);
+          nuevo.id = new_id;
           setState(() => pertenencias.insert(0, nuevo));
           //pertenencias.add(nuevo);
-          PertenenciaCRUD.instance.insert(nuevo);
 
           //objetos.add(nuevo);
         },

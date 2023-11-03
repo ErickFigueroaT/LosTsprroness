@@ -44,7 +44,7 @@ class InfoActividad extends StatelessWidget {
                 style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
               ),
             ),
-            Container(
+            Flexible(
               child: Text(title, style: const TextStyle(fontSize: 20)),
             )
           ]),
