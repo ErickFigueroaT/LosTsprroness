@@ -35,12 +35,7 @@ class _FichaCampanaState extends State<FichaCampana> {
               context,
               MaterialPageRoute(
                   builder: ((context) => InfoActividad(
-                        title: widget.actividad.title,
-                        id: widget.actividad.id,
-                        description: widget.actividad.description,
-                        location: widget.actividad.location,
-                        date: widget.actividad.date,
-                        duration: widget.actividad.duration,
+                        actividad: widget.actividad,
                       ))));
         },
         splashColor: Colors.blueGrey,

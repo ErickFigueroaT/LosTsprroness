@@ -4,25 +4,10 @@ import 'package:activity_ally/Views/Actividad/Temporizador.dart';
 import 'package:flutter/material.dart';
 
 class InfoActividad extends StatefulWidget {
-  final int id;
-  final String title;
-  final DateTime date;
-  final int duration;
-  final String? location;
-  final String? description;
-  final DateTime? finishDate;
-  final int? duration_r; // Added finishDate attribute
+  final Activity actividad; // Added finishDate attribute
 
   const InfoActividad(
-      {required this.id,
-      required this.title,
-      required this.date,
-      required this.duration,
-      this.location,
-      this.description,
-      this.finishDate,
-      // ignore: non_constant_identifier_names
-      this.duration_r // Added finishDate parameter in constructor
+      {required this.actividad,
       });
 
   @override
@@ -34,48 +19,19 @@ class _InfoActividadState extends State<InfoActividad> {
   int secs = 0;
   int mins = 0;
   int hors = 0;
-  String s = '';
-  String m = '';
-  String h = '';
   @override
   Widget build(BuildContext context) {
-    print('---------------');
-    print(widget.duration_r);
-    print(widget.duration);
-    if (widget.duration_r != null) {
-      duracionReal = widget.duration_r!;
+    if (widget.actividad.duration_r != null) {
+      duracionReal = widget.actividad.duration_r!;
     }
-    double horas = widget.duration / 60;
-    double minutos = widget.duration % 60;
-    int hrs = horas.round();
-    int min = minutos.round();
-    String hours = hrs.toString();
-    String minutes = min.toString();
+    int horas = (widget.actividad.duration / 60).floor();
+    int minutos = widget.actividad.duration % 60;
     secs = duracionReal % 60;
-    mins = (duracionReal / 60).floor();
+    mins = ((duracionReal/60) % 60).floor();
     hors = (duracionReal / 3600).floor();
 
-    s = secs.toString();
-    m = mins.toString();
-    h = hors.toString();
-    if (hrs < 10) {
-      hours = '0' + hrs.toString();
-    }
-    if (min < 10) {
-      minutes = '0' + min.toString();
-    }
-    if (secs < 10) {
-      s = '0' + secs.toString();
-    }
-    if (mins < 10) {
-      m = '0' + mins.toString();
-    }
-    if (hors < 10) {
-      h = '0' + hors.toString();
-    }
-
     return Scaffold(
-      appBar: AppBar(title: Text(widget.title)),
+      appBar: AppBar(title: Text(widget.actividad.title)),
       body: Container(
         padding: const EdgeInsets.symmetric(vertical: 50, horizontal: 40),
         margin: const EdgeInsets.all(20),
@@ -92,7 +48,7 @@ class _InfoActividadState extends State<InfoActividad> {
               ),
             ),
             Flexible(
-              child: Text(widget.title, style: const TextStyle(fontSize: 20)),
+              child: Text(widget.actividad.title, style: const TextStyle(fontSize: 20)),
             )
           ]),
           Row(mainAxisAlignment: MainAxisAlignment.start, children: [
@@ -103,7 +59,7 @@ class _InfoActividadState extends State<InfoActividad> {
               ),
             ),
             Flexible(
-              child: Text(widget.date.toString(),
+              child: Text(widget.actividad.date.toString(),
                   style: const TextStyle(fontSize: 20)),
             )
           ]),
@@ -115,7 +71,7 @@ class _InfoActividadState extends State<InfoActividad> {
               ),
             ),
             Container(
-              child: Text('$hours:$minutes:00',
+              child: Text('$horas:${minutos.toString().padLeft(2, '0')}:00',
                   style: const TextStyle(fontSize: 20)),
             )
           ]),
@@ -128,7 +84,7 @@ class _InfoActividadState extends State<InfoActividad> {
             ),
             Container(
               child:
-                  Text(widget.location!, style: const TextStyle(fontSize: 20)),
+                  Text(widget.actividad.location!, style: const TextStyle(fontSize: 20)),
             )
           ]),
           Row(mainAxisAlignment: MainAxisAlignment.start, children: [
@@ -140,7 +96,7 @@ class _InfoActividadState extends State<InfoActividad> {
             ),
             Container(
               child: Text(
-                '$h:$m:$s',
+                '${hors.toString().padLeft(2, '0')}:${mins.toString().padLeft(2, '0')}:${secs.toString().padLeft(2, '0')}',
                 style: const TextStyle(fontSize: 20),
               ),
             )
@@ -153,7 +109,7 @@ class _InfoActividadState extends State<InfoActividad> {
               ),
             ),
             Flexible(
-              child: Text(widget.description!,
+              child: Text(widget.actividad.description!,
                   style: const TextStyle(fontSize: 20)),
             ),
           ]),
@@ -164,7 +120,7 @@ class _InfoActividadState extends State<InfoActividad> {
               boton(),
               ElevatedButton(
                 onPressed: () {
-                  ActivityCRUD.instance.delete(widget.id);
+                  ActivityCRUD.instance.delete(widget.actividad.id);
                   Navigator.of(context).pop();
                 },
                 style:
@@ -191,17 +147,15 @@ class _InfoActividadState extends State<InfoActividad> {
   }
 
   void actualizar() async {
+    widget.actividad.startDate = DateTime.now();
+    ActivityCRUD.instance.update(widget.actividad);
     final nuevo = await Navigator.push(
-        context, MaterialPageRoute(builder: (context) => Temporizador()));
-    setState(() => duracionReal = nuevo!);
-    ActivityCRUD.instance.update(Activity(
-        id: widget.id,
-        title: widget.title,
-        date: widget.date,
-        duration: widget.duration,
-        location: widget.location,
-        description: widget.description,
-        duration_r: nuevo));
-    print(' a ' + widget.duration_r.toString());
+        context, MaterialPageRoute(builder: (context) => Temporizador(actividad: widget.actividad,)));
+    if(nuevo != null){
+        setState(() {
+        duracionReal = nuevo;
+      }); 
+    }
+    //setState(() => duracionReal = nuevo!);
   }
 }

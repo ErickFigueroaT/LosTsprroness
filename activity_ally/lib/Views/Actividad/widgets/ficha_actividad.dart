@@ -1,25 +1,12 @@
+import 'package:activity_ally/Models/Activity.dart';
 import 'package:activity_ally/Views/Actividad/widgets/info_actividad.dart';
 import 'package:flutter/material.dart';
 
 class FichaActividad extends StatefulWidget {
-  int id;
-  String title;
-  DateTime date;
-  int duration;
-  String? location;
-  String? description;
-  DateTime? finishDate;
-  int? duration_r; // Added finishDate attribute
+  Activity actividad; // Added finishDate attribute
 
   FichaActividad(
-      {required this.id,
-      required this.title,
-      required this.date,
-      required this.duration,
-      this.location,
-      this.description,
-      this.finishDate, // Added finishDate parameter in constructor
-      this.duration_r});
+      {required this.actividad});
 
   @override
   State<FichaActividad> createState() => _FichaActividadState();
@@ -36,13 +23,7 @@ class _FichaActividadState extends State<FichaActividad> {
               context,
               MaterialPageRoute(
                   builder: ((context) => InfoActividad(
-                        title: widget.title,
-                        id: widget.id,
-                        description: widget.description,
-                        location: widget.location,
-                        date: widget.date,
-                        duration: widget.duration,
-                        duration_r: widget.duration_r,
+                        actividad: widget.actividad,
                       ))));
         },
         splashColor: Colors.blueGrey,
@@ -58,9 +39,9 @@ class _FichaActividadState extends State<FichaActividad> {
                   mainAxisSize: MainAxisSize.min,
                   children: <Widget>[
                     ListTile(
-                      title: Text(widget.title,
+                      title: Text(widget.actividad.title,
                           style: const TextStyle(fontSize: 20)),
-                      subtitle: Text(widget.date.toString()),
+                      subtitle: Text(widget.actividad.date.toString()),
                     ),
                   ],
                 ),
