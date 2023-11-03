@@ -54,6 +54,7 @@ class _VistaActividadState extends State<VistaActividad> {
                     duration: item.duration,
                     location: item.location,
                     description: item.description,
+                    duration_r: item.duration_r,
                   );
                 },
               );
@@ -61,7 +62,6 @@ class _VistaActividadState extends State<VistaActividad> {
           },
         ),
       ),
-  
       floatingActionButton: FloatingActionButton(
         onPressed: () async {
           final nuevo = await Navigator.of(context).push<Activity>(
