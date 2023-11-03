@@ -8,29 +8,31 @@ class FichaActividad extends StatefulWidget {
   int duration;
   String? location;
   String? description;
-  DateTime? finishDate; // Added finishDate attribute
+  DateTime? finishDate;
+  int? duration_r; // Added finishDate attribute
 
-  FichaActividad({
-    required this.id,
-    required this.title,
-    required this.date,
-    required this.duration,
-    this.location,
-    this.description,
-    this.finishDate, // Added finishDate parameter in constructor
-  });
+  FichaActividad(
+      {required this.id,
+      required this.title,
+      required this.date,
+      required this.duration,
+      this.location,
+      this.description,
+      this.finishDate, // Added finishDate parameter in constructor
+      this.duration_r});
 
   @override
   State<FichaActividad> createState() => _FichaActividadState();
 }
 
 class _FichaActividadState extends State<FichaActividad> {
+  int duracionReal = 0;
   @override
   Widget build(BuildContext context) {
     return Material(
       child: InkWell(
-        onTap: () {
-          Navigator.push(
+        onTap: () async {
+          final nuevo = await Navigator.push(
               context,
               MaterialPageRoute(
                   builder: ((context) => InfoActividad(
@@ -40,6 +42,7 @@ class _FichaActividadState extends State<FichaActividad> {
                         location: widget.location,
                         date: widget.date,
                         duration: widget.duration,
+                        duration_r: widget.duration_r,
                       ))));
         },
         splashColor: Colors.blueGrey,

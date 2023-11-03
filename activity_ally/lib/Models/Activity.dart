@@ -50,7 +50,8 @@ class Activity {
       'location': location,
       'description': description,
       'finish_date': finishDate?.toIso8601String(),
-      'start_date': startDate?.toIso8601String(),
+      'start_date': startDate
+          ?.toIso8601String(),
       'duration_r': duration_r,
       'notify': notify, // Include notify in JSON
     };
