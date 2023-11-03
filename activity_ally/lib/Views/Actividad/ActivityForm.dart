@@ -21,8 +21,8 @@ class _ActivityFormState extends State<ActivityForm> {
   TimeOfDay? hora;
 
   DateTime hoy = DateTime.now();
-  var hours = DateTime.now().add(Duration(hours: 1)).hour;
-  var minutes = '00';
+  var hours = TimeOfDay(hour:  DateTime.now().add(Duration(hours: 1)).hour, minute: 0);
+  
 
   @override
   Widget build(BuildContext context) {
@@ -55,13 +55,13 @@ class _ActivityFormState extends State<ActivityForm> {
               },
             ),
             ElevatedButton(
-              child: Text('${hours}:${minutes}'),
+              child: Text('${hours.hour}:${hours.minute.toString().padLeft(2, '0')}'),
               onPressed: () async {
                 hora = await pickTime();
                 if (hora != null) {
                   setState(() {
-                    hours = hora!.hour;
-                    minutes = hora!.minute.toString();
+                    hours = hora!;
+                    //hours.minute = hora!.minute.toString();
                   });
                 }
               },
@@ -126,14 +126,8 @@ class _ActivityFormState extends State<ActivityForm> {
                     return;
                   }
                   form.save();
-                  final fecha_hora;
-                  if (fecha != null && hora != null)
-                    fecha_hora = new DateTime(fecha!.year, fecha!.month,
-                        fecha!.day, hora!.hour, hora!.minute, 0, 0, 0);
-                  else {
-                    fecha_hora = new DateTime(
-                        hoy!.year, hoy!.month, hoy!.day, hours, 0, 0, 0, 0);
-                  }
+                  final fecha_hora = new DateTime(
+                        hoy!.year, hoy!.month, hoy!.day, hours.hour, hours.minute, 0, 0, 0);
                   Navigator.of(context).pop(Activity(
                     id: 0,
                     title: title,
@@ -162,7 +156,7 @@ class _ActivityFormState extends State<ActivityForm> {
 
   Future<TimeOfDay?> pickTime() => showTimePicker(
       context: context,
-      initialTime: TimeOfDay(hour: hours, minute: hoy.minute));
+      initialTime: TimeOfDay(hour: hours.hour, minute: hours.minute));
 
   void _showDialog(Widget child) {
     showCupertinoModalPopup<void>(

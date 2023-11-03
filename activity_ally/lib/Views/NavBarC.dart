@@ -1,3 +1,4 @@
+import 'package:activity_ally/Views/Actividad/Recordatorios.dart';
 import 'package:activity_ally/Views/Mochila/Pagina.dart';
 //import 'package:activity_ally/Views/crud.dart';
 import 'package:flutter/material.dart';
@@ -19,7 +20,7 @@ class _NavBarCState extends State<NavBarC> {
 
 
   List<Widget> __screens = [
-    Plantilla(),
+    vistaRecordatorio(),
     ListadoPage(),
     VistaActividad(),
     Pagina()
@@ -60,16 +61,16 @@ class _NavBarCState extends State<NavBarC> {
             label: 'Inicio',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.add),
-            label: 'Publicar',
+            icon: Icon(Icons.edit_notifications),
+            label: 'Recordatorios',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.post_add),
-            label: 'Publicaciones',
+            label: 'Actividades',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.settings),
-            label: 'Options',
+            icon: Icon(Icons.backpack_outlined),
+            label: 'Mochila',
           ),
         ],
         currentIndex: _selectedIndex,

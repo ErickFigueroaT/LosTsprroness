@@ -2,24 +2,28 @@ import 'package:activity_ally/Api/ActivityCRUD.dart';
 import 'package:activity_ally/Models/Activity.dart';
 import 'package:activity_ally/Views/Actividad/ActivityForm.dart';
 import 'package:activity_ally/Views/Actividad/widgets/ficha_actividad.dart';
+import 'package:activity_ally/Views/Actividad/widgets/FichaCampana.dart';
 import 'package:activity_ally/services/Notificacion.dart';
 import 'package:flutter/material.dart';
 
 //import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-class VistaActividad extends StatefulWidget {
-  const VistaActividad({super.key});
+class vistaRecordatorio extends StatefulWidget {
+  const vistaRecordatorio({super.key});
 
   @override
-  State<VistaActividad> createState() => _VistaActividadState();
+  State<vistaRecordatorio> createState() => _vistaRecordatorioState();
 }
 
-class _VistaActividadState extends State<VistaActividad> {
+class _vistaRecordatorioState extends State<vistaRecordatorio> {
+  late final Notificacion notificaciones;
   late Future<List<Activity>> actividades;
   late List<Activity> _actividades;
 
   @override
   void initState() {
     super.initState();
+    notificaciones = Notificacion();
+    notificaciones.initialize();
     actividades = ActivityCRUD.instance.getAllItems();
   }
 
@@ -44,34 +48,14 @@ class _VistaActividadState extends State<VistaActividad> {
                 itemCount: _actividades.length,
                 itemBuilder: (context, index) {
                   final item = _actividades[index];
-                  return FichaActividad(
-                    title: item.title,
-                    id: item.id,
-                    date: item.date,
-                    duration: item.duration,
-                    location: item.location,
-                    description: item.description,
-                    duration_r: item.duration_r,
+                  return FichaCampana(
+                    actividad: item,
                   );
                 },
               );
             }
           },
         ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () async {
-          final nuevo = await Navigator.of(context).push<Activity>(
-              MaterialPageRoute(builder: (context) => const ActivityForm()));
-          if (nuevo == null) {
-            return;
-          }
-          int new_id = await ActivityCRUD.instance.insert(nuevo);
-          nuevo.id = new_id;
-          setState(() => _actividades.insert(0, nuevo));
-        },
-        //backgroundColor: Colors.indigo,
-        child: const Icon(Icons.add),
       ),
     );
   }

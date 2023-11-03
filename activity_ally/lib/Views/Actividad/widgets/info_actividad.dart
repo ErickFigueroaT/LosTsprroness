@@ -91,7 +91,7 @@ class _InfoActividadState extends State<InfoActividad> {
                 style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
               ),
             ),
-            Container(
+            Flexible(
               child: Text(widget.title, style: const TextStyle(fontSize: 20)),
             )
           ]),
