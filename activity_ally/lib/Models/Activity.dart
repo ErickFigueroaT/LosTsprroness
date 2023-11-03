@@ -48,7 +48,8 @@ class Activity {
       'location': location,
       'description': description,
       'finish_date': finishDate?.toIso8601String(),
-      'start_date': startDate?.toIso8601String(), // Include startDate in JSON if it exists
+      'start_date': startDate
+          ?.toIso8601String(), // Include startDate in JSON if it exists
       'duration_r': duration_r, // Include duration_r in JSON if it exists
     };
   }
