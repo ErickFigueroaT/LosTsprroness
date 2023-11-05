@@ -1,7 +1,7 @@
 import 'package:activity_ally/Api/ChecklistCRUD.dart';
 import 'package:activity_ally/Api/PertenenciaCRUD.dart';
 import 'package:activity_ally/Presenters/PertenenciaPresenter.dart';
-import 'package:activity_ally/Views/Mochila/Mochila.dart';
+import 'package:activity_ally/Views/Updatable.dart';
 import 'package:flutter/material.dart';
 import 'package:activity_ally/Models/Pertenencia.dart';
 import 'package:activity_ally/Views/Mochila/formu.dart';
@@ -16,7 +16,7 @@ class objetos_check extends StatefulWidget {
   State<objetos_check> createState() => _objetos_checkState();
 }
 
-class _objetos_checkState extends State<objetos_check> implements Mochila{
+class _objetos_checkState extends State<objetos_check> implements Updatable{
   late Future<List<Pertenencia>> objetos;
 
   void initState() {

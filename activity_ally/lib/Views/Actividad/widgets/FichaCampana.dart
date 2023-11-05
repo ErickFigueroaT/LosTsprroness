@@ -30,7 +30,17 @@ class _FichaCampanaState extends State<FichaCampana> {
 
   @override
   Widget build(BuildContext context) {
-    bool bell = widget.actividad.date.isBefore(DateTime.now()) || widget.actividad.duration_r == 0;
+    bool isPast = widget.actividad.date.isBefore(DateTime.now());
+    bool isFinished = widget.actividad.finishDate != null;
+
+    Color containerColor = Colors.white70;
+
+    if (isPast && !isFinished) {
+      containerColor = Colors.red[100] ?? Colors.red; // Use red[100] if available, else use default red
+    } else if (isFinished) {
+      containerColor = Colors.grey[300] ?? Colors.grey; // Use grey[100] if available, else use default grey
+    }
+    bool bell = isPast || isFinished || widget.actividad.startDate != null ;
     return Material(
       child: InkWell(
         onTap: () {
@@ -43,15 +53,16 @@ class _FichaCampanaState extends State<FichaCampana> {
                       ))));
         },
         splashColor: Colors.blueGrey,
-        child: Container(
-          decoration: BoxDecoration(
-              color: Colors.white70,
-              borderRadius: BorderRadius.circular(16),
-              border: Border.all(color: Colors.grey, width: 1)),
+          child: Container(
+            decoration: BoxDecoration(
+            color: containerColor,
+            borderRadius: BorderRadius.circular(16),
+            border: Border.all(color: Colors.grey, width: 1),
+          ),
           child: Column(
             children: [
-              Card(
-                child: Column(
+              //Card(child: 
+              Column(
                   mainAxisSize: MainAxisSize.min,
                   children: <Widget>[
                     ListTile(
@@ -88,7 +99,7 @@ class _FichaCampanaState extends State<FichaCampana> {
                     ),
                   ],
                 ),
-              ),
+              //),
             ],
           ),
         ),

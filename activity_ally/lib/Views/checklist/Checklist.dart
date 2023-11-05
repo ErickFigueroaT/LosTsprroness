@@ -1,6 +1,7 @@
+import 'package:activity_ally/Api/PertenenciaCRUD.dart';
 import 'package:activity_ally/Models/Pertenencia.dart';
 import 'package:activity_ally/Views/checklist/formulario_checklist.dart';
-import 'package:activity_ally/Views/checklist/objetos_check.dart';
+import 'package:activity_ally/Views/checklist/widgets/check_obj.dart';
 import 'package:flutter/material.dart';
 import 'package:activity_ally/Models/ChecklistModelo.dart';
 import 'package:activity_ally/Api/ChecklistCRUD.dart';
@@ -22,19 +23,16 @@ class ListadoPage extends StatefulWidget {
 class _ListadoPageState extends State<ListadoPage> {
 
   late Future<List<Pertenencia>> objetos;
-  late List<Pertenencia> pertenencias;
+  late List<Pertenencia>? pertenencias;
+  late List<int> checked; 
 
   void initState() {
     objetos = ChecklistCRUD.instance.getChecklistActivityItems(widget.act_id);
     super.initState();
   }
 
-
-
-
   @override
   Widget build(BuildContext context) {
-    bool checkin;
     return Scaffold(
       appBar: AppBar(title: Text("Listado de Objetos")),
       
@@ -49,31 +47,23 @@ class _ListadoPageState extends State<ListadoPage> {
             } else if (snapshot.hasError) {
               return Text('Error: ${snapshot.error}');
             } else if (snapshot.data?.isEmpty ?? true) {
-              return Center(child: Text("No has registrado ningun objeto"));
+              pertenencias = null;
+              return Center(child: Text("No trajiste ningun objeto"));
             } 
             else {
               pertenencias = snapshot.data!;
+              //checked = [pertenencias!.length];
               return ListView.builder(
-                itemCount: pertenencias.length,
+                itemCount: pertenencias!.length,
                 itemBuilder: (context, index) {
-                  //if (checklistItems == null) {
-                  // return CircularProgressIndicator(); // Muestra un indicador de carga en caso de que checklistItems sea nulo.
-                  //}
-                  final item = pertenencias[index];
-                  //bool newValue = false;
-                  return ListTile(
-                    contentPadding: EdgeInsets.all(8.0),
-                    title: Text(item.nombre),
-                    trailing: Checkbox(
-                      value: item.status,//item.completado,
-                      onChanged: (bool? newValue) {
-                        // Actualiza el estado del elemento en la base de datos
-                        //item.completado = newValue!;
-                        item.status = newValue!;
-                        //ChecklistCRUD.instance.updateChecklistItem(item);
-                        setState(() {});
-                      },
-                    ),
+                  final item = pertenencias![index];
+                  return ChecklistItemWidget(
+                    item: item,
+                    onChanged: (bool newValue) {
+                      setState(() {
+                        item.status = newValue; // Update the item's status
+                      });
+                    },
                   );
                 },
               );
@@ -95,6 +85,13 @@ class _ListadoPageState extends State<ListadoPage> {
           FloatingActionButton(
             heroTag: 'paloma',
             onPressed: () {
+              if(pertenencias != null){
+                for(Pertenencia p in pertenencias!){
+                  if(!p.status){
+                    PertenenciaCRUD.instance.update(p);
+                  }
+                }
+              }
               Navigator.of(context).pop(true);
               // Acción a realizar al pulsar el botón "Finalizar"
             },
@@ -104,6 +101,8 @@ class _ListadoPageState extends State<ListadoPage> {
       ),
     );
   }
+
+
 
   /*
 

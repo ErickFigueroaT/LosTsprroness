@@ -16,9 +16,20 @@ class FichaActividad extends StatefulWidget {
 }
 
 class _FichaActividadState extends State<FichaActividad> {
-  int duracionReal = 0;
+  //int duracionReal = 0;
   @override
   Widget build(BuildContext context) {
+    bool isPast = widget.actividad.date.isBefore(DateTime.now());
+    bool isFinished = widget.actividad.finishDate != null;
+
+    Color containerColor = Colors.white70;
+
+    if (isPast && !isFinished) {
+      containerColor = Colors.red[100] ?? Colors.red; // Use red[100] if available, else use default red
+    } else if (isFinished) {
+      containerColor = Colors.grey[300] ?? Colors.grey; // Use grey[100] if available, else use default grey
+    }
+
     return Material(
       child: InkWell(
         onTap: () async {
@@ -33,13 +44,13 @@ class _FichaActividadState extends State<FichaActividad> {
         splashColor: Colors.blueGrey,
         child: Container(
           decoration: BoxDecoration(
-              color: Colors.white70,
-              borderRadius: BorderRadius.circular(16),
-              border: Border.all(color: Colors.grey, width: 1)),
+            color: containerColor,
+            borderRadius: BorderRadius.circular(16),
+            border: Border.all(color: Colors.grey, width: 1),
+          ),
           child: Column(
             children: [
-              Card(
-                child: Column(
+               Column(
                   mainAxisSize: MainAxisSize.min,
                   children: <Widget>[
                     ListTile(
@@ -48,8 +59,7 @@ class _FichaActividadState extends State<FichaActividad> {
                       subtitle: Text(widget.actividad.date.toString()),
                     ),
                   ],
-                ),
-              ),
+               )  
             ],
           ),
         ),

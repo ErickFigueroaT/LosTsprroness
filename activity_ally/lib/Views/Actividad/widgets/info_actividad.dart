@@ -3,6 +3,7 @@ import 'package:activity_ally/Models/Activity.dart';
 import 'package:activity_ally/Presenters/ActivityPresenter.dart';
 import 'package:activity_ally/Presenters/PertenenciaPresenter.dart';
 import 'package:activity_ally/Views/Actividad/Temporizador.dart';
+import 'package:activity_ally/Views/Updatable.dart';
 import 'package:activity_ally/Views/checklist/Checklist.dart';
 import 'package:activity_ally/Views/checklist/objetos_check.dart';
 import 'package:flutter/material.dart';
@@ -20,7 +21,7 @@ class InfoActividad extends StatefulWidget {
   State<InfoActividad> createState() => _InfoActividadState();
 }
 
-class _InfoActividadState extends State<InfoActividad> {
+class _InfoActividadState extends State<InfoActividad> implements Updatable {
   int duracionReal = 0;
   int secs = 0;
   int mins = 0;
@@ -173,12 +174,15 @@ class _InfoActividadState extends State<InfoActividad> {
   void agregar() async {
     Navigator.push(context, MaterialPageRoute(builder: (context) => objetos_check(id: widget.actividad.id, presenter: PertenenciaPresenter(),)));
   }
+
+
  
   void actualizar() async {
-    widget.actividad.startDate = DateTime.now();
-    ActivityCRUD.instance.update(widget.actividad);
-    final nuevo = await Navigator.push(
-        context, MaterialPageRoute(builder: (context) => Temporizador(actividad: widget.actividad,)));
+    widget.presenter.start(widget.actividad);
+    updateView();
+    Navigator.push(context, MaterialPageRoute(builder: (context) => Temporizador(actividad: widget.actividad, presenter: widget.presenter, parent: this,)));
+
+    /*
     if(nuevo != null){
         setState(() {
         duracionReal = nuevo;
@@ -188,6 +192,11 @@ class _InfoActividadState extends State<InfoActividad> {
               widget.actividad.id,)));
               
     }
-    //setState(() => duracionReal = nuevo!);
+    *///setState(() => duracionReal = nuevo!);
+  }
+  
+  @override
+  updateView() {
+    setState(() {});
   }
 }
