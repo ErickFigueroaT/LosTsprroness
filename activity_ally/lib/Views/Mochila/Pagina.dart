@@ -36,7 +36,7 @@ class _PaginaState extends State<Pagina>  implements Updatable{
     );
 
     return Scaffold(
-      appBar: AppBar(title: const Text('Prueba')),
+      appBar: AppBar(title: const Text('Pertenencias')),
       body: Padding(
         padding: const EdgeInsets.all(10),
         child: FutureBuilder<List<Pertenencia>>(
