@@ -1,12 +1,13 @@
 import 'package:activity_ally/Models/Activity.dart';
-import 'package:activity_ally/Views/Mochila/Mochila.dart';
+import 'package:activity_ally/Views/Updatable.dart';
 import 'package:activity_ally/Api/ActivityCRUD.dart';
+import 'package:activity_ally/Views/checklist/Checklist.dart';
 import 'package:activity_ally/services/Notificacion.dart';
 import 'package:flutter/material.dart';
 
 class ActivityPresenter{
 
-late Mochila view;
+late Updatable view;
 final Notificacion notificaciones = Notificacion();
 ActivityPresenter(){
   notificaciones.initialize();
@@ -48,5 +49,32 @@ ActivityPresenter(){
     //Navigator.of(context).pop();
     view.updateView();
 
+  }
+
+  Future<void> onUpdate(Activity actividad) async{
+
+    ActivityCRUD.instance.update(actividad);
+    view.updateView();
+  }
+
+  Future <void> start(Activity actividad) async{
+    actividad.startDate = DateTime.now();
+    if (actividad.notify && actividad.startDate!.isBefore(actividad.date)){
+      notificaciones.cancela(actividad.id);
+    }
+    return onUpdate(actividad);
+  }
+
+  Future <void> finish(Activity actividad, BuildContext context) async{
+    actividad.finishDate = DateTime.now();
+    onUpdate(actividad);
+    completarCL(context, actividad);
+  }
+
+  void completarCL(BuildContext context, Activity actividad) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => ListadoPage(act_id: actividad.id,)), // Specify the new page to navigate to
+    );
   }
 }

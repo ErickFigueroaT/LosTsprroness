@@ -1,5 +1,5 @@
 import 'package:activity_ally/Presenters/PertenenciaPresenter.dart';
-import 'package:activity_ally/Views/Mochila/Mochila.dart';
+import 'package:activity_ally/Views/Updatable.dart';
 import 'package:flutter/material.dart';
 import 'package:activity_ally/Models/Pertenencia.dart';
 import 'package:activity_ally/Views/Mochila/formu.dart';
@@ -14,7 +14,7 @@ class Pagina extends StatefulWidget {
   State<Pagina> createState() => _PaginaState();
 }
 
-class _PaginaState extends State<Pagina>  implements Mochila{
+class _PaginaState extends State<Pagina>  implements Updatable{
   late Future<List<Pertenencia>> objetos;
 
   void initState() {
@@ -47,7 +47,7 @@ class _PaginaState extends State<Pagina>  implements Mochila{
             } else if (snapshot.hasError) {
               return Text('Error: ${snapshot.error}');
             }else if (snapshot.data?.isEmpty ?? true) {
-              return Center(child: Text("No has registrado ningun objeto"));
+              return Center(child: Text("Aun no has registrado ningun objeto"));
             }  
             else {
               List<Pertenencia> pertenencias = snapshot.data!;

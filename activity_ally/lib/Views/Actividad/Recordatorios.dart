@@ -1,7 +1,7 @@
 import 'package:activity_ally/Models/Activity.dart';
 import 'package:activity_ally/Presenters/ActivityPresenter.dart';
 import 'package:activity_ally/Views/Actividad/widgets/FichaCampana.dart';
-import 'package:activity_ally/Views/Mochila/Mochila.dart';
+import 'package:activity_ally/Views/Updatable.dart';
 import 'package:flutter/material.dart';
 
 //import 'package:flutter_local_notifications/flutter_local_notifications.dart';
@@ -13,7 +13,7 @@ class VistaRecordatorio extends StatefulWidget {
   State<VistaRecordatorio> createState() => _VistaRecordatorioState();
 }
 
-class _VistaRecordatorioState extends State<VistaRecordatorio> implements Mochila {
+class _VistaRecordatorioState extends State<VistaRecordatorio> implements Updatable {
   late Future<List<Activity>> actividades;
 
   void initState() {

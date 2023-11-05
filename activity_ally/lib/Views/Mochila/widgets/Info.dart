@@ -1,17 +1,18 @@
 import 'dart:io';
 
 import 'package:activity_ally/Api/PertenenciaCRUD.dart';
+import 'package:activity_ally/Models/Pertenencia.dart';
 import 'package:activity_ally/Presenters/PertenenciaPresenter.dart';
 import 'package:flutter/material.dart';
 
-class Info extends StatelessWidget {
+class Info extends StatefulWidget {
   final String titulo;
   final String descripcion;
   final int id;
-  final bool estado;
+  bool estado;
   final String? foto;
   final PertenenciaPresenter presenter;
-  const Info(
+  Info(
       {required this.titulo,
       required this.descripcion,
       required this.id,
@@ -20,16 +21,21 @@ class Info extends StatelessWidget {
       required this.presenter});
 
   @override
+  State<Info> createState() => _InfoState();
+}
+
+class _InfoState extends State<Info> {
+  @override
   Widget build(BuildContext context) {
     var image;
-    if (foto == null) {
+    if (widget.foto == null) {
       image = new AssetImage('res/placeholder.jpg');
     } else {
-      image = FileImage(File(foto!));
+      image = FileImage(File(widget.foto!));
     }
     String estadoActual = "";
     String statusObject() {
-      if (estado) {
+      if (widget.estado) {
         estadoActual = "OK";
       } else {
         estadoActual = "Perdido";
@@ -38,7 +44,7 @@ class Info extends StatelessWidget {
     }
 
     return Scaffold(
-      appBar: AppBar(title: Text(titulo)),
+      appBar: AppBar(title: Text(widget.titulo)),
       body: Container(
         padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 40),
         margin: const EdgeInsets.all(20),
@@ -61,7 +67,7 @@ class Info extends StatelessWidget {
               ),
             ),
             Container(
-              child: Text(titulo, style: const TextStyle(fontSize: 20)),
+              child: Text(widget.titulo, style: const TextStyle(fontSize: 20)),
             )
           ]),
           Row(mainAxisAlignment: MainAxisAlignment.start, children: [
@@ -72,7 +78,7 @@ class Info extends StatelessWidget {
               ),
             ),
             Flexible(
-              child: Text(descripcion, style: const TextStyle(fontSize: 20)),
+              child: Text(widget.descripcion, style: const TextStyle(fontSize: 20)),
             ),
           ]),
           Row(mainAxisAlignment: MainAxisAlignment.start, children: [
@@ -86,7 +92,7 @@ class Info extends StatelessWidget {
               child: Text(statusObject(),
                   style: TextStyle(
                       fontSize: 20,
-                      color: estado == false ? Colors.red : Colors.green)),
+                      color: widget.estado == false ? Colors.red : Colors.green)),
             )
           ]),
           const SizedBox(height: 20),
@@ -95,6 +101,10 @@ class Info extends StatelessWidget {
             children: [
               ElevatedButton(
                 onPressed: () {
+                  setState(()  {
+                    widget.estado = true;
+                  });
+                  widget.presenter.onUpdate(Pertenencia(id: widget.id, nombre: widget.titulo, status: widget.estado, foto: widget.foto));
                   /*var form = formkey.currentState;
                     if (form!.validate()) {
                       form.save();
@@ -104,11 +114,11 @@ class Info extends StatelessWidget {
                 },
                 style:
                     ElevatedButton.styleFrom(padding: const EdgeInsets.all(15)),
-                child: const Text("Editar"),
+                child: const Text("Recuperar"),
               ),
               ElevatedButton(
                 onPressed: () {
-                  presenter.Eliminar(id);
+                  widget.presenter.Eliminar(widget.id);
                   Navigator.of(context).pop();
                   /*var form = formkey.currentState;
                     if (form!.validate()) {
