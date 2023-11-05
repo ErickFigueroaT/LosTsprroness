@@ -127,7 +127,7 @@ class _InfoActividadState extends State<InfoActividad> implements Updatable {
               boton(),
               ElevatedButton(
                 onPressed: () {
-                  widget.presenter.cancelar(widget.actividad.notify,widget.actividad.id);
+                  widget.presenter.cancelar(widget.actividad);
                   Navigator.of(context).pop();
                 },
                 style:

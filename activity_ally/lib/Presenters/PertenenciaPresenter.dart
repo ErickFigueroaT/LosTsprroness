@@ -32,6 +32,10 @@ late Updatable view;
   Future<List<Pertenencia>> getPertenencias() async{
     return PertenenciaCRUD.instance.getAllItems();
   }
+   Future<List<Pertenencia>> getPertenenciasOk() async{
+    return PertenenciaCRUD.instance.getNItems(1);
+  }
+
 
   Future<void> Eliminar(int id) async{
     PertenenciaCRUD.instance.delete(id);

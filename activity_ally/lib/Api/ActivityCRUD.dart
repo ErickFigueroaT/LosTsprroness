@@ -53,4 +53,31 @@ class ActivityCRUD {
       whereArgs: [item.id],
     );
   }
+
+  Future<List<Activity>> getActivitiesForToday() async {
+    final db = await AADB.instance.database;
+
+    // Get the current date in the format "yyyy-MM-dd"
+    DateTime now = DateTime.now();
+    String formattedDate = now.toIso8601String();
+
+    // Calculate the start and end of today
+    String startOfDay = "${now.year}-${now.month.toString().padLeft(2, '0')}-${now.day.toString().padLeft(2, '0')}T00:00:00.000Z";
+    String endOfDay = "${now.year}-${now.month.toString().padLeft(2, '0')}-${now.day.toString().padLeft(2, '0')}T23:59:59.999Z";
+
+    final List<Map<String, dynamic>> maps = await db.query(
+      tabla,
+      where: 'date BETWEEN ? AND ?',
+      whereArgs: [startOfDay, endOfDay],
+      orderBy: 'date DESC', // Order by date in ascending order
+    );
+
+    List<Activity> activities = List.generate(maps.length, (i) {
+      return Activity.fromJson(maps[i]);
+    });
+
+    return activities;
+  }
+
+
 }
