@@ -46,7 +46,7 @@ class _VistaActividadState extends State<VistaActividad> implements Updatable {
             } else if (snapshot.hasError) {
               return Text('Error: ${snapshot.error}');
             } else if (snapshot.data?.isEmpty ?? true) {
-              return Center(child: Text("Aun no comienzas ha planear prueba con agregar una actividad"));
+              return Center(child: Text("Aun no tienes planes prueba agregar alguno"));
             } 
              else {
               List<Activity> _actividades = snapshot.data!;
