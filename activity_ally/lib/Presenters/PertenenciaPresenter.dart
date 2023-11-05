@@ -23,6 +23,7 @@ late Mochila view;
       foto: foto));
   }
 
+
   Future<List<Pertenencia>> getPertenencias() async{
     return PertenenciaCRUD.instance.getAllItems();
   }

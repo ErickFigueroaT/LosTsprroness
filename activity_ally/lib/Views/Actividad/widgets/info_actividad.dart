@@ -1,6 +1,7 @@
 import 'package:activity_ally/Api/ActivityCRUD.dart';
 import 'package:activity_ally/Models/Activity.dart';
 import 'package:activity_ally/Presenters/ActivityPresenter.dart';
+import 'package:activity_ally/Presenters/PertenenciaPresenter.dart';
 import 'package:activity_ally/Views/Actividad/Temporizador.dart';
 import 'package:activity_ally/Views/checklist/Checklist.dart';
 import 'package:activity_ally/Views/checklist/objetos_check.dart';
@@ -170,7 +171,7 @@ class _InfoActividadState extends State<InfoActividad> {
     }
   }
   void agregar() async {
-    Navigator.push(context, MaterialPageRoute(builder: (context) => objetos_check(id: widget.actividad.id,)));
+    Navigator.push(context, MaterialPageRoute(builder: (context) => objetos_check(id: widget.actividad.id, presenter: PertenenciaPresenter(),)));
   }
  
   void actualizar() async {

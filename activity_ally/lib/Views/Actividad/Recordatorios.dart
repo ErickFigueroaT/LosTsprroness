@@ -44,7 +44,10 @@ class _VistaRecordatorioState extends State<VistaRecordatorio> implements Mochil
               return CircularProgressIndicator(); // Show loading indicator
             } else if (snapshot.hasError) {
               return Text('Error: ${snapshot.error}');
-            } else {
+            }else if (snapshot.data?.isEmpty ?? true) {
+              return Center(child: Text("No tienes pendientes el dia de hoy"));
+            }  
+            else {
               List<Activity> _actividades = snapshot.data!;
               return ListView.builder(
                 itemCount: _actividades.length,

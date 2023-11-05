@@ -45,7 +45,10 @@ class _VistaActividadState extends State<VistaActividad> implements Mochila {
               return CircularProgressIndicator(); // Show loading indicator
             } else if (snapshot.hasError) {
               return Text('Error: ${snapshot.error}');
-            } else {
+            } else if (snapshot.data?.isEmpty ?? true) {
+              return Center(child: Text("Aun no comienzas ha planear prueba con agregar una actividad"));
+            } 
+             else {
               List<Activity> _actividades = snapshot.data!;
               return ListView.builder(
                 itemCount: _actividades.length,

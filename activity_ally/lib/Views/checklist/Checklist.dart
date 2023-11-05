@@ -48,9 +48,9 @@ class _ListadoPageState extends State<ListadoPage> {
               return CircularProgressIndicator(); // Muestra un indicador de carga mientras se obtienen los datos.
             } else if (snapshot.hasError) {
               return Text('Error: ${snapshot.error}');
-            } //else if (snapshot.data?.isEmpty ?? true) {
-              //return Center(child: Text("No hay objetos agregados"));
-            //} 
+            } else if (snapshot.data?.isEmpty ?? true) {
+              return Center(child: Text("No has registrado ningun objeto"));
+            } 
             else {
               pertenencias = snapshot.data!;
               return ListView.builder(

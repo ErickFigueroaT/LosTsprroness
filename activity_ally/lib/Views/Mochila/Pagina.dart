@@ -46,7 +46,10 @@ class _PaginaState extends State<Pagina>  implements Mochila{
               return CircularProgressIndicator(); // Show loading indicator
             } else if (snapshot.hasError) {
               return Text('Error: ${snapshot.error}');
-            } else {
+            }else if (snapshot.data?.isEmpty ?? true) {
+              return Center(child: Text("No has registrado ningun objeto"));
+            }  
+            else {
               List<Pertenencia> pertenencias = snapshot.data!;
               return ListView.builder(
                 itemCount: pertenencias.length,
