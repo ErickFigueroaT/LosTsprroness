@@ -1,31 +1,33 @@
-import 'package:activity_ally/Api/ActivityCRUD.dart';
 import 'package:activity_ally/Models/Activity.dart';
-import 'package:activity_ally/Views/Actividad/ActivityForm.dart';
-import 'package:activity_ally/Views/Actividad/widgets/ficha_actividad.dart';
+import 'package:activity_ally/Presenters/ActivityPresenter.dart';
 import 'package:activity_ally/Views/Actividad/widgets/FichaCampana.dart';
-import 'package:activity_ally/services/Notificacion.dart';
+import 'package:activity_ally/Views/Mochila/Mochila.dart';
 import 'package:flutter/material.dart';
 
 //import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-class vistaRecordatorio extends StatefulWidget {
-  const vistaRecordatorio({super.key});
+class VistaRecordatorio extends StatefulWidget {
+  final ActivityPresenter presenter;
+  const VistaRecordatorio({super.key, required this.presenter});
 
   @override
-  State<vistaRecordatorio> createState() => _vistaRecordatorioState();
+  State<VistaRecordatorio> createState() => _VistaRecordatorioState();
 }
 
-class _vistaRecordatorioState extends State<vistaRecordatorio> {
-  late final Notificacion notificaciones;
+class _VistaRecordatorioState extends State<VistaRecordatorio> implements Mochila {
   late Future<List<Activity>> actividades;
-  late List<Activity> _actividades;
 
-  @override
   void initState() {
     super.initState();
-    notificaciones = Notificacion();
-    notificaciones.initialize();
-    actividades = ActivityCRUD.instance.getAllItems();
+    this.widget.presenter.view = this;
+    actividades = widget.presenter.getActivitys();
   }
+
+   void updateView() async {
+    setState(() {
+      actividades = widget.presenter.getActivitys();
+    });
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -42,14 +44,18 @@ class _vistaRecordatorioState extends State<vistaRecordatorio> {
               return CircularProgressIndicator(); // Show loading indicator
             } else if (snapshot.hasError) {
               return Text('Error: ${snapshot.error}');
-            } else {
-              _actividades = snapshot.data!;
+            }else if (snapshot.data?.isEmpty ?? true) {
+              return Center(child: Text("No tienes pendientes el dia de hoy"));
+            }  
+            else {
+              List<Activity> _actividades = snapshot.data!;
               return ListView.builder(
                 itemCount: _actividades.length,
                 itemBuilder: (context, index) {
                   final item = _actividades[index];
                   return FichaCampana(
                     actividad: item,
+                    presenter: widget.presenter,
                   );
                 },
               );

@@ -1,5 +1,7 @@
 import 'package:activity_ally/Api/ChecklistCRUD.dart';
 import 'package:activity_ally/Api/PertenenciaCRUD.dart';
+import 'package:activity_ally/Presenters/PertenenciaPresenter.dart';
+import 'package:activity_ally/Views/Mochila/Mochila.dart';
 import 'package:flutter/material.dart';
 import 'package:activity_ally/Models/Pertenencia.dart';
 import 'package:activity_ally/Views/Mochila/formu.dart';
@@ -7,19 +9,26 @@ import 'package:activity_ally/Views/Mochila/widgets/ficha_check.dart';
 
 class objetos_check extends StatefulWidget {
   final int id;
-  const objetos_check({required this.id});
+  final PertenenciaPresenter presenter;
+  const objetos_check({required this.id, required this.presenter});
 
   @override
   State<objetos_check> createState() => _objetos_checkState();
 }
 
-class _objetos_checkState extends State<objetos_check> {
+class _objetos_checkState extends State<objetos_check> implements Mochila{
   late Future<List<Pertenencia>> objetos;
-  late List<Pertenencia> pertenencias;
 
   void initState() {
     super.initState();
-    objetos = PertenenciaCRUD.instance.getAllItems();
+    this.widget.presenter.view = this;
+    objetos = widget.presenter.getPertenencias();
+  }
+
+   void updateView() async {
+    setState(() {
+      objetos = widget.presenter.getPertenencias();
+    });
   }
 
   @override
@@ -39,8 +48,11 @@ class _objetos_checkState extends State<objetos_check> {
               return CircularProgressIndicator(); // Show loading indicator
             } else if (snapshot.hasError) {
               return Text('Error: ${snapshot.error}');
-            } else {
-              pertenencias = snapshot.data!;
+            } else if (snapshot.data?.isEmpty ?? true) {
+              return Center(child: Text("Aun no has registrado ningun objeto"));
+            }
+            else {
+              List<Pertenencia> pertenencias = snapshot.data!;
               return ListView.builder(
                 itemCount: pertenencias.length,
                 itemBuilder: (context, index) {
@@ -62,15 +74,10 @@ class _objetos_checkState extends State<objetos_check> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () async {
-          final nuevo = await Navigator.of(context).push<Pertenencia>(
-              MaterialPageRoute(builder: (context) => const Formu()));
-          if (nuevo == null) {
-            return;
-          }
-          int new_id = await PertenenciaCRUD.instance.insert(nuevo);
-          nuevo.id = new_id;
-          ChecklistCRUD.instance.insertActivity_Object(widget.id, nuevo.id);
-          setState(() => pertenencias.insert(0, nuevo));
+          Navigator.of(context).push(
+              MaterialPageRoute(builder: (context) => Formu(widget.presenter)));
+
+              //ChecklistCRUD.instance.insertActivity_Object(widget.id, nuevo.id);
         },
         //backgroundColor: Colors.indigo,
         child: const Icon(Icons.add),

@@ -1,23 +1,32 @@
-import 'package:activity_ally/Api/PertenenciaCRUD.dart';
+import 'package:activity_ally/Presenters/PertenenciaPresenter.dart';
+import 'package:activity_ally/Views/Mochila/Mochila.dart';
 import 'package:flutter/material.dart';
 import 'package:activity_ally/Models/Pertenencia.dart';
 import 'package:activity_ally/Views/Mochila/formu.dart';
 import 'package:activity_ally/Views/Mochila/widgets/ficha.dart';
 
 class Pagina extends StatefulWidget {
-  const Pagina({super.key});
+  final PertenenciaPresenter presenter;
+  
+  const Pagina(this.presenter);
 
   @override
   State<Pagina> createState() => _PaginaState();
 }
 
-class _PaginaState extends State<Pagina> {
+class _PaginaState extends State<Pagina>  implements Mochila{
   late Future<List<Pertenencia>> objetos;
-  late List<Pertenencia> pertenencias;
 
   void initState() {
     super.initState();
-    objetos = PertenenciaCRUD.instance.getAllItems();
+    this.widget.presenter.view = this;
+    objetos = widget.presenter.getPertenencias();
+  }
+
+   void updateView() async {
+    setState(() {
+      objetos = widget.presenter.getPertenencias();
+    });
   }
 
   @override
@@ -37,8 +46,11 @@ class _PaginaState extends State<Pagina> {
               return CircularProgressIndicator(); // Show loading indicator
             } else if (snapshot.hasError) {
               return Text('Error: ${snapshot.error}');
-            } else {
-              pertenencias = snapshot.data!;
+            }else if (snapshot.data?.isEmpty ?? true) {
+              return Center(child: Text("No has registrado ningun objeto"));
+            }  
+            else {
+              List<Pertenencia> pertenencias = snapshot.data!;
               return ListView.builder(
                 itemCount: pertenencias.length,
                 itemBuilder: (context, index) {
@@ -48,7 +60,8 @@ class _PaginaState extends State<Pagina> {
                       titulo: item.nombre,
                       estado: item.status,
                       descripcion: item.descripcion,
-                      foto: item.foto);
+                      foto: item.foto,
+                      presenter: widget.presenter,);
                 },
               );
             }
@@ -57,20 +70,9 @@ class _PaginaState extends State<Pagina> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () async {
-          final nuevo = await Navigator.of(context).push<Pertenencia>(
-              MaterialPageRoute(builder: (context) => const Formu()));
-          if (nuevo == null) {
-            return;
-          }
-          //PertenenciaCRUD.instance.insert(nuevo);
-          int new_id = await PertenenciaCRUD.instance.insert(nuevo);
-          nuevo.id = new_id;
-          setState(() => pertenencias.insert(0, nuevo));
-          //pertenencias.add(nuevo);
-
-          //objetos.add(nuevo);
+          Navigator.of(context).push(
+              MaterialPageRoute(builder: (context) => Formu(widget.presenter)));
         },
-        //backgroundColor: Colors.indigo,
         child: const Icon(Icons.add),
       ),
     );

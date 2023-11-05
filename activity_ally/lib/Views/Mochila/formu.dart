@@ -1,10 +1,13 @@
+import 'package:activity_ally/Models/Activity.dart';
+import 'package:activity_ally/Presenters/PertenenciaPresenter.dart';
 import 'package:flutter/material.dart';
 import 'dart:io';
 import 'package:activity_ally/Models/Pertenencia.dart';
 import 'package:activity_ally/Views/Mochila/widgets/image_input.dart';
 
 class Formu extends StatefulWidget {
-  const Formu({super.key});
+  final PertenenciaPresenter presenter;
+  const Formu(this.presenter,);
 
   @override
   State<Formu> createState() => _FormuState();
@@ -74,13 +77,9 @@ class _FormuState extends State<Formu> {
                 var form = formkey.currentState;
                 if (form!.validate()) {
                   form.save();
-                  Navigator.of(context).pop(Pertenencia(
-                    id: 0,
-                    nombre: nombre,
-                    status: true,
-                    descripcion: descripcion,
-                    foto: seleccion,
-                  ));
+                  widget.presenter.onSubmit(nombre, descripcion, seleccion);
+                  Navigator.of(context).pop();
+
                 }
               },
               style:

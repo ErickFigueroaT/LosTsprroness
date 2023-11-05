@@ -1,15 +1,17 @@
 import 'package:activity_ally/Api/ActivityCRUD.dart';
 import 'package:activity_ally/Models/Activity.dart';
+import 'package:activity_ally/Presenters/ActivityPresenter.dart';
 import 'package:activity_ally/Views/Actividad/widgets/info_actividad.dart';
 import 'package:activity_ally/services/Notificacion.dart';
 import 'package:flutter/material.dart';
 
 class FichaCampana extends StatefulWidget {
   Activity actividad; // Added finishDate attribute
+  ActivityPresenter presenter;
 
-  FichaCampana({
-    required this.actividad,
-  });
+  FichaCampana(
+      {required this.actividad,
+      required this.presenter});
 
   @override
   State<FichaCampana> createState() => _FichaCampanaState();
@@ -37,6 +39,7 @@ class _FichaCampanaState extends State<FichaCampana> {
               MaterialPageRoute(
                   builder: ((context) => InfoActividad(
                         actividad: widget.actividad,
+                        presenter: widget.presenter,
                       ))));
         },
         splashColor: Colors.blueGrey,

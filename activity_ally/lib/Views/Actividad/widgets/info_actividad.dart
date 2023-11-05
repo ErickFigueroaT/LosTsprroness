@@ -1,5 +1,7 @@
 import 'package:activity_ally/Api/ActivityCRUD.dart';
 import 'package:activity_ally/Models/Activity.dart';
+import 'package:activity_ally/Presenters/ActivityPresenter.dart';
+import 'package:activity_ally/Presenters/PertenenciaPresenter.dart';
 import 'package:activity_ally/Views/Actividad/Temporizador.dart';
 import 'package:activity_ally/Views/checklist/Checklist.dart';
 import 'package:activity_ally/Views/checklist/objetos_check.dart';
@@ -7,9 +9,11 @@ import 'package:flutter/material.dart';
 
 class InfoActividad extends StatefulWidget {
   final Activity actividad; // Added finishDate attribute
+  final ActivityPresenter presenter;
 
   const InfoActividad(
       {required this.actividad,
+      required this.presenter,
       });
 
   @override
@@ -122,7 +126,7 @@ class _InfoActividadState extends State<InfoActividad> {
               boton(),
               ElevatedButton(
                 onPressed: () {
-                  ActivityCRUD.instance.delete(widget.actividad.id);
+                  widget.presenter.cancelar(widget.actividad.notify,widget.actividad.id);
                   Navigator.of(context).pop();
                 },
                 style:
@@ -167,7 +171,7 @@ class _InfoActividadState extends State<InfoActividad> {
     }
   }
   void agregar() async {
-    Navigator.push(context, MaterialPageRoute(builder: (context) => objetos_check(id: widget.actividad.id,)));
+    Navigator.push(context, MaterialPageRoute(builder: (context) => objetos_check(id: widget.actividad.id, presenter: PertenenciaPresenter(),)));
   }
  
   void actualizar() async {

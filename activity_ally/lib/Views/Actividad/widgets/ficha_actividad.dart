@@ -1,12 +1,15 @@
 import 'package:activity_ally/Models/Activity.dart';
+import 'package:activity_ally/Presenters/ActivityPresenter.dart';
 import 'package:activity_ally/Views/Actividad/widgets/info_actividad.dart';
 import 'package:flutter/material.dart';
 
 class FichaActividad extends StatefulWidget {
   Activity actividad; // Added finishDate attribute
+  ActivityPresenter presenter;
 
   FichaActividad(
-      {required this.actividad});
+      {required this.actividad,
+      required this.presenter});
 
   @override
   State<FichaActividad> createState() => _FichaActividadState();
@@ -24,6 +27,7 @@ class _FichaActividadState extends State<FichaActividad> {
               MaterialPageRoute(
                   builder: ((context) => InfoActividad(
                         actividad: widget.actividad,
+                        presenter: widget.presenter,
                       ))));
         },
         splashColor: Colors.blueGrey,
