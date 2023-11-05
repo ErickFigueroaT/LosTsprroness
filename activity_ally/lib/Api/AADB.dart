@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:activity_ally/Models/Pertenencia.dart';
 import 'package:flutter/material.dart';
 import 'package:path/path.dart';

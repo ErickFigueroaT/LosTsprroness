@@ -1,10 +1,14 @@
 import 'package:activity_ally/Models/Activity.dart';
+import 'package:activity_ally/Presenters/ActivityPresenter.dart';
 import 'package:flutter/material.dart';
 import 'dart:io';
 import 'package:flutter/cupertino.dart';
 
 class ActivityForm extends StatefulWidget {
-  const ActivityForm({super.key});
+  //const ActivityForm({super.key});
+  final ActivityPresenter presenter;
+
+  const ActivityForm(this.presenter);
 
   @override
   State<ActivityForm> createState() => _ActivityFormState();
@@ -128,14 +132,9 @@ class _ActivityFormState extends State<ActivityForm> {
                   form.save();
                   final fecha_hora = new DateTime(
                         hoy!.year, hoy!.month, hoy!.day, hours.hour, hours.minute, 0, 0, 0);
-                  Navigator.of(context).pop(Activity(
-                    id: 0,
-                    title: title,
-                    date: fecha_hora,
-                    description: description,
-                    duration: minutos,
-                    location: location,
-                  ));
+
+                  widget.presenter.onSubmit(title, fecha_hora, description, minutos, location);
+                  Navigator.of(context).pop();
                 }
               },
               style:

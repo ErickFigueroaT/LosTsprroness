@@ -1,27 +1,34 @@
-import 'package:activity_ally/Api/ActivityCRUD.dart';
 import 'package:activity_ally/Models/Activity.dart';
+import 'package:activity_ally/Presenters/ActivityPresenter.dart';
 import 'package:activity_ally/Views/Actividad/ActivityForm.dart';
 import 'package:activity_ally/Views/Actividad/widgets/ficha_actividad.dart';
-import 'package:activity_ally/services/Notificacion.dart';
+import 'package:activity_ally/Views/Mochila/Mochila.dart';
 import 'package:flutter/material.dart';
 
 //import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 class VistaActividad extends StatefulWidget {
-  const VistaActividad({super.key});
+  final ActivityPresenter presenter;
+  const VistaActividad({super.key, required this.presenter});
 
   @override
   State<VistaActividad> createState() => _VistaActividadState();
 }
 
-class _VistaActividadState extends State<VistaActividad> {
+class _VistaActividadState extends State<VistaActividad> implements Mochila {
   late Future<List<Activity>> actividades;
-  late List<Activity> _actividades;
 
-  @override
   void initState() {
     super.initState();
-    actividades = ActivityCRUD.instance.getAllItems();
+    this.widget.presenter.view = this;
+    actividades = widget.presenter.getActivitys();
   }
+
+   void updateView() async {
+    setState(() {
+      actividades = widget.presenter.getActivitys();
+    });
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -39,13 +46,14 @@ class _VistaActividadState extends State<VistaActividad> {
             } else if (snapshot.hasError) {
               return Text('Error: ${snapshot.error}');
             } else {
-              _actividades = snapshot.data!;
+              List<Activity> _actividades = snapshot.data!;
               return ListView.builder(
                 itemCount: _actividades.length,
                 itemBuilder: (context, index) {
                   final item = _actividades[index];
                   return FichaActividad(
                     actividad: item,
+                    presenter: widget.presenter,
                   );
                 },
               );
@@ -55,14 +63,8 @@ class _VistaActividadState extends State<VistaActividad> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () async {
-          final nuevo = await Navigator.of(context).push<Activity>(
-              MaterialPageRoute(builder: (context) => const ActivityForm()));
-          if (nuevo == null) {
-            return;
-          }
-          int new_id = await ActivityCRUD.instance.insert(nuevo);
-          nuevo.id = new_id;
-          setState(() => _actividades.insert(0, nuevo));
+          Navigator.of(context).push(
+              MaterialPageRoute(builder: (context) => ActivityForm(widget.presenter)));
         },
         //backgroundColor: Colors.indigo,
         child: const Icon(Icons.add),

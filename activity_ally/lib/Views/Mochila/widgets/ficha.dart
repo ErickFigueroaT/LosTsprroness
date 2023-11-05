@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:activity_ally/Presenters/PertenenciaPresenter.dart';
 import 'package:flutter/material.dart';
 import 'package:activity_ally/Views/Mochila/widgets/Info.dart';
 
@@ -8,12 +9,14 @@ class Ficha extends StatefulWidget {
   final String titulo;
   final bool estado;
   final String? foto;
+  final PertenenciaPresenter presenter;
   const Ficha(
       {required this.id,
       required this.titulo,
       required this.descripcion,
       required this.estado,
-      required this.foto});
+      required this.foto,
+      required this.presenter});
 
   @override
   State<Ficha> createState() => _FichaState();
@@ -41,6 +44,7 @@ class _FichaState extends State<Ficha> {
                         id: widget.id,
                         estado: widget.estado,
                         foto: widget.foto,
+                        presenter: widget.presenter,
                       ))));
         },
         splashColor: Colors.blueGrey,

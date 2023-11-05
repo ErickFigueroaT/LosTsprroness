@@ -62,8 +62,8 @@ class _objetos_checkState extends State<objetos_check> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () async {
-          final nuevo = await Navigator.of(context).push<Pertenencia>(
-              MaterialPageRoute(builder: (context) => const Formu()));
+          final nuevo = null;// await Navigator.of(context).push<Pertenencia>(
+             // MaterialPageRoute(builder: (context) => const Formu()));
           if (nuevo == null) {
             return;
           }

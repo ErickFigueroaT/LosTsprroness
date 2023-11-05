@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:activity_ally/Api/PertenenciaCRUD.dart';
+import 'package:activity_ally/Presenters/PertenenciaPresenter.dart';
 import 'package:flutter/material.dart';
 
 class Info extends StatelessWidget {
@@ -9,12 +10,14 @@ class Info extends StatelessWidget {
   final int id;
   final bool estado;
   final String? foto;
+  final PertenenciaPresenter presenter;
   const Info(
       {required this.titulo,
       required this.descripcion,
       required this.id,
       required this.estado,
-      required this.foto});
+      required this.foto,
+      required this.presenter});
 
   @override
   Widget build(BuildContext context) {
@@ -105,7 +108,7 @@ class Info extends StatelessWidget {
               ),
               ElevatedButton(
                 onPressed: () {
-                  PertenenciaCRUD.instance.delete(id);
+                  presenter.Eliminar(id);
                   Navigator.of(context).pop();
                   /*var form = formkey.currentState;
                     if (form!.validate()) {

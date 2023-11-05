@@ -1,3 +1,5 @@
+import 'package:activity_ally/Presenters/PertenenciaPresenter.dart';
+import 'package:activity_ally/Presenters/ActivityPresenter.dart';
 import 'package:activity_ally/Views/Actividad/Recordatorios.dart';
 import 'package:activity_ally/Views/Mochila/Pagina.dart';
 //import 'package:activity_ally/Views/crud.dart';
@@ -20,10 +22,10 @@ class _NavBarCState extends State<NavBarC> {
 
 
   List<Widget> __screens = [
-    vistaRecordatorio(),
+    VistaRecordatorio(presenter: ActivityPresenter(),),
     //ListadoPage(),
-    VistaActividad(),
-    Pagina()
+    VistaActividad(presenter: ActivityPresenter()),
+    Pagina(PertenenciaPresenter())
   ];
 
 
