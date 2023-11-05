@@ -34,10 +34,14 @@ ActivityPresenter(){
     return ActivityCRUD.instance.getAllItems();
   }
 
-  Future<void> cancelar(bool rec, int id) async{
-    Eliminar(id);
-    if(rec){
-      notificaciones.cancela(id);
+  Future<List<Activity>> getTodayAct() async{
+    return  ActivityCRUD.instance.getActivitiesForToday();
+  }
+
+  Future<void> cancelar(Activity actividad) async{
+    Eliminar(actividad.id);
+    if(actividad.notify || actividad.startDate != null){
+      notificaciones.cancela(actividad.id);
     }
 
   }
@@ -58,15 +62,21 @@ ActivityPresenter(){
   }
 
   Future <void> start(Activity actividad) async{
-    actividad.startDate = DateTime.now();
-    if (actividad.notify && actividad.startDate!.isBefore(actividad.date)){
-      notificaciones.cancela(actividad.id);
+    if(actividad.startDate == null){
+      actividad.startDate = DateTime.now();
+      if (actividad.notify && actividad.startDate!.isBefore(actividad.date)){
+        notificaciones.cancela(actividad.id);
+      }
+      notificaciones.NotificacionFin(actividad);
+      return onUpdate(actividad);
     }
-    return onUpdate(actividad);
   }
 
   Future <void> finish(Activity actividad, BuildContext context) async{
     actividad.finishDate = DateTime.now();
+    if (actividad.finishDate!.isBefore(DateTime.now().add(Duration(minutes: actividad.duration)))){
+        notificaciones.cancela(actividad.id);
+      }
     onUpdate(actividad);
     completarCL(context, actividad);
   }

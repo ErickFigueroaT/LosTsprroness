@@ -28,6 +28,10 @@ class _TemporizadorState extends State<Temporizador> {
   @override
   void initState() {
     super.initState();
+    // Calculate initial duration based on the difference between actividad.startDate and now
+    DateTime now = DateTime.now();
+    Duration difference = now.difference(widget.actividad.startDate!);
+    duration = Duration(seconds: difference.inSeconds);
     startTimer();
   }
 
@@ -61,7 +65,7 @@ class _TemporizadorState extends State<Temporizador> {
             onPressed: () {
               widget.actividad.duration_r = duration.inSeconds;
               setState(() => duration = const Duration());
-              setState(() => timer?.cancel());
+              //setState(() => timer?.cancel());
               widget.parent.updateView();
               Navigator.of(context).pop();
               widget.presenter.finish(widget.actividad,context);
@@ -88,5 +92,11 @@ class _TemporizadorState extends State<Temporizador> {
       '$hours:$minutes:$seconds',
       style: TextStyle(fontSize: 80),
     );
+  }
+
+   @override
+  void dispose() {
+    timer?.cancel(); // Don't forget to cancel the timer when the widget is disposed
+    super.dispose();
   }
 }

@@ -22,12 +22,12 @@ class _objetos_checkState extends State<objetos_check> implements Updatable{
   void initState() {
     super.initState();
     this.widget.presenter.view = this;
-    objetos = widget.presenter.getPertenencias();
+    objetos = widget.presenter.getPertenenciasOk();
   }
 
    void updateView() async {
     setState(() {
-      objetos = widget.presenter.getPertenencias();
+      objetos = widget.presenter.getPertenenciasOk();
     });
   }
 

@@ -19,12 +19,12 @@ class _VistaRecordatorioState extends State<VistaRecordatorio> implements Updata
   void initState() {
     super.initState();
     this.widget.presenter.view = this;
-    actividades = widget.presenter.getActivitys();
+    actividades = widget.presenter.getTodayAct();
   }
 
    void updateView() async {
     setState(() {
-      actividades = widget.presenter.getActivitys();
+      actividades = widget.presenter.getTodayAct();
     });
   }
 

@@ -53,6 +53,18 @@ class Notificacion{
       }
   }
 
+  Future<void> NotificacionFin(Activity actividad) async{
+      final details = await _notificationDetails();
+      DateTime fin = DateTime.now().add(Duration(minutes: actividad.duration));
+
+      await LNS.zonedSchedule(actividad.id, 'No olvides terminar tus activdades: ${actividad.title}', actividad.description, 
+      tz.TZDateTime.from(fin.add(Duration(seconds: 0)), tz.local), details,
+      androidAllowWhileIdle:  true,
+      uiLocalNotificationDateInterpretation: UILocalNotificationDateInterpretation.absoluteTime,
+      );
+    
+  }
+
   void onDidReciveLocalNotification(int id, String? body, String? payload){
     print('id, $id');
   }

@@ -28,7 +28,7 @@ class PertenenciaCRUD {
   Future<List<Pertenencia>> getNItems(int n) async {
     final db = await AADB.instance.database;
     final List<Map<String, dynamic>> maps =
-        await db.query(tabla, where: 'id > $n', orderBy: 'nombre');
+        await db.query(tabla, where: 'status = $n', orderBy: 'nombre');
     return List.generate(maps.length, (i) {
       return Pertenencia.fromJson(maps[i]);
     });

@@ -36,7 +36,7 @@ class ChecklistCRUD {
       SELECT * 
       FROM $tabla
       JOIN possession ON $tabla.possession_id = possession.id
-      WHERE activity_id = $id
+      WHERE activity_id = $id  AND possession.status = 1
       '''
     );
     return List.generate(maps.length, (i) {
