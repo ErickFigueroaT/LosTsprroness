@@ -9,8 +9,13 @@ class Notificacion{
   Notificacion();
   
   final LNS = FlutterLocalNotificationsPlugin();
+  //final android = AndroidFlutterLocalNotificationsPlugin();
   
   Future<void> initialize() async{
+    LNS.resolvePlatformSpecificImplementation<
+    AndroidFlutterLocalNotificationsPlugin>()!.requestNotificationsPermission();
+    LNS.resolvePlatformSpecificImplementation<
+    AndroidFlutterLocalNotificationsPlugin>()!.requestExactAlarmsPermission();
     tz.initializeTimeZones();
     const AndroidInitializationSettings
       ais = AndroidInitializationSettings('@mipmap/ic_launcher');
