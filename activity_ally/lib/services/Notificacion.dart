@@ -24,7 +24,8 @@ class Notificacion{
       'channelId', 
       'channelName',
       channelDescription: 'desc',
-      playSound: true
+      playSound: true,
+      importance: Importance.max,
       );
       return NotificationDetails(android: ANDetails);
 

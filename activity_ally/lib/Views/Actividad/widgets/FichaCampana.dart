@@ -70,7 +70,7 @@ class _FichaCampanaState extends State<FichaCampana> {
                           style: const TextStyle(fontSize: 20)),
                       subtitle: Text(widget.actividad.date.toString()),
                       trailing: bell ? null : IconButton(
-                        icon: widget.actividad.notify ? Icon(Icons.notifications_active) : Icon(Icons.notifications),
+                        icon: widget.actividad.notify ? Icon(Icons.notifications_active) : Icon(Icons.notifications_off),
                         onPressed: () {
                           if(widget.actividad.date.isAfter(DateTime.now())){
                             if(widget.actividad.notify == false){
