@@ -16,7 +16,7 @@ class objetos_check extends StatefulWidget {
   State<objetos_check> createState() => _objetos_checkState();
 }
 
-class _objetos_checkState extends State<objetos_check> implements Updatable{
+class _objetos_checkState extends State<objetos_check> implements Updatable {
   late Future<List<Pertenencia>> objetos;
 
   void initState() {
@@ -25,7 +25,7 @@ class _objetos_checkState extends State<objetos_check> implements Updatable{
     objetos = widget.presenter.getPertenenciasOk();
   }
 
-   void updateView() async {
+  void updateView() async {
     setState(() {
       objetos = widget.presenter.getPertenenciasOk();
     });
@@ -38,7 +38,7 @@ class _objetos_checkState extends State<objetos_check> implements Updatable{
     );
 
     return Scaffold(
-      appBar: AppBar(title: const Text('Prueba')),
+      appBar: AppBar(title: const Text('Checklist')),
       body: Padding(
         padding: const EdgeInsets.all(10),
         child: FutureBuilder<List<Pertenencia>>(
@@ -50,14 +50,13 @@ class _objetos_checkState extends State<objetos_check> implements Updatable{
               return Text('Error: ${snapshot.error}');
             } else if (snapshot.data?.isEmpty ?? true) {
               return Center(child: Text("Aun no has registrado ningun objeto"));
-            }
-            else {
+            } else {
               List<Pertenencia> pertenencias = snapshot.data!;
               return ListView.builder(
                 itemCount: pertenencias.length,
                 itemBuilder: (context, index) {
                   final item = pertenencias[index];
-                  
+
                   return FichaC(
                       act_id: widget.id,
                       id: item.id,
@@ -65,7 +64,6 @@ class _objetos_checkState extends State<objetos_check> implements Updatable{
                       estado: item.status,
                       descripcion: item.descripcion,
                       foto: item.foto);
-                
                 },
               );
             }
@@ -77,7 +75,7 @@ class _objetos_checkState extends State<objetos_check> implements Updatable{
           Navigator.of(context).push(
               MaterialPageRoute(builder: (context) => Formu(widget.presenter)));
 
-              //ChecklistCRUD.instance.insertActivity_Object(widget.id, nuevo.id);
+          //ChecklistCRUD.instance.insertActivity_Object(widget.id, nuevo.id);
         },
         //backgroundColor: Colors.indigo,
         child: const Icon(Icons.add),
