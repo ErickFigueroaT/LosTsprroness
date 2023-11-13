@@ -1,9 +1,9 @@
 
-import 'package:activity_ally/Api/PertenenciaCRUD.dart';
+import 'package:activity_ally/services/DB/PertenenciaCRUD.dart';
 import 'package:activity_ally/Models/Pertenencia.dart';
 import 'package:activity_ally/Views/Updatable.dart';
-import 'package:activity_ally/Views/Mochila/Pagina.dart';
-import 'package:activity_ally/Views/Mochila/formu.dart';
+import 'package:activity_ally/Views/Mochila/VistaPertenencia.dart';
+import 'package:activity_ally/Views/Mochila/PertenenciaForm.dart';
 import 'package:flutter/material.dart';
 
 class PertenenciaPresenter{

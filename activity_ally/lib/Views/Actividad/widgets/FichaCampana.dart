@@ -1,4 +1,4 @@
-import 'package:activity_ally/Api/ActivityCRUD.dart';
+import 'package:activity_ally/services/DB/ActivityCRUD.dart';
 import 'package:activity_ally/Models/Activity.dart';
 import 'package:activity_ally/Presenters/ActivityPresenter.dart';
 import 'package:activity_ally/Views/Actividad/widgets/info_actividad.dart';

@@ -1,16 +1,16 @@
 import 'dart:io';
 import 'package:activity_ally/Presenters/PertenenciaPresenter.dart';
 import 'package:flutter/material.dart';
-import 'package:activity_ally/Views/Mochila/widgets/Info.dart';
+import 'package:activity_ally/Views/Mochila/widgets/InfoPertenencia.dart';
 
-class Ficha extends StatefulWidget {
+class FichaPertnencia extends StatefulWidget {
   final int id;
   final String descripcion;
   final String titulo;
   final bool estado;
   final String? foto;
   final PertenenciaPresenter presenter;
-  const Ficha(
+  const FichaPertnencia(
       {required this.id,
       required this.titulo,
       required this.descripcion,
@@ -19,10 +19,10 @@ class Ficha extends StatefulWidget {
       required this.presenter});
 
   @override
-  State<Ficha> createState() => _FichaState();
+  State<FichaPertnencia> createState() => _FichaPertnenciaState();
 }
 
-class _FichaState extends State<Ficha> {
+class _FichaPertnenciaState extends State<FichaPertnencia> {
   @override
   Widget build(BuildContext context) {
     var image;
@@ -38,7 +38,7 @@ class _FichaState extends State<Ficha> {
           Navigator.push(
               context,
               MaterialPageRoute(
-                  builder: ((context) => Info(
+                  builder: ((context) => InfoPertenencia(
                         titulo: widget.titulo,
                         descripcion: widget.descripcion,
                         id: widget.id,

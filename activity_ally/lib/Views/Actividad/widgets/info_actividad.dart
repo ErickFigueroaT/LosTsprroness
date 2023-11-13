@@ -1,11 +1,11 @@
-import 'package:activity_ally/Api/ActivityCRUD.dart';
+import 'package:activity_ally/services/DB/ActivityCRUD.dart';
 import 'package:activity_ally/Models/Activity.dart';
 import 'package:activity_ally/Presenters/ActivityPresenter.dart';
 import 'package:activity_ally/Presenters/PertenenciaPresenter.dart';
 import 'package:activity_ally/Views/Actividad/Temporizador.dart';
 import 'package:activity_ally/Views/Updatable.dart';
 import 'package:activity_ally/Views/checklist/Checklist.dart';
-import 'package:activity_ally/Views/checklist/objetos_check.dart';
+import 'package:activity_ally/Views/checklist/ChecklistMaker.dart';
 import 'package:flutter/material.dart';
 
 class InfoActividad extends StatefulWidget {
@@ -172,7 +172,7 @@ class _InfoActividadState extends State<InfoActividad> implements Updatable {
     }
   }
   void agregar() async {
-    Navigator.push(context, MaterialPageRoute(builder: (context) => objetos_check(id: widget.actividad.id, presenter: PertenenciaPresenter(),)));
+    Navigator.push(context, MaterialPageRoute(builder: (context) => ChecklistMaker(id: widget.actividad.id, presenter: PertenenciaPresenter(),)));
   }
 
 

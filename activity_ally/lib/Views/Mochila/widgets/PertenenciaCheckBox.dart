@@ -1,16 +1,16 @@
 import 'dart:io';
-import 'package:activity_ally/Api/ChecklistCRUD.dart';
+import 'package:activity_ally/services/DB/ChecklistCRUD.dart';
 import 'package:flutter/material.dart';
-import 'package:activity_ally/Views/Mochila/widgets/Info.dart';
+import 'package:activity_ally/Views/Mochila/widgets/InfoPertenencia.dart';
 
-class FichaC extends StatefulWidget {
+class PertenenciaCheckBox extends StatefulWidget {
   final int act_id;
   final int id;
   final String descripcion;
   final String titulo;
   final bool estado;
   final String? foto;
-  const FichaC(
+  const PertenenciaCheckBox(
       {required this.act_id,
       required this.id,
       required this.titulo,
@@ -19,10 +19,10 @@ class FichaC extends StatefulWidget {
       required this.foto});
 
   @override
-  State<FichaC> createState() => _FichaCState();
+  State<PertenenciaCheckBox> createState() => _PertenenciaCheckBoxState();
 }
 
-class _FichaCState extends State<FichaC> {
+class _PertenenciaCheckBoxState extends State<PertenenciaCheckBox> {
   
 
   @override

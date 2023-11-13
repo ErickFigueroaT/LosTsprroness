@@ -1,6 +1,6 @@
 import 'package:activity_ally/Models/Activity.dart';
 import 'package:activity_ally/Views/Updatable.dart';
-import 'package:activity_ally/Api/ActivityCRUD.dart';
+import 'package:activity_ally/services/DB/ActivityCRUD.dart';
 import 'package:activity_ally/Views/checklist/Checklist.dart';
 import 'package:activity_ally/services/Notificacion.dart';
 import 'package:flutter/material.dart';

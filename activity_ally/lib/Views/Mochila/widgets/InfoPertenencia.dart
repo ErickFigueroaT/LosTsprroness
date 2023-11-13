@@ -1,18 +1,18 @@
 import 'dart:io';
 
-import 'package:activity_ally/Api/PertenenciaCRUD.dart';
+import 'package:activity_ally/services/DB/PertenenciaCRUD.dart';
 import 'package:activity_ally/Models/Pertenencia.dart';
 import 'package:activity_ally/Presenters/PertenenciaPresenter.dart';
 import 'package:flutter/material.dart';
 
-class Info extends StatefulWidget {
+class InfoPertenencia extends StatefulWidget {
   final String titulo;
   final String descripcion;
   final int id;
   bool estado;
   final String? foto;
   final PertenenciaPresenter presenter;
-  Info(
+  InfoPertenencia(
       {required this.titulo,
       required this.descripcion,
       required this.id,
@@ -21,10 +21,10 @@ class Info extends StatefulWidget {
       required this.presenter});
 
   @override
-  State<Info> createState() => _InfoState();
+  State<InfoPertenencia> createState() => _InfoPertenenciaState();
 }
 
-class _InfoState extends State<Info> {
+class _InfoPertenenciaState extends State<InfoPertenencia> {
   @override
   Widget build(BuildContext context) {
     var image;

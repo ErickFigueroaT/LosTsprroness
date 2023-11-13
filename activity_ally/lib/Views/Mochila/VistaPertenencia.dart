@@ -1,33 +1,31 @@
-import 'package:activity_ally/Api/ChecklistCRUD.dart';
-import 'package:activity_ally/Api/PertenenciaCRUD.dart';
 import 'package:activity_ally/Presenters/PertenenciaPresenter.dart';
 import 'package:activity_ally/Views/Updatable.dart';
 import 'package:flutter/material.dart';
 import 'package:activity_ally/Models/Pertenencia.dart';
-import 'package:activity_ally/Views/Mochila/formu.dart';
-import 'package:activity_ally/Views/Mochila/widgets/ficha_check.dart';
+import 'package:activity_ally/Views/Mochila/PertenenciaForm.dart';
+import 'package:activity_ally/Views/Mochila/widgets/FichaPertenencia.dart';
 
-class objetos_check extends StatefulWidget {
-  final int id;
+class VistaPertenencia extends StatefulWidget {
   final PertenenciaPresenter presenter;
-  const objetos_check({required this.id, required this.presenter});
+  
+  const VistaPertenencia(this.presenter);
 
   @override
-  State<objetos_check> createState() => _objetos_checkState();
+  State<VistaPertenencia> createState() => _VistaPertenenciaState();
 }
 
-class _objetos_checkState extends State<objetos_check> implements Updatable {
+class _VistaPertenenciaState extends State<VistaPertenencia>  implements Updatable{
   late Future<List<Pertenencia>> objetos;
 
   void initState() {
     super.initState();
     this.widget.presenter.view = this;
-    objetos = widget.presenter.getPertenenciasOk();
+    objetos = widget.presenter.getPertenencias();
   }
 
-  void updateView() async {
+   void updateView() async {
     setState(() {
-      objetos = widget.presenter.getPertenenciasOk();
+      objetos = widget.presenter.getPertenencias();
     });
   }
 
@@ -38,7 +36,7 @@ class _objetos_checkState extends State<objetos_check> implements Updatable {
     );
 
     return Scaffold(
-      appBar: AppBar(title: const Text('Checklist')),
+      appBar: AppBar(title: const Text('Pertenencias')),
       body: Padding(
         padding: const EdgeInsets.all(10),
         child: FutureBuilder<List<Pertenencia>>(
@@ -48,22 +46,22 @@ class _objetos_checkState extends State<objetos_check> implements Updatable {
               return CircularProgressIndicator(); // Show loading indicator
             } else if (snapshot.hasError) {
               return Text('Error: ${snapshot.error}');
-            } else if (snapshot.data?.isEmpty ?? true) {
+            }else if (snapshot.data?.isEmpty ?? true) {
               return Center(child: Text("Aun no has registrado ningun objeto"));
-            } else {
+            }  
+            else {
               List<Pertenencia> pertenencias = snapshot.data!;
               return ListView.builder(
                 itemCount: pertenencias.length,
                 itemBuilder: (context, index) {
                   final item = pertenencias[index];
-
-                  return FichaC(
-                      act_id: widget.id,
+                  return FichaPertnencia(
                       id: item.id,
                       titulo: item.nombre,
                       estado: item.status,
                       descripcion: item.descripcion,
-                      foto: item.foto);
+                      foto: item.foto,
+                      presenter: widget.presenter,);
                 },
               );
             }
@@ -73,11 +71,8 @@ class _objetos_checkState extends State<objetos_check> implements Updatable {
       floatingActionButton: FloatingActionButton(
         onPressed: () async {
           Navigator.of(context).push(
-              MaterialPageRoute(builder: (context) => Formu(widget.presenter)));
-
-          //ChecklistCRUD.instance.insertActivity_Object(widget.id, nuevo.id);
+              MaterialPageRoute(builder: (context) => PertenenciaForm(widget.presenter)));
         },
-        //backgroundColor: Colors.indigo,
         child: const Icon(Icons.add),
       ),
     );

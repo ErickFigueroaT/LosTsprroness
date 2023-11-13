@@ -1,7 +1,7 @@
 import 'package:activity_ally/Presenters/PertenenciaPresenter.dart';
 import 'package:activity_ally/Presenters/ActivityPresenter.dart';
 import 'package:activity_ally/Views/Actividad/Recordatorios.dart';
-import 'package:activity_ally/Views/Mochila/Pagina.dart';
+import 'package:activity_ally/Views/Mochila/VistaPertenencia.dart';
 //import 'package:activity_ally/Views/crud.dart';
 import 'package:flutter/material.dart';
 
@@ -25,7 +25,7 @@ class _NavBarCState extends State<NavBarC> {
     VistaRecordatorio(presenter: ActivityPresenter(),),
     //ListadoPage(),
     VistaActividad(presenter: ActivityPresenter()),
-    Pagina(PertenenciaPresenter())
+    VistaPertenencia(PertenenciaPresenter())
   ];
 
 

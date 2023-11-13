@@ -1,6 +1,5 @@
-import 'package:activity_ally/Api/AADB.dart';
-import 'package:activity_ally/Api/PertenenciaCRUD.dart';
-import 'package:activity_ally/Models/ChecklistModelo.dart';
+import 'package:activity_ally/services/DB/AADB.dart';
+import 'package:activity_ally/services/DB/PertenenciaCRUD.dart';
 import 'package:activity_ally/Models/Pertenencia.dart';
 
 class ChecklistCRUD {
@@ -44,28 +43,5 @@ class ChecklistCRUD {
       });
   }
 
-  Future<int> insertChecklistItem(ChecklistItem item) async {
-    final db = await AADB.instance.database;
-    return await db.insert('checklist_items', item.toSqlite());
-  }
-
-
-  Future<List<ChecklistItem>> getAllChecklistItems() async {
-    final db = await AADB.instance.database;
-    final List<Map<String, dynamic>> maps = await db.query('checklist_items');
-    return List.generate(maps.length, (i) {
-      return ChecklistItem.fromMap(maps[i]);
-    });
-  }
-
-  Future<int> updateChecklistItem(ChecklistItem item) async {
-    final db = await AADB.instance.database;
-
-    return await db.update(
-      'checklist_items',
-      item.toMap(),
-      where: 'id = ?',
-      whereArgs: [item.id],
-    );
-  }
+ 
 }
