@@ -44,7 +44,7 @@ class AADB {
           PRIMARY KEY (activity_id, possession_id)
       );
       ''';
-      
+    /*  
       final String checklist_items = '''
       CREATE TABLE checklist_items (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -52,6 +52,7 @@ class AADB {
         completado INTEGER
       );
     ''';
+    */
 
 
 
@@ -76,7 +77,7 @@ class AADB {
     await db.execute(pertenencia);
     await db.execute(actividad);
     await db.execute(checklist);
-    await db.execute(checklist_items);
+    //await db.execute(checklist_items);
 
   }
 }
