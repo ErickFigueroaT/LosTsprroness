@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 import 'package:flutter/material.dart';
-import 'package:activity_ally/Views/Mochila/widgets/Info.dart';
+import 'package:activity_ally/Views/Mochila/widgets/InfoPertenencia.dart';
 
 class Pertenencia {
   int id;

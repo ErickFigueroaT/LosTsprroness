@@ -1,31 +1,33 @@
+import 'package:activity_ally/services/DB/ChecklistCRUD.dart';
+import 'package:activity_ally/services/DB/PertenenciaCRUD.dart';
 import 'package:activity_ally/Presenters/PertenenciaPresenter.dart';
 import 'package:activity_ally/Views/Updatable.dart';
 import 'package:flutter/material.dart';
 import 'package:activity_ally/Models/Pertenencia.dart';
-import 'package:activity_ally/Views/Mochila/formu.dart';
-import 'package:activity_ally/Views/Mochila/widgets/ficha.dart';
+import 'package:activity_ally/Views/Mochila/PertenenciaForm.dart';
+import 'package:activity_ally/Views/Mochila/widgets/PertenenciaCheckBox.dart';
 
-class Pagina extends StatefulWidget {
+class ChecklistMaker extends StatefulWidget {
+  final int id;
   final PertenenciaPresenter presenter;
-  
-  const Pagina(this.presenter);
+  const ChecklistMaker({required this.id, required this.presenter});
 
   @override
-  State<Pagina> createState() => _PaginaState();
+  State<ChecklistMaker> createState() => _ChecklistMakerState();
 }
 
-class _PaginaState extends State<Pagina>  implements Updatable{
+class _ChecklistMakerState extends State<ChecklistMaker> implements Updatable {
   late Future<List<Pertenencia>> objetos;
 
   void initState() {
     super.initState();
     this.widget.presenter.view = this;
-    objetos = widget.presenter.getPertenencias();
+    objetos = widget.presenter.getPertenenciasOk();
   }
 
-   void updateView() async {
+  void updateView() async {
     setState(() {
-      objetos = widget.presenter.getPertenencias();
+      objetos = widget.presenter.getPertenenciasOk();
     });
   }
 
@@ -36,7 +38,7 @@ class _PaginaState extends State<Pagina>  implements Updatable{
     );
 
     return Scaffold(
-      appBar: AppBar(title: const Text('Pertenencias')),
+      appBar: AppBar(title: const Text('Checklist')),
       body: Padding(
         padding: const EdgeInsets.all(10),
         child: FutureBuilder<List<Pertenencia>>(
@@ -46,22 +48,22 @@ class _PaginaState extends State<Pagina>  implements Updatable{
               return CircularProgressIndicator(); // Show loading indicator
             } else if (snapshot.hasError) {
               return Text('Error: ${snapshot.error}');
-            }else if (snapshot.data?.isEmpty ?? true) {
+            } else if (snapshot.data?.isEmpty ?? true) {
               return Center(child: Text("Aun no has registrado ningun objeto"));
-            }  
-            else {
+            } else {
               List<Pertenencia> pertenencias = snapshot.data!;
               return ListView.builder(
                 itemCount: pertenencias.length,
                 itemBuilder: (context, index) {
                   final item = pertenencias[index];
-                  return Ficha(
+
+                  return PertenenciaCheckBox(
+                      act_id: widget.id,
                       id: item.id,
                       titulo: item.nombre,
                       estado: item.status,
                       descripcion: item.descripcion,
-                      foto: item.foto,
-                      presenter: widget.presenter,);
+                      foto: item.foto);
                 },
               );
             }
@@ -71,8 +73,9 @@ class _PaginaState extends State<Pagina>  implements Updatable{
       floatingActionButton: FloatingActionButton(
         onPressed: () async {
           Navigator.of(context).push(
-              MaterialPageRoute(builder: (context) => Formu(widget.presenter)));
+              MaterialPageRoute(builder: (context) => PertenenciaForm(widget.presenter)));
         },
+        //backgroundColor: Colors.indigo,
         child: const Icon(Icons.add),
       ),
     );

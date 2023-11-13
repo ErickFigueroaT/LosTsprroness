@@ -1,4 +1,4 @@
-import 'package:activity_ally/Api/AADB.dart';
+import 'package:activity_ally/services/DB/AADB.dart';
 import 'package:activity_ally/Models/Pertenencia.dart';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';

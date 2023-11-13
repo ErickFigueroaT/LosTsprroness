@@ -5,15 +5,15 @@ import 'dart:io';
 import 'package:activity_ally/Models/Pertenencia.dart';
 import 'package:activity_ally/Views/Mochila/widgets/image_input.dart';
 
-class Formu extends StatefulWidget {
+class PertenenciaForm extends StatefulWidget {
   final PertenenciaPresenter presenter;
-  const Formu(this.presenter,);
+  const PertenenciaForm(this.presenter,);
 
   @override
-  State<Formu> createState() => _FormuState();
+  State<PertenenciaForm> createState() => _PertenenciaFormState();
 }
 
-class _FormuState extends State<Formu> {
+class _PertenenciaFormState extends State<PertenenciaForm> {
   //Pertenencia Pertenencia = Pertenencia(id: 0, nombre: '', descripcion: '');
   //List<Pertenencia> Pertenencias = [];
   String? seleccion;

@@ -1,14 +1,10 @@
-import 'package:activity_ally/Api/PertenenciaCRUD.dart';
+import 'package:activity_ally/services/DB/PertenenciaCRUD.dart';
 import 'package:activity_ally/Models/Pertenencia.dart';
-import 'package:activity_ally/Views/checklist/formulario_checklist.dart';
 import 'package:activity_ally/Views/checklist/widgets/check_obj.dart';
 import 'package:flutter/material.dart';
-import 'package:activity_ally/Models/ChecklistModelo.dart';
-import 'package:activity_ally/Api/ChecklistCRUD.dart';
+import 'package:activity_ally/services/DB/ChecklistCRUD.dart';
 
 class ListadoPage extends StatefulWidget {
-  //const ListadoPage({Key key = const Key('my_key')}) : super(key: key);
-
   static final nombrePagina = "Checklist";
   final int act_id;
 
@@ -74,13 +70,6 @@ class _ListadoPageState extends State<ListadoPage> {
       floatingActionButton: Column(
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
-          /*
-          FloatingActionButton(
-            heroTag: 'agregar',
-            onPressed: () => Navigator.push(context,
-                MaterialPageRoute(builder: (context) =>  objetos_check(id: 1,))),//FormularioPage())),
-            child: Icon(Icons.add),
-          ),*/
           SizedBox(height: 10),
           FloatingActionButton(
             heroTag: 'paloma',
@@ -101,47 +90,4 @@ class _ListadoPageState extends State<ListadoPage> {
       ),
     );
   }
-
-
-
-  /*
-
-  FutureBuilder<List<ChecklistItem>> _crearItem() {
-    return FutureBuilder<List<ChecklistItem>>(
-      future: ChecklistCRUD.instance.getAllChecklistItems(),
-      builder:
-          (BuildContext context, AsyncSnapshot<List<ChecklistItem>> snapshot) {
-        if (snapshot.connectionState == ConnectionState.waiting) {
-          return CircularProgressIndicator(); // Muestra un indicador de carga mientras se obtienen los datos.
-        } else if (snapshot.hasError) {
-          return Text('Error: ${snapshot.error}');
-        } else if (snapshot.data?.isEmpty == true) {
-          return Center(child: Text("No hay objetos agregados"));
-        } else {
-          final checklistItems = snapshot.data;
-          return ListView.builder(
-            itemCount: checklistItems?.length ?? 0,
-            itemBuilder: (context, index) {
-              if (checklistItems == null) {
-                return CircularProgressIndicator(); // Muestra un indicador de carga en caso de que checklistItems sea nulo.
-              }
-              final item = checklistItems[index];
-              return ListTile(
-                title: Text(item.nombre),
-                trailing: Checkbox(
-                  value: item.completado,
-                  onChanged: (bool? newValue) {
-                    // Actualiza el estado del elemento en la base de datos
-                    item.completado = newValue!;
-                    ChecklistCRUD.instance.updateChecklistItem(item);
-                    setState(() {});
-                  },
-                ),
-              );
-            },
-          );
-        }
-      },
-    );
-  }*/
 }
