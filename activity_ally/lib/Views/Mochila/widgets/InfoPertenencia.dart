@@ -1,16 +1,14 @@
 import 'dart:io';
-
-import 'package:activity_ally/services/DB/PertenenciaCRUD.dart';
 import 'package:activity_ally/Models/Pertenencia.dart';
 import 'package:activity_ally/Presenters/PertenenciaPresenter.dart';
 import 'package:flutter/material.dart';
 
 class InfoPertenencia extends StatefulWidget {
-  final String titulo;
-  final String descripcion;
+  String titulo;
+  String descripcion;
   final int id;
   bool estado;
-  final String? foto;
+  String? foto;
   final PertenenciaPresenter presenter;
   InfoPertenencia(
       {required this.titulo,
@@ -25,14 +23,12 @@ class InfoPertenencia extends StatefulWidget {
 }
 
 class _InfoPertenenciaState extends State<InfoPertenencia> {
+
+
   @override
   Widget build(BuildContext context) {
-    var image;
-    if (widget.foto == null) {
-      image = new AssetImage('res/placeholder.jpg');
-    } else {
-      image = FileImage(File(widget.foto!));
-    }
+    var image = showImg(widget.foto);
+    
     String estadoActual = "";
     String statusObject() {
       if (widget.estado) {
@@ -100,32 +96,24 @@ class _InfoPertenenciaState extends State<InfoPertenencia> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               ElevatedButton(
-                onPressed: () {
-                  setState(()  {
-                    widget.estado = true;
+                onPressed: () async {
+                  Pertenencia pertenencia = Pertenencia(id: widget.id, nombre: widget.titulo, descripcion: widget.descripcion, status: widget.estado, foto: widget.foto);
+                  pertenencia = await widget.presenter.onChange(context,pertenencia);
+                  setState((){
+                    widget.titulo = pertenencia.nombre;
+                    widget.descripcion = pertenencia.descripcion;
+                    widget.foto = pertenencia.foto;
+                    image = showImg(widget.foto);
                   });
-                  widget.presenter.onUpdate(Pertenencia(id: widget.id, nombre: widget.titulo, status: widget.estado, foto: widget.foto));
-                  /*var form = formkey.currentState;
-                    if (form!.validate()) {
-                      form.save();
-                      Navigator.of(context).pop(Objeto(
-                          id: plus(), titulo: titulo, descripcion: descripcion));
-                    }*/
                 },
                 style:
                     ElevatedButton.styleFrom(padding: const EdgeInsets.all(15)),
-                child: const Text("Recuperar"),
+                child: const Text("Editar"),
               ),
               ElevatedButton(
                 onPressed: () {
                   widget.presenter.Eliminar(widget.id);
                   Navigator.of(context).pop();
-                  /*var form = formkey.currentState;
-                    if (form!.validate()) {
-                      form.save();
-                      Navigator.of(context).pop(Objeto(
-                          id: plus(), titulo: titulo, descripcion: descripcion));
-                    }*/
                 },
                 style:
                     ElevatedButton.styleFrom(padding: const EdgeInsets.all(15)),
@@ -137,4 +125,25 @@ class _InfoPertenenciaState extends State<InfoPertenencia> {
       ),
     );
   }
+
+  ImageProvider showImg(String? path){
+    if (widget.foto == null) {
+        return new AssetImage('res/placeholder.jpg');
+      } else {
+        return FileImage(File(widget.foto!));
+      }
+  }
 }
+/**
+ * ElevatedButton(
+                onPressed: () {
+                  setState(()  {
+                    widget.estado = true;
+                  });
+                  widget.presenter.onUpdate(Pertenencia(id: widget.id, nombre: widget.titulo, status: widget.estado, foto: widget.foto));
+                },
+                style:
+                    ElevatedButton.styleFrom(padding: const EdgeInsets.all(15)),
+                child: const Text("Recuperar"),
+              ),
+ */
