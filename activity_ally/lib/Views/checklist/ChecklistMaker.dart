@@ -72,8 +72,9 @@ class _ChecklistMakerState extends State<ChecklistMaker> implements Updatable {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () async {
-          Navigator.of(context).push(
-              MaterialPageRoute(builder: (context) => PertenenciaForm(widget.presenter)));
+          //Navigator.of(context).push(
+              //MaterialPageRoute(builder: (context) => PertenenciaForm(widget.presenter)));
+              widget.presenter.onSubmit(context);
         },
         //backgroundColor: Colors.indigo,
         child: const Icon(Icons.add),
