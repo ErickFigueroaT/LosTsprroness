@@ -1,14 +1,14 @@
 import 'package:activity_ally/Models/Activity.dart';
-import 'package:activity_ally/Presenters/ActivityPresenter.dart';
 import 'package:flutter/material.dart';
 import 'dart:io';
 import 'package:flutter/cupertino.dart';
 
 class ActivityForm extends StatefulWidget {
   //const ActivityForm({super.key});
-  final ActivityPresenter presenter;
+  //final ActivityPresenter presenter;
+  final Activity? activity;
 
-  const ActivityForm(this.presenter);
+  const ActivityForm(this.activity,);
 
   @override
   State<ActivityForm> createState() => _ActivityFormState();
@@ -16,28 +16,59 @@ class ActivityForm extends StatefulWidget {
 
 class _ActivityFormState extends State<ActivityForm> {
   final formkey = GlobalKey<FormState>();
+  
   int id = 0;
   var title = '';
   var description = '';
   var location = '';
-  DateTime duracion = DateTime(2000, 1, 10, 00, 00);
-  DateTime? fecha;
-  TimeOfDay? hora;
 
-  DateTime hoy = DateTime.now();
-  var hours = TimeOfDay(hour:  DateTime.now().add(Duration(hours: 1)).hour, minute: 0);
-  
+  late DateTime duracion;
+  late DateTime? fecha;
+  late TimeOfDay? hora;
+
+  late DateTime hoy;
+  late TimeOfDay hours;
+
+  late TextEditingController titleController;
+  late TextEditingController descriptionController;
+  late TextEditingController locationController;
+
+  @override
+  void initState() {
+    super.initState();
+    titleController = TextEditingController(text: widget.activity?.title ?? '');
+    descriptionController = TextEditingController(text: widget.activity?.description ?? '');
+    locationController = TextEditingController(text: widget.activity?.location ?? '');
+    if(widget.activity == null){
+      setDate(DateTime.now(), DateTime.now().add(Duration(hours: 1)).hour, 0);
+      duracion = DateTime(2000, 1, 10, 00, 00);
+    }
+    else{
+      DateTime date = widget.activity!.date;
+      setDate(date, date.hour , date.minute);
+      duracion = DateTime( date.year, date.month, date.day, widget.activity!.duration ~/ 60 , widget.activity!.duration % 60);
+      //setDate(widget.activity!.date, widget.activity!.duration ~/ 60 , widget.activity!.duration % 60);
+    }
+  }
+
+  void setDate(DateTime day, int hour, int minute){
+    hoy = day;
+    hours = TimeOfDay(hour: hour, minute: minute);
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Nueva actividad')),
+      appBar: AppBar(
+        title: Text(widget.activity != null ? 'Editar Actividad' : 'Nueva Actividad')
+      ),
       body: Center(
           child: Form(
         key: formkey,
         child: ListView(
           children: [
             TextFormField(
+              controller: titleController,
               decoration: const InputDecoration(
                   border: OutlineInputBorder(), hintText: "nombre"),
               onSaved: (value) {
@@ -70,7 +101,7 @@ class _ActivityFormState extends State<ActivityForm> {
                 }
               },
             ),
-            const Text('Duracion'),
+            const Text('Duracion estimada'),
             CupertinoButton(
               // Display a CupertinoDatePicker in time picker mode.
               onPressed: () => _showDialog(
@@ -85,7 +116,7 @@ class _ActivityFormState extends State<ActivityForm> {
                 ),
               ),
               child: Text(
-                '${duracion.hour}:${duracion.minute}',
+                '${duracion.hour}:${duracion.minute.toString().padLeft(2, '0')}',
                 style: const TextStyle(
                   fontSize: 22.0,
                 ),
@@ -94,6 +125,7 @@ class _ActivityFormState extends State<ActivityForm> {
             const SizedBox(height: 10),
             TextFormField(
               maxLines: 3,
+              controller: descriptionController,
               decoration: const InputDecoration(
                   border: OutlineInputBorder(), hintText: "Descripcion"),
               onSaved: (value) {
@@ -107,6 +139,7 @@ class _ActivityFormState extends State<ActivityForm> {
             ),
             const SizedBox(height: 10),
             TextFormField(
+              controller: locationController,
               decoration: const InputDecoration(
                   border: OutlineInputBorder(), hintText: "Ubicacion"),
               onSaved: (value) {
@@ -132,14 +165,14 @@ class _ActivityFormState extends State<ActivityForm> {
                   form.save();
                   final fecha_hora = new DateTime(
                         hoy!.year, hoy!.month, hoy!.day, hours.hour, hours.minute, 0, 0, 0);
-
-                  widget.presenter.onSubmit(title, fecha_hora, description, minutos, location);
-                  Navigator.of(context).pop();
+                  //widget.presenter.onSubmit(title, fecha_hora, description, minutos, location);
+                  Navigator.of(context).pop({'title':title, 'date':fecha_hora, 'description':description, 'duration': minutos, 'location':location
+                  });
                 }
               },
               style:
                   ElevatedButton.styleFrom(padding: const EdgeInsets.all(15)),
-              child: const Text("Agregar"),
+              child: const Text("Guardar"),
             )
           ],
         ),

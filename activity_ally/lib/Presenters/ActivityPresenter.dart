@@ -1,4 +1,5 @@
 import 'package:activity_ally/Models/Activity.dart';
+import 'package:activity_ally/Views/Actividad/ActivityForm.dart';
 import 'package:activity_ally/Views/Updatable.dart';
 import 'package:activity_ally/services/DB/ActivityCRUD.dart';
 import 'package:activity_ally/Views/checklist/Checklist.dart';
@@ -13,16 +14,45 @@ ActivityPresenter(){
   notificaciones.initialize();
 }
 
-  Future <void> onSubmit(String title, DateTime fecha_hora, String description,int minutos, String? location) async {
+  Future <void> onSubmit(BuildContext context) async {
+    var res = await Navigator.of(context).push(
+              MaterialPageRoute(builder: (context) => ActivityForm(null)));
+    if(res == null){
+      return; 
+    }
     int? id = await onSave(Activity(
                     id: 0,
-                    title: title,
-                    date: fecha_hora,
-                    description: description,
-                    duration: minutos,
-                    location: location,
+                    title: res['title'],
+                    date: res['date'],
+                    description: res['description'],
+                    duration: res['duration'],
+                    location: res['location'],
                   ));
     view.updateView();
+  }
+
+   Future<int> onChange(BuildContext context, Activity activity) async {
+    ActivityForm form = ActivityForm(activity,);
+    final res = await Navigator.of(context).push(
+      MaterialPageRoute(builder: (context) => form),
+    );
+
+    if (res == null) {
+      return 0; // Handle cancel or dismiss
+    }
+
+    activity.title = res['title'];
+    activity.date = res['date'];
+    activity.description = res['description'];
+    activity.duration = res['duration'];
+    activity.location = res['location'];
+    int? id = await onUpdate(activity);
+    view.updateView(); 
+    if(activity.notify){
+      notificaciones.cancela(activity.id);
+      notificaciones.NotificacionProgramada(activity);
+    }
+    return id;
   }
 
   Future <int> onSave( Activity actividad) async {
@@ -55,10 +85,8 @@ ActivityPresenter(){
 
   }
 
-  Future<void> onUpdate(Activity actividad) async{
-
-    ActivityCRUD.instance.update(actividad);
-    view.updateView();
+  Future<int> onUpdate(Activity actividad) async{
+    return ActivityCRUD.instance.update(actividad);
   }
 
   Future <void> start(Activity actividad) async{
@@ -68,7 +96,7 @@ ActivityPresenter(){
         notificaciones.cancela(actividad.id);
       }
       notificaciones.NotificacionFin(actividad);
-      return onUpdate(actividad);
+      onUpdate(actividad);
     }
   }
 

@@ -66,8 +66,7 @@ class _VistaActividadState extends State<VistaActividad> implements Updatable {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () async {
-          Navigator.of(context).push(
-              MaterialPageRoute(builder: (context) => ActivityForm(widget.presenter)));
+          widget.presenter.onSubmit(context);
         },
         //backgroundColor: Colors.indigo,
         child: const Icon(Icons.add),

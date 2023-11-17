@@ -141,6 +141,7 @@ class _InfoActividadState extends State<InfoActividad> implements Updatable {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               botonObjetos(),
+              botonEditar(),
             ],
           )
         ]),
@@ -175,6 +176,23 @@ class _InfoActividadState extends State<InfoActividad> implements Updatable {
     Navigator.push(context, MaterialPageRoute(builder: (context) => ChecklistMaker(id: widget.actividad.id, presenter: PertenenciaPresenter(),)));
   }
 
+  botonEditar(){
+    if (duracionReal == 0) {
+      return ElevatedButton(
+        onPressed: editar,
+        style: ElevatedButton.styleFrom(padding: const EdgeInsets.all(15)),
+        child: const Text("edit"),
+      );
+    } else {
+      return const Text('');
+    }
+  }
+  void editar() async{
+    int? id = await widget.presenter.onChange(context, widget.actividad);
+    if(id == null) return;
+    setState(() {
+    });
+  }
 
  
   void actualizar() async {
