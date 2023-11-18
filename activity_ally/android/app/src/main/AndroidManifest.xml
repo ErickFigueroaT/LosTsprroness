@@ -3,6 +3,8 @@
         android:label="activity_ally"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
+        
+
         <activity
             android:name=".MainActivity"
             android:requestLegacyExternalStorage="true"
@@ -30,6 +32,9 @@
         <meta-data
             android:name="flutterEmbedding"
             android:value="2" />
+        
+        <meta-data android:name="com.google.android.geo.API_KEY"
+               android:value="AIzaSyAg9zP-8A9y-byDa9SuzzFexkr8226omI0"/>
         
         <receiver android:exported="false" android:name="com.dexterous.flutterlocalnotifications.ScheduledNotificationReceiver" />
         <receiver android:exported="false" android:name="com.dexterous.flutterlocalnotifications.ScheduledNotificationBootReceiver">

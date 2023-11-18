@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:activity_ally/ImageLoader.dart';
 import 'package:activity_ally/Models/Pertenencia.dart';
 import 'package:activity_ally/Presenters/PertenenciaPresenter.dart';
 import 'package:flutter/material.dart';
@@ -27,8 +28,7 @@ class _InfoPertenenciaState extends State<InfoPertenencia> {
 
   @override
   Widget build(BuildContext context) {
-    var image = showImg(widget.foto);
-    
+    var image = ImageLoader.loadImage(widget.foto);
     String estadoActual = "";
     String statusObject() {
       if (widget.estado) {
@@ -103,7 +103,7 @@ class _InfoPertenenciaState extends State<InfoPertenencia> {
                     widget.titulo = pertenencia.nombre;
                     widget.descripcion = pertenencia.descripcion;
                     widget.foto = pertenencia.foto;
-                    image = showImg(widget.foto);
+                    image = ImageLoader.loadImage(widget.foto);
                   });
                 },
                 style:
@@ -124,14 +124,6 @@ class _InfoPertenenciaState extends State<InfoPertenencia> {
         ]),
       ),
     );
-  }
-
-  ImageProvider showImg(String? path){
-    if (widget.foto == null) {
-        return new AssetImage('res/placeholder.jpg');
-      } else {
-        return FileImage(File(widget.foto!));
-      }
   }
 }
 /**
