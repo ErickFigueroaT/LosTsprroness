@@ -132,11 +132,13 @@ class _ActivityFormState extends State<ActivityForm> {
               onSaved: (value) {
                 description = value!;
               },
+              /*
               validator: (value) {
                 if (value == null || value.isEmpty) {
                   return 'Introduce descripcion';
                 }
               },
+              */
             ),
             const SizedBox(height: 10),
             TextFormField(
@@ -145,6 +147,11 @@ class _ActivityFormState extends State<ActivityForm> {
                   border: OutlineInputBorder(), hintText: "Ubicacion"),
               onSaved: (value) {
                 location = value!;
+              },
+              validator: (value) {
+                if (value == null || value.isEmpty) {
+                  return 'Introduce ubicacion';
+                }
               },
             ),
             ElevatedButton(

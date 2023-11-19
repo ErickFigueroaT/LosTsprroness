@@ -48,49 +48,62 @@ class _InfoPertenenciaState extends State<InfoPertenencia> {
             color: Colors.white70,
             borderRadius: BorderRadius.circular(20),
             border: Border.all(color: Colors.grey, width: 2)),
-        child: Column(children: [
+        child: Column(
+          children: [
           SizedBox(
-              child: Image(
-            image: image,
-            height: 400,
-            width: 200,
-          )),
-          Row(mainAxisAlignment: MainAxisAlignment.start, children: [
-            Container(
-              child: const Text(
-                'Nombre: ',
-                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-              ),
+            height:  500, // Adjust the height as needed
+            child: ListView(
+              children: [
+                SizedBox(
+                  child: Image(
+                  image: image,
+                  height: 300,
+                  fit: BoxFit.cover,
+                  //width: 200,
+                )),
+                Container(
+                  child: const Text(
+                    'Nombre: ',
+                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                  ),
+                ),
+                Container(
+                  child: Text(widget.titulo, style: const TextStyle(fontSize: 20)),
+                ),
+                Container(
+                  child: Text(
+                    'Descripcion: ',
+                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                  ),
+                ),
+                Container(
+                  child: Text(widget.descripcion, style: const TextStyle(fontSize: 20)),
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Container(
+                      child: const Text(
+                        'Estado: ',
+                        style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                      ),
+                    ),
+                    Container(
+                      child: Text(
+                        statusObject(),
+                        style: TextStyle(
+                          fontSize: 20,
+                          color: widget.estado == false ? Colors.red : Colors.green,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+                // Add more widgets to the ListView if needed
+              ],
             ),
-            Container(
-              child: Text(widget.titulo, style: const TextStyle(fontSize: 20)),
-            )
-          ]),
-          Row(mainAxisAlignment: MainAxisAlignment.start, children: [
-            const Flexible(
-              child: Text(
-                'Descripcion: ',
-                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-              ),
-            ),
-            Flexible(
-              child: Text(widget.descripcion, style: const TextStyle(fontSize: 20)),
-            ),
-          ]),
-          Row(mainAxisAlignment: MainAxisAlignment.start, children: [
-            Container(
-              child: const Text(
-                'Estado: ',
-                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-              ),
-            ),
-            Container(
-              child: Text(statusObject(),
-                  style: TextStyle(
-                      fontSize: 20,
-                      color: widget.estado == false ? Colors.red : Colors.green)),
-            )
-          ]),
+          ),
+
           const SizedBox(height: 20),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,

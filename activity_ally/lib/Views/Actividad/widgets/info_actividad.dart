@@ -46,8 +46,10 @@ class _InfoActividadState extends State<InfoActividad> implements Updatable {
             color: Colors.white70,
             borderRadius: BorderRadius.circular(20),
             border: Border.all(color: Colors.grey, width: 2)),
-        child: Column(children: [
-          Row(mainAxisAlignment: MainAxisAlignment.start, children: [
+        child: Column(
+          //crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+          //Row(mainAxisAlignment: MainAxisAlignment.start, children: [
             Container(
               child: const Text(
                 'Nombre: ',
@@ -56,10 +58,10 @@ class _InfoActividadState extends State<InfoActividad> implements Updatable {
             ),
             Flexible(
               child: Text(widget.actividad.title, style: const TextStyle(fontSize: 20)),
-            )
-          ]),
-          Row(mainAxisAlignment: MainAxisAlignment.start, children: [
-            const Flexible(
+            ),
+          //]),
+          //Row(mainAxisAlignment: MainAxisAlignment.start, children: [
+            Container(
               child: Text(
                 'Fecha: ',
                 style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
@@ -68,8 +70,8 @@ class _InfoActividadState extends State<InfoActividad> implements Updatable {
             Flexible(
               child: Text(widget.actividad.date.toString(),
                   style: const TextStyle(fontSize: 20)),
-            )
-          ]),
+            ),
+          //]),
           Row(mainAxisAlignment: MainAxisAlignment.start, children: [
             Container(
               child: const Text(
@@ -108,18 +110,18 @@ class _InfoActividadState extends State<InfoActividad> implements Updatable {
               ),
             )
           ]),
-          Row(mainAxisAlignment: MainAxisAlignment.start, children: [
-            const Flexible(
+          //Row(mainAxisAlignment: MainAxisAlignment.start, children: [
+            Container(
               child: Text(
                 'Descripcion: ',
                 style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
               ),
             ),
             Flexible(
-              child: Text(widget.actividad.description!,
+              child: Text(widget.actividad.description ?? '',
                   style: const TextStyle(fontSize: 20)),
             ),
-          ]),
+          //]),
           const SizedBox(height: 50),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
