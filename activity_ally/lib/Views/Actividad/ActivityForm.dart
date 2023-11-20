@@ -1,5 +1,6 @@
 import 'package:activity_ally/Models/Activity.dart';
-import 'package:activity_ally/services/mapa.dart';
+import 'package:activity_ally/Presenters/MapPresenter.dart';
+import 'package:activity_ally/services/Maps/Mapita.dart';
 import 'package:flutter/material.dart';
 import 'dart:io';
 import 'package:flutter/cupertino.dart';
@@ -158,7 +159,7 @@ class _ActivityFormState extends State<ActivityForm> {
               child: Text('coordenadas'),
               onPressed: () async {
                 Navigator.of(context).push(
-              MaterialPageRoute(builder: (context) => Mapa()));
+              MaterialPageRoute(builder: (context) => Mapita(presenter: MapPresenter())));
               },
             ),
 
