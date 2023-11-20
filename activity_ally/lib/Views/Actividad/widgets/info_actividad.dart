@@ -12,10 +12,10 @@ class InfoActividad extends StatefulWidget {
   final Activity actividad; // Added finishDate attribute
   final ActivityPresenter presenter;
 
-  const InfoActividad(
-      {required this.actividad,
-      required this.presenter,
-      });
+  const InfoActividad({
+    required this.actividad,
+    required this.presenter,
+  });
 
   @override
   State<InfoActividad> createState() => _InfoActividadState();
@@ -34,7 +34,7 @@ class _InfoActividadState extends State<InfoActividad> implements Updatable {
     int horas = (widget.actividad.duration / 60).floor();
     int minutos = widget.actividad.duration % 60;
     secs = duracionReal % 60;
-    mins = ((duracionReal/60) % 60).floor();
+    mins = ((duracionReal / 60) % 60).floor();
     hors = (duracionReal / 3600).floor();
 
     return Scaffold(
@@ -55,7 +55,8 @@ class _InfoActividadState extends State<InfoActividad> implements Updatable {
               ),
             ),
             Flexible(
-              child: Text(widget.actividad.title, style: const TextStyle(fontSize: 20)),
+              child: Text(widget.actividad.title,
+                  style: const TextStyle(fontSize: 20)),
             )
           ]),
           Row(mainAxisAlignment: MainAxisAlignment.start, children: [
@@ -90,8 +91,8 @@ class _InfoActividadState extends State<InfoActividad> implements Updatable {
               ),
             ),
             Container(
-              child:
-                  Text(widget.actividad.location!, style: const TextStyle(fontSize: 20)),
+              child: Text(widget.actividad.location!,
+                  style: const TextStyle(fontSize: 20)),
             )
           ]),
           Row(mainAxisAlignment: MainAxisAlignment.start, children: [
@@ -149,19 +150,20 @@ class _InfoActividadState extends State<InfoActividad> implements Updatable {
   }
 
   boton() {
-    if (duracionReal == 0) {
+    if (widget.actividad.finishDate == null) {
       return ElevatedButton(
-        onPressed: actualizar,
-        style: ElevatedButton.styleFrom(padding: const EdgeInsets.all(15)),
-        child: const Text("Comenzar"),
-      );
+          onPressed: actualizar,
+          style: ElevatedButton.styleFrom(padding: const EdgeInsets.all(15)),
+          child: duracionReal == 0
+              ? const Text("Comenzar")
+              : const Text("Reanudar"));
     } else {
       return const Text('');
     }
   }
 
   botonObjetos() {
-    if (duracionReal == 0) {
+    if (widget.actividad.finishDate == null) {
       return ElevatedButton(
         onPressed: agregar,
         style: ElevatedButton.styleFrom(padding: const EdgeInsets.all(15)),
@@ -171,16 +173,28 @@ class _InfoActividadState extends State<InfoActividad> implements Updatable {
       return const Text('');
     }
   }
+
   void agregar() async {
-    Navigator.push(context, MaterialPageRoute(builder: (context) => ChecklistMaker(id: widget.actividad.id, presenter: PertenenciaPresenter(),)));
+    Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: (context) => ChecklistMaker(
+                  id: widget.actividad.id,
+                  presenter: PertenenciaPresenter(),
+                )));
   }
 
-
- 
   void actualizar() async {
     widget.presenter.start(widget.actividad);
     updateView();
-    Navigator.push(context, MaterialPageRoute(builder: (context) => Temporizador(actividad: widget.actividad, presenter: widget.presenter, parent: this,)));
+    Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: (context) => Temporizador(
+                  actividad: widget.actividad,
+                  presenter: widget.presenter,
+                  parent: this,
+                )));
 
     /*
     if(nuevo != null){
@@ -192,9 +206,9 @@ class _InfoActividadState extends State<InfoActividad> implements Updatable {
               widget.actividad.id,)));
               
     }
-    *///setState(() => duracionReal = nuevo!);
+    */ //setState(() => duracionReal = nuevo!);
   }
-  
+
   @override
   updateView() {
     setState(() {});

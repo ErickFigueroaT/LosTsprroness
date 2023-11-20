@@ -8,13 +8,12 @@ import 'package:flutter/material.dart';
 class Temporizador extends StatefulWidget {
   //const Temporizador({super.key});
 
-final Activity actividad;
-final ActivityPresenter presenter;
-final Updatable parent;
+  final Activity actividad;
+  final ActivityPresenter presenter;
+  final Updatable parent;
 
-const Temporizador({required this.actividad,
-required this.presenter,
-required this.parent});
+  const Temporizador(
+      {required this.actividad, required this.presenter, required this.parent});
 
   @override
   State<Temporizador> createState() => _TemporizadorState();
@@ -37,22 +36,38 @@ class _TemporizadorState extends State<Temporizador> {
 
   void addTime() {
     final addSeconds = 1;
-    if (mounted){
-    setState(() {
-      final seconds = duration.inSeconds + addSeconds;
+    if (mounted) {
+      setState(() {
+        final seconds = duration.inSeconds + addSeconds;
 
-      duration = Duration(seconds: seconds);
-    });
-      
+        duration = Duration(seconds: seconds);
+      });
     }
   }
 
-  void startTimer() {
-    timer = Timer.periodic(Duration(seconds: 1), (_) => addTime());
+  void startTimer({bool resets = true}) {
+    if (resets) {
+      reset();
+    }
+
+    timer = Timer.periodic(const Duration(seconds: 1), (_) => addTime());
+  }
+
+  void reset() {
+    setState(() => duration = Duration());
+  }
+
+  void stopTimer({bool resets = true}) {
+    if (resets) {
+      reset();
+    }
+
+    setState(() => timer?.cancel());
   }
 
   @override
   Widget build(BuildContext context) {
+    final isRunning = timer == null ? false : timer!.isActive;
     return Scaffold(
       appBar: AppBar(title: const Text("Temporizador")),
       body: Center(
@@ -65,13 +80,26 @@ class _TemporizadorState extends State<Temporizador> {
             onPressed: () {
               widget.actividad.duration_r = duration.inSeconds;
               setState(() => duration = const Duration());
-              //setState(() => timer?.cancel());
               widget.parent.updateView();
               Navigator.of(context).pop();
-              widget.presenter.finish(widget.actividad,context);
+              widget.presenter.finish(widget.actividad, context);
             },
             style: ElevatedButton.styleFrom(padding: const EdgeInsets.all(15)),
             child: const Text("Terminar"),
+          ),
+          const SizedBox(height: 50),
+          ElevatedButton(
+            onPressed: () {
+              if (isRunning) {
+                widget.actividad.duration_r = duration.inSeconds;
+                stopTimer(resets: false);
+                widget.parent.updateView();
+              } else {
+                startTimer(resets: false);
+              }
+            },
+            style: ElevatedButton.styleFrom(padding: const EdgeInsets.all(15)),
+            child: isRunning ? const Text("Pausar") : const Text("Continuar"),
           ),
         ],
       )),
@@ -94,9 +122,10 @@ class _TemporizadorState extends State<Temporizador> {
     );
   }
 
-   @override
+  @override
   void dispose() {
-    timer?.cancel(); // Don't forget to cancel the timer when the widget is disposed
+    timer
+        ?.cancel(); // Don't forget to cancel the timer when the widget is disposed
     super.dispose();
   }
 }
