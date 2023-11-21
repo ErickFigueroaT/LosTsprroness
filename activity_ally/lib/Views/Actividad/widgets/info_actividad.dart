@@ -140,22 +140,32 @@ class _InfoActividadState extends State<InfoActividad> implements Updatable {
   }
 
   boton() {
-    if (duracionReal == 0) {
-      return customIconButton(Icons.play_arrow, actualizar, Colors.amber);
+    if (widget.actividad.finishDate == null) {
+      return customIconButton( duracionReal == 0
+              ? Icons.play_arrow
+              : Icons.play_arrow , actualizar, Colors.amber);
     } else {
       return const Text('');
     }
   }
 
   botonObjetos() {
-    if (duracionReal == 0) {
+    if (widget.actividad.finishDate == null) {
       return customIconButton(Icons.backpack, agregar, Colors.green);
     } else {
       return const Text('');
     }
   }
   void agregar() async {
-    Navigator.push(context, MaterialPageRoute(builder: (context) => ChecklistMaker(id: widget.actividad.id, presenter: PertenenciaPresenter(),)));
+    //Navigator.push(context, MaterialPageRoute(builder: (context) => ChecklistMaker(id: widget.actividad.id, presenter: PertenenciaPresenter(),)));
+      Navigator.push(
+      context,
+      MaterialPageRoute(
+          builder: (context) => ChecklistMaker(
+                id: widget.actividad.id,
+                presenter: PertenenciaPresenter(),
+              )));
+  
   }
   botonEliminar(){
     return customIconButton(Icons.delete, eliminar, Colors.red);
@@ -184,7 +194,15 @@ class _InfoActividadState extends State<InfoActividad> implements Updatable {
   void actualizar() async {
     widget.presenter.start(widget.actividad);
     updateView();
-    Navigator.push(context, MaterialPageRoute(builder: (context) => Temporizador(actividad: widget.actividad, presenter: widget.presenter, parent: this,)));
+    //Navigator.push(context, MaterialPageRoute(builder: (context) => Temporizador(actividad: widget.actividad, presenter: widget.presenter, parent: this,)));
+    Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: (context) => Temporizador(
+                  actividad: widget.actividad,
+                  presenter: widget.presenter,
+                  parent: this,
+                )));
 
     /*
     if(nuevo != null){
