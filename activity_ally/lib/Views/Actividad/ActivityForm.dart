@@ -42,8 +42,10 @@ class _ActivityFormState extends State<ActivityForm> {
     titleController = TextEditingController(text: widget.activity?.title ?? '');
     descriptionController = TextEditingController(text: widget.activity?.description ?? '');
     locationController = TextEditingController(text: widget.activity?.location ?? '');
-    coordenadasController = TextEditingController(text: '');
-
+    coordenadas = widget.activity?.coords;
+    coordenadasController = TextEditingController(text: coordenadas!= null ?  
+    '${coordenadas!.latitude.toStringAsFixed(2)}, ${coordenadas!.longitude.toStringAsFixed(2)}'
+    : '');
     if(widget.activity == null){
       setDate(DateTime.now(), DateTime.now().add(Duration(hours: 1)).hour, 0);
       duracion = DateTime(2000, 1, 10, 00, 00);
@@ -228,7 +230,7 @@ class _ActivityFormState extends State<ActivityForm> {
           final fecha_hora = new DateTime(
                 hoy!.year, hoy!.month, hoy!.day, hours.hour, hours.minute, 0, 0, 0);
           //widget.presenter.onSubmit(title, fecha_hora, description, minutos, location);
-          Navigator.of(context).pop({'title':title, 'date':fecha_hora, 'description':description, 'duration': minutos, 'location':location
+          Navigator.of(context).pop({'title':title, 'date':fecha_hora, 'description':description, 'duration': minutos, 'location':location, 'coordenadas':coordenadas
           });
         }
       },

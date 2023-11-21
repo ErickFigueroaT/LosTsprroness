@@ -29,6 +29,7 @@ ActivityPresenter(){
                     description: res['description'],
                     duration: res['duration'],
                     location: res['location'],
+                    coords: res['coordenadas'],
                   ));
     view.updateView();
   }
@@ -48,6 +49,7 @@ ActivityPresenter(){
     activity.description = res['description'];
     activity.duration = res['duration'];
     activity.location = res['location'];
+    activity.coords = res['coordenadas'];
     int? id = await onUpdate(activity);
     view.updateView(); 
     if(activity.notify){
