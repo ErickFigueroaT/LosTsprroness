@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:activity_ally/ImageLoader.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
@@ -19,9 +20,18 @@ class _ImageInputState extends State<ImageInput> {
   void initState(){
     super.initState();
     if(widget.initialImagePath != null){
-      seleccion = File(widget.initialImagePath!);
-      widget.onPickImage(seleccion!);
+      loadInitialImage();
     }
+  }
+
+  void loadInitialImage() {
+    var initialImage = ImageLoader.loadImage(widget.initialImagePath);
+    setState(() {
+      if (initialImage is FileImage) {
+        seleccion = File(widget.initialImagePath!);
+        widget.onPickImage(seleccion!);
+      }
+    });
   }
 
   void elegirImagen() async {

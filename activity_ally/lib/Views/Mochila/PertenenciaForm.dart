@@ -47,7 +47,7 @@ class _PertenenciaFormState extends State<PertenenciaForm> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Add')),
+      appBar: AppBar(title: Text(widget.nombre != '' ? 'Editar Actividad' : 'Nueva Actividad')),
       body: Center(
           child: Form(
         key: formkey,
@@ -110,7 +110,7 @@ class _PertenenciaFormState extends State<PertenenciaForm> {
               },
               style:
                   ElevatedButton.styleFrom(padding: const EdgeInsets.all(15)),
-              child: const Text("Agregar"),
+              child: const Text("Guardar"),
             )
           ],
         ),

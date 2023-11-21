@@ -1,10 +1,12 @@
 import 'package:activity_ally/Models/Activity.dart';
+import 'package:activity_ally/Presenters/MapPresenter.dart';
 import 'package:activity_ally/Views/Actividad/ActivityForm.dart';
 import 'package:activity_ally/Views/Updatable.dart';
 import 'package:activity_ally/services/DB/ActivityCRUD.dart';
 import 'package:activity_ally/Views/checklist/Checklist.dart';
 import 'package:activity_ally/services/Notificacion.dart';
 import 'package:flutter/material.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 class ActivityPresenter{
 
@@ -16,7 +18,7 @@ ActivityPresenter(){
 
   Future <void> onSubmit(BuildContext context) async {
     var res = await Navigator.of(context).push(
-              MaterialPageRoute(builder: (context) => ActivityForm(null)));
+              MaterialPageRoute(builder: (context) => ActivityForm(null,this)));
     if(res == null){
       return; 
     }
@@ -27,12 +29,13 @@ ActivityPresenter(){
                     description: res['description'],
                     duration: res['duration'],
                     location: res['location'],
+                    coords: res['coordenadas'],
                   ));
     view.updateView();
   }
 
    Future<int> onChange(BuildContext context, Activity activity) async {
-    ActivityForm form = ActivityForm(activity,);
+    ActivityForm form = ActivityForm(activity, this);
     final res = await Navigator.of(context).push(
       MaterialPageRoute(builder: (context) => form),
     );
@@ -46,6 +49,7 @@ ActivityPresenter(){
     activity.description = res['description'];
     activity.duration = res['duration'];
     activity.location = res['location'];
+    activity.coords = res['coordenadas'];
     int? id = await onUpdate(activity);
     view.updateView(); 
     if(activity.notify){
@@ -114,5 +118,15 @@ ActivityPresenter(){
       context,
       MaterialPageRoute(builder: (context) => ListadoPage(act_id: actividad.id,)), // Specify the new page to navigate to
     );
+  }
+
+  Future<LatLng?> getCordenadas(BuildContext context, LatLng? coords)async{
+    MapPresenter mp = MapPresenter();
+    if(coords != null){
+      mp.addMarker('1',
+        coords.latitude,coords.longitude
+      );
+    }
+    return mp.showMap(context);
   }
 }

@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:activity_ally/ImageLoader.dart';
 import 'package:activity_ally/Presenters/PertenenciaPresenter.dart';
 import 'package:flutter/material.dart';
 import 'package:activity_ally/Views/Mochila/widgets/InfoPertenencia.dart';
@@ -25,13 +26,7 @@ class FichaPertnencia extends StatefulWidget {
 class _FichaPertnenciaState extends State<FichaPertnencia> {
   @override
   Widget build(BuildContext context) {
-    var image;
-      if (widget.foto == null){
-        image = new AssetImage('res/placeholder.jpg');
-      }
-      else{
-        image = FileImage(File(widget.foto!));
-      }
+    var image = ImageLoader.loadImage(widget.foto);
     return Material(
       child: InkWell(
         onTap: () {

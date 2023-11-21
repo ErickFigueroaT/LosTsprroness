@@ -9,6 +9,8 @@ class AADB {
   static Database? _database;
 
   AADB._init();
+
+  
     final String pertenencia = '''
       --tabla pertenencia
       CREATE TABLE possession (
@@ -20,7 +22,7 @@ class AADB {
       );
     ''';
     final String actividad = '''
-       -- Create the activity table
+      -- Create the activity table
       CREATE TABLE activity (
         id INTEGER PRIMARY KEY AUTOINCREMENT, 
         title TEXT,
@@ -31,7 +33,9 @@ class AADB {
         finish_date DATE,
         start_date DATE,
         duration_r INTEGER,
-        notify TEXT
+        notify TEXT,
+        latitude REAL, -- Added latitude field for coords
+        longitude REAL -- Added longitude field for coords
       );
     ''';
 
@@ -69,7 +73,13 @@ class AADB {
     final dbPath = await getDatabasesPath();
     final path = join(dbPath, filePath);
 
-    return await openDatabase(path, version: 8, onCreate: _onCreateDB);
+    return await openDatabase(
+      path, 
+      version: 9,
+      onCreate: _onCreateDB,
+      onUpgrade: _onUpgradeDB,
+    );
+    
 
   }
 
@@ -79,5 +89,15 @@ class AADB {
     await db.execute(checklist);
     //await db.execute(checklist_items);
 
+  }
+
+   Future _onUpgradeDB(Database db, int oldVersion, int newVersion) async {
+    // Handle database schema upgrades here
+    if (oldVersion == 8 && newVersion == 9) {
+      // Example: Add a new column to the 'activity' table
+      await db.execute('ALTER TABLE activity ADD COLUMN latitude REAL');
+      await db.execute('ALTER TABLE activity ADD COLUMN longitude REAL');
+    }
+    // Add more upgrade logic as needed for other versions
   }
 }
