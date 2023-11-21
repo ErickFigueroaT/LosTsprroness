@@ -23,6 +23,7 @@ class _MyAppState extends State<Mapita> implements Mapas{
   @override
   void initState() {
     widget.presenter.mapa = this;
+    markers = widget.presenter.markers;
     super.initState();
   }
 
@@ -47,10 +48,10 @@ class _MyAppState extends State<Mapita> implements Mapas{
               ponMarcador(position);
             },
             initialCameraPosition: CameraPosition(
-              target: widget.presenter.getDefaultLocation(),
+              target: widget.presenter.getMarkerLocation('1'),
               zoom: 14.0,
             ),
-            markers: markers.values.toSet(),
+            markers: widget.presenter.markers.values.toSet(),
           ),
           Container(
             padding: EdgeInsets.only(top: 24, right: 12),
@@ -85,7 +86,7 @@ class _MyAppState extends State<Mapita> implements Mapas{
                 FloatingActionButton(
                   heroTag: 'loc',
                   onPressed: () {
-                    widget.presenter.updateMarkerWithCurrentLocation();
+                    widget.presenter.updateMarkerWithCurrentLocation('1');
                   },
                   backgroundColor: Colors.deepPurpleAccent,
                   child: const Icon(Icons.add_location),
@@ -94,7 +95,18 @@ class _MyAppState extends State<Mapita> implements Mapas{
                 FloatingActionButton(
                   heroTag: 'paloma',
                   onPressed: () {
-                    Navigator.of(context).pop(true);
+                    if(widget.presenter.markers.isEmpty){
+                      ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text('Primero agrega un marcador'),
+                        backgroundColor:
+                            Colors.red, // Set snackbar color to red
+                      ),
+                    );
+                      return;}
+                    else{
+                      Navigator.of(context).pop('1');
+                    }
                   },
                   backgroundColor: Colors.deepOrangeAccent,
                   child: Icon(Icons.done),
@@ -111,14 +123,15 @@ class _MyAppState extends State<Mapita> implements Mapas{
 
   ponMarcador(LatLng position){
     //print(position.toString());
+    widget.presenter.addMarker('1', position.latitude, position.longitude);
+  }
+
+  void updateView(LatLng position) async {
+    //print(position.toString());
     setState(() {
-      markers['1'] =Marker(markerId: MarkerId('1'), position: position);
+      markers = widget.presenter.markers;
       mapController.animateCamera(CameraUpdate.newLatLng(position));
     });
-
-    return;
   }
-  
-  
 
 }

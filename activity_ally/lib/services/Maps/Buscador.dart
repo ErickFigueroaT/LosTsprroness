@@ -50,7 +50,7 @@ class _BuscadorState extends State<Buscador> {
         isLatLngRequired: true,
         getPlaceDetailWithLatLng: (Prediction prediction) {
           //print("placeDetails" + prediction.lat.toString());
-          widget.presenter.changeMarker(double.parse(prediction.lat!), double.parse(prediction.lng!));//helpme to make a latLng with lat antd lng from 
+          widget.presenter.addMarker('1',double.parse(prediction.lat!), double.parse(prediction.lng!));//helpme to make a latLng with lat antd lng from 
         },
 
         itemClick: (Prediction prediction) {

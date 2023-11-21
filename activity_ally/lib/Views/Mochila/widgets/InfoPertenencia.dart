@@ -1,4 +1,3 @@
-import 'dart:io';
 import 'package:activity_ally/ImageLoader.dart';
 import 'package:activity_ally/Models/Pertenencia.dart';
 import 'package:activity_ally/Presenters/PertenenciaPresenter.dart';
@@ -108,29 +107,37 @@ class _InfoPertenenciaState extends State<InfoPertenencia> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              ElevatedButton(
-                onPressed: () async {
-                  Pertenencia pertenencia = Pertenencia(id: widget.id, nombre: widget.titulo, descripcion: widget.descripcion, status: widget.estado, foto: widget.foto);
-                  pertenencia = await widget.presenter.onChange(context,pertenencia);
-                  setState((){
-                    widget.titulo = pertenencia.nombre;
-                    widget.descripcion = pertenencia.descripcion;
-                    widget.foto = pertenencia.foto;
-                    image = ImageLoader.loadImage(widget.foto);
-                  });
-                },
-                style:
-                    ElevatedButton.styleFrom(padding: const EdgeInsets.all(15)),
-                child: const Text("Editar"),
+              Container(
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: Colors.blue, // Set your desired background color here
+                ),
+                child: IconButton(
+                  onPressed: () async {
+                    Pertenencia pertenencia = Pertenencia(id: widget.id, nombre: widget.titulo, descripcion: widget.descripcion, status: widget.estado, foto: widget.foto);
+                    pertenencia = await widget.presenter.onChange(context,pertenencia);
+                    setState(() {
+                      widget.titulo = pertenencia.nombre;
+                      widget.descripcion = pertenencia.descripcion;
+                      widget.foto = pertenencia.foto;
+                      image = ImageLoader.loadImage(widget.foto);
+                    });
+                  },
+                  icon: Icon(Icons.edit, color: Colors.white), // Set the icon color
+                ),
               ),
-              ElevatedButton(
-                onPressed: () {
-                  widget.presenter.Eliminar(widget.id);
-                  Navigator.of(context).pop();
-                },
-                style:
-                    ElevatedButton.styleFrom(padding: const EdgeInsets.all(15)),
-                child: const Text("Eliminar"),
+              Container(
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: Colors.red, // Set your desired background color here
+                ),
+                child: IconButton(
+                  onPressed: () {
+                    widget.presenter.Eliminar(widget.id);
+                    Navigator.of(context).pop();
+                  },
+                  icon: Icon(Icons.delete, color: Colors.white), // Set the icon color
+                ),
               ),
             ],
           )

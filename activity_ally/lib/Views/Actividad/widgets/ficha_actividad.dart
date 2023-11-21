@@ -1,6 +1,8 @@
+import 'package:activity_ally/services/DB/ActivityCRUD.dart';
 import 'package:activity_ally/Models/Activity.dart';
 import 'package:activity_ally/Presenters/ActivityPresenter.dart';
 import 'package:activity_ally/Views/Actividad/widgets/info_actividad.dart';
+import 'package:activity_ally/services/Notificacion.dart';
 import 'package:flutter/material.dart';
 
 class FichaActividad extends StatefulWidget {
@@ -16,7 +18,16 @@ class FichaActividad extends StatefulWidget {
 }
 
 class _FichaActividadState extends State<FichaActividad> {
-  //int duracionReal = 0;
+   late final Notificacion notificaciones;
+  
+  void initState() {
+    super.initState();
+    notificaciones = Notificacion();
+    notificaciones.initialize();
+  }
+    
+
+
   @override
   Widget build(BuildContext context) {
     bool isPast = widget.actividad.date.isBefore(DateTime.now());
@@ -29,11 +40,11 @@ class _FichaActividadState extends State<FichaActividad> {
     } else if (isFinished) {
       containerColor = Colors.grey[300] ?? Colors.grey; // Use grey[100] if available, else use default grey
     }
-
+    bool bell = isPast || isFinished || widget.actividad.startDate != null ;
     return Material(
       child: InkWell(
-        onTap: () async {
-          final nuevo = await Navigator.push(
+        onTap: () {
+          Navigator.push(
               context,
               MaterialPageRoute(
                   builder: ((context) => InfoActividad(
@@ -42,24 +53,53 @@ class _FichaActividadState extends State<FichaActividad> {
                       ))));
         },
         splashColor: Colors.blueGrey,
-        child: Container(
-          decoration: BoxDecoration(
+          child: Container(
+            decoration: BoxDecoration(
             color: containerColor,
             borderRadius: BorderRadius.circular(16),
             border: Border.all(color: Colors.grey, width: 1),
           ),
           child: Column(
             children: [
-               Column(
+              //Card(child: 
+              Column(
                   mainAxisSize: MainAxisSize.min,
                   children: <Widget>[
                     ListTile(
                       title: Text(widget.actividad.title,
                           style: const TextStyle(fontSize: 20)),
                       subtitle: Text(widget.actividad.date.toString()),
+                      trailing: bell ? null : IconButton(
+                        icon: widget.actividad.notify ? Icon(Icons.notifications_active) : Icon(Icons.notifications_off),
+                        onPressed: () {
+                          if(widget.actividad.date.isAfter(DateTime.now())){
+                            if(widget.actividad.notify == false){
+                              notificaciones.NotificacionProgramada(
+                              Activity(id: widget.actividad.id, title: widget.actividad.title, date: widget.actividad.date, duration: widget.actividad.duration));
+                            }
+                            else{
+                              notificaciones.cancela(widget.actividad.id);
+                            }
+                            setState(() {
+                              widget.actividad.notify = !widget.actividad.notify;
+                              ActivityCRUD.instance.update(widget.actividad);
+                            });
+                          }
+                          else{
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                content: Text('Recordatorio fallido: actividad en una fecha pasada'),
+                                backgroundColor:
+                                    Colors.red, // Set snackbar color to red
+                              ),
+                            );
+                          }
+                        },
+                      ),
                     ),
                   ],
-               )  
+                ),
+              //),
             ],
           ),
         ),

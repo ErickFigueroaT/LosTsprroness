@@ -1,10 +1,8 @@
-import 'package:activity_ally/services/DB/ActivityCRUD.dart';
 import 'package:activity_ally/Models/Activity.dart';
 import 'package:activity_ally/Presenters/ActivityPresenter.dart';
 import 'package:activity_ally/Presenters/PertenenciaPresenter.dart';
 import 'package:activity_ally/Views/Actividad/Temporizador.dart';
 import 'package:activity_ally/Views/Updatable.dart';
-import 'package:activity_ally/Views/checklist/Checklist.dart';
 import 'package:activity_ally/Views/checklist/ChecklistMaker.dart';
 import 'package:flutter/material.dart';
 
@@ -47,7 +45,7 @@ class _InfoActividadState extends State<InfoActividad> implements Updatable {
             borderRadius: BorderRadius.circular(20),
             border: Border.all(color: Colors.grey, width: 2)),
         child: Column(
-          //crossAxisAlignment: CrossAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
           //Row(mainAxisAlignment: MainAxisAlignment.start, children: [
             Container(
@@ -123,27 +121,17 @@ class _InfoActividadState extends State<InfoActividad> implements Updatable {
             ),
           //]),
           const SizedBox(height: 50),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              boton(),
-              ElevatedButton(
-                onPressed: () {
-                  widget.presenter.cancelar(widget.actividad);
-                  Navigator.of(context).pop();
-                },
-                style:
-                    ElevatedButton.styleFrom(padding: const EdgeInsets.all(15)),
-                child: const Text("Eliminar"),
-              ),
-            ],
-          ),
+          
+          boton(),
+            
           const SizedBox(height: 20),
           Row(
-            mainAxisAlignment: MainAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            
             children: [
               botonObjetos(),
               botonEditar(),
+              botonEliminar(),
             ],
           )
         ]),
@@ -153,11 +141,7 @@ class _InfoActividadState extends State<InfoActividad> implements Updatable {
 
   boton() {
     if (duracionReal == 0) {
-      return ElevatedButton(
-        onPressed: actualizar,
-        style: ElevatedButton.styleFrom(padding: const EdgeInsets.all(15)),
-        child: const Text("Comenzar"),
-      );
+      return customIconButton(Icons.play_arrow, actualizar, Colors.amber);
     } else {
       return const Text('');
     }
@@ -165,11 +149,7 @@ class _InfoActividadState extends State<InfoActividad> implements Updatable {
 
   botonObjetos() {
     if (duracionReal == 0) {
-      return ElevatedButton(
-        onPressed: agregar,
-        style: ElevatedButton.styleFrom(padding: const EdgeInsets.all(15)),
-        child: const Text("Objetos"),
-      );
+      return customIconButton(Icons.backpack, agregar, Colors.green);
     } else {
       return const Text('');
     }
@@ -177,18 +157,22 @@ class _InfoActividadState extends State<InfoActividad> implements Updatable {
   void agregar() async {
     Navigator.push(context, MaterialPageRoute(builder: (context) => ChecklistMaker(id: widget.actividad.id, presenter: PertenenciaPresenter(),)));
   }
+  botonEliminar(){
+    return customIconButton(Icons.delete, eliminar, Colors.red);
+  }
+  eliminar(){
+    widget.presenter.cancelar(widget.actividad);
+    Navigator.of(context).pop();
+  }
 
   botonEditar(){
     if (duracionReal == 0) {
-      return ElevatedButton(
-        onPressed: editar,
-        style: ElevatedButton.styleFrom(padding: const EdgeInsets.all(15)),
-        child: const Text("edit"),
-      );
+      return customIconButton(Icons.edit, editar, Colors.blue);
     } else {
       return const Text('');
     }
   }
+
   void editar() async{
     int? id = await widget.presenter.onChange(context, widget.actividad);
     if(id == null) return;
@@ -214,7 +198,22 @@ class _InfoActividadState extends State<InfoActividad> implements Updatable {
     }
     *///setState(() => duracionReal = nuevo!);
   }
-  
+
+  Container customIconButton(IconData icon, Function onPressed, Color backgroundColor) {
+    return Container(
+      decoration: BoxDecoration(
+        shape: BoxShape.circle,
+        color: backgroundColor,
+      ),
+      child: IconButton(
+        onPressed: () => onPressed(),
+        style: ElevatedButton.styleFrom(padding: const EdgeInsets.all(15)),
+        icon: Icon(icon, color: Colors.white),
+      
+      ),
+    );
+  }
+    
   @override
   updateView() {
     setState(() {});

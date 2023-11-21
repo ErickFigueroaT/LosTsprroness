@@ -1,6 +1,6 @@
 import 'package:activity_ally/Models/Activity.dart';
 import 'package:activity_ally/Presenters/ActivityPresenter.dart';
-import 'package:activity_ally/Views/Actividad/widgets/FichaCampana.dart';
+import 'package:activity_ally/Views/Actividad/widgets/ficha_actividad.dart';
 import 'package:activity_ally/Views/Updatable.dart';
 import 'package:flutter/material.dart';
 
@@ -53,7 +53,7 @@ class _VistaRecordatorioState extends State<VistaRecordatorio> implements Updata
                 itemCount: _actividades.length,
                 itemBuilder: (context, index) {
                   final item = _actividades[index];
-                  return FichaCampana(
+                  return FichaActividad(
                     actividad: item,
                     presenter: widget.presenter,
                   );
