@@ -67,11 +67,11 @@ class ActivityCRUD {
   }
 
 
-  Future<List<Activity>> getActivitiesForToday(List<String>? columns) async {
+  Future<List<Activity>> getActivitiesForToday(DateTime now, List<String>? columns) async {
     final db = await AADB.instance.database;
 
     // Get the current date in the format "yyyy-MM-dd"
-    DateTime now = DateTime.now();
+    //DateTime now = DateTime.now();
     String formattedDate = now.toIso8601String();
 
     // Calculate the start and end of today
