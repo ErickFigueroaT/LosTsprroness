@@ -36,9 +36,9 @@ class MapPresenter{
     }
   }
 
-  Future<Map<String, Marker>> getMarkers() async {
+  Future<Map<String, Marker>> getMarkers(DateTime date) async {
     markers = {};
-    List<Activity> actividades = await ActivityCRUD.instance.getActivitiesForToday(ficha_colums);
+    List<Activity> actividades = await ActivityCRUD.instance.getActivitiesForToday(date, ficha_colums);
 
     for (Activity actividad in actividades) {
       if (actividad.coords == null) continue;

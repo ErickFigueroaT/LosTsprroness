@@ -79,10 +79,11 @@ ActivityPresenter(){
     return ActivityCRUD.instance.getAllItems(ficha_colums);
   }
 
+  /*
   Future<List<Activity>> getTodayAct() async{
     return  ActivityCRUD.instance.getActivitiesForToday(null);
   }
-
+  */
   Future<void> cancelar(Activity actividad) async{
     Eliminar(actividad.id);
     if(actividad.notify || actividad.startDate != null){

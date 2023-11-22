@@ -25,7 +25,7 @@ class _MyAppState extends State<VistaMapa> implements Mapas{
   @override
   void initState() {
     widget.presenter.mapa = this;
-    widget.presenter.getMarkers(); //widget.presenter.markers;
+    widget.presenter.getMarkers(DateTime.now()); //widget.presenter.markers;
     widget.presenter.updateMarkerWithCurrentLocation('usr');
     
     super.initState();
@@ -54,7 +54,12 @@ class _MyAppState extends State<VistaMapa> implements Mapas{
             ),
             markers: widget.presenter.markers.values.toSet(),
           ),
-          Container(
+          Positioned(
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
+            child: Container(
             padding: EdgeInsets.only(top: 24, right: 12),
             alignment: Alignment.topRight,
             child: Column(
@@ -68,36 +73,34 @@ class _MyAppState extends State<VistaMapa> implements Mapas{
                 const SizedBox(height: 20),
                 botonUbicacion(),
               ],
-            ),
+            ),)
+            ,
           )
         ]
       ),
     );
   }
-
-  
-
-  ponMarcador(LatLng position){
-    //print(position.toString());
-    widget.presenter.addMarker('1', position.latitude, position.longitude);
-  }
-
-  void updateView(LatLng position) async {
-    //print(position.toString());
-    setState(() {
-      markers = widget.presenter.markers;
-      mapController.animateCamera(CameraUpdate.newLatLng(position));
-    });
-  }
-
   calendar(){
     return FloatingActionButton(
-                      heroTag: 'dates',
-                      onPressed: calendar,
-                      backgroundColor: Colors.green,
-                      child: Icon(Icons.calendar_month),
-                    );
+      heroTag: 'dates',
+      onPressed: () async {
+        DateTime? fecha = await pickDate();
+        if (fecha != null) {
+          setState(() {
+            widget.presenter.getMarkers(fecha);
+          });
+        }
+      },
+      backgroundColor: Colors.green,
+      child: Icon(Icons.calendar_month),
+    );
   }
+
+  Future<DateTime?> pickDate() => showDatePicker(
+    context: context,
+    initialDate: DateTime.now(),
+    firstDate: DateTime(2000),
+    lastDate: DateTime(2100));
 
   botonCambiar(){
     return FloatingActionButton(
@@ -135,6 +138,21 @@ class _MyAppState extends State<VistaMapa> implements Mapas{
         }
       }
     }
+  }
+
+
+
+  ponMarcador(LatLng position){
+    //print(position.toString());
+    widget.presenter.addMarker('1', position.latitude, position.longitude);
+  }
+
+  void updateView(LatLng position) async {
+    //print(position.toString());
+    setState(() {
+      markers = widget.presenter.markers;
+      mapController.animateCamera(CameraUpdate.newLatLng(position));
+    });
   }
 
 }
