@@ -15,24 +15,24 @@ class ActivityCRUD {
         conflictAlgorithm: ConflictAlgorithm.replace);
   }
 
-  Future<List<Activity>> getAllItems() async {
+  Future<List<Activity>> getAllItems(List<String>? columns ) async {
     final db = await AADB.instance.database;
     final List<Map<String, dynamic>> maps =
-        await db.query(tabla, orderBy: "id desc");
+        await db.query(tabla, columns: columns, orderBy: "id desc");
 
     return List.generate(maps.length, (i) {
       return Activity.fromJson(maps[i]);
     });
   }
 
-  Future<List<Activity>> getNItems(int n) async {
+  Future<Activity?> getItem(int n) async {
     final db = await AADB.instance.database;
     final List<Map<String, dynamic>> maps =
-        await db.query(tabla, where: 'id > $n', orderBy: 'nombre');
+        await db.query(tabla, where: 'id = $n', );
 
-    return List.generate(maps.length, (i) {
-      return Activity.fromJson(maps[i]);
-    });
+    //return List.generate(maps.length, (i) {
+    return Activity.fromJson(maps[0]);
+    //});
   }
 
   Future<int> delete(int id) async {
@@ -54,7 +54,20 @@ class ActivityCRUD {
     );
   }
 
-  Future<List<Activity>> getActivitiesForToday() async {
+  Future<int> rawUpdate(Activity item) async{
+    final db = await AADB.instance.database;
+    return await db.rawUpdate('sql,');
+
+    return 1;
+  }
+
+   Future<int> notify(int id, bool notify) async{
+    final db = await AADB.instance.database;
+    return await db.rawUpdate('UPDATE FROM $tabla SET notify = $notify  WHERE id = $id');
+  }
+
+
+  Future<List<Activity>> getActivitiesForToday(List<String>? columns) async {
     final db = await AADB.instance.database;
 
     // Get the current date in the format "yyyy-MM-dd"
@@ -67,6 +80,7 @@ class ActivityCRUD {
 
     final List<Map<String, dynamic>> maps = await db.query(
       tabla,
+      columns: columns,
       where: 'date BETWEEN ? AND ?',
       whereArgs: [startOfDay, endOfDay],
       orderBy: 'date DESC', // Order by date in ascending order
