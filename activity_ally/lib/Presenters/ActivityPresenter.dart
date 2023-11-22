@@ -1,6 +1,7 @@
 import 'package:activity_ally/Models/Activity.dart';
 import 'package:activity_ally/Presenters/MapPresenter.dart';
 import 'package:activity_ally/Views/Actividad/ActivityForm.dart';
+import 'package:activity_ally/Views/Actividad/widgets/info_actividad.dart';
 import 'package:activity_ally/Views/Updatable.dart';
 import 'package:activity_ally/services/DB/ActivityCRUD.dart';
 import 'package:activity_ally/Views/checklist/Checklist.dart';
@@ -128,5 +129,44 @@ ActivityPresenter(){
       );
     }
     return mp.showMap(context);
+  }
+
+  Future <int> changeSub(BuildContext context, int id) async {
+    Activity? actividad = await ActivityCRUD.instance.getItem(id);
+    if(actividad!.date.isAfter(DateTime.now())){
+      if(actividad.notify == false){
+        notificaciones.NotificacionProgramada(actividad);
+      }
+      else{
+        notificaciones.cancela(actividad.id);
+      }
+        actividad.notify = !actividad.notify;
+        return ActivityCRUD.instance.update(actividad);
+    }
+    else{
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Recordatorio fallido: actividad en una fecha pasada'),
+          backgroundColor:
+              Colors.red, // Set snackbar color to red
+        ),
+      );
+      return 0;
+    }
+  }
+
+  Future<Activity> getAcivity(int id) async {
+    return await ActivityCRUD.instance.getItem(id) ?? Activity(id: 0, title: '', date: DateTime.now(), duration: 0);
+  }
+
+  Future<void> showDetails(BuildContext context ,int id) async {
+    Activity act = await getAcivity(id);
+    Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: ((context) => InfoActividad(
+                  actividad: act,
+                  presenter: this,
+                ))));
   }
 }

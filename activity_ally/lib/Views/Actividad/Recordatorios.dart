@@ -54,7 +54,12 @@ class _VistaRecordatorioState extends State<VistaRecordatorio> implements Updata
                 itemBuilder: (context, index) {
                   final item = _actividades[index];
                   return FichaActividad(
-                    actividad: item,
+                    id: item.id,
+                    date: item.date,
+                    title: item.title,
+                    notify: item.notify,
+                    startDate: item.startDate,
+                    finishDate: item.finishDate,
                     presenter: widget.presenter,
                   );
                 },

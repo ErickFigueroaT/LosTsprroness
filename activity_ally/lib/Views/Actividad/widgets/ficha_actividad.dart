@@ -1,4 +1,3 @@
-import 'package:activity_ally/services/DB/ActivityCRUD.dart';
 import 'package:activity_ally/Models/Activity.dart';
 import 'package:activity_ally/Presenters/ActivityPresenter.dart';
 import 'package:activity_ally/Views/Actividad/widgets/info_actividad.dart';
@@ -6,12 +5,21 @@ import 'package:activity_ally/services/Notificacion.dart';
 import 'package:flutter/material.dart';
 
 class FichaActividad extends StatefulWidget {
-  Activity actividad; // Added finishDate attribute
+  //Activity actividad; // Added finishDate attribute
   ActivityPresenter presenter;
+  int id;
+  String title;
+  DateTime  date;
+  bool notify;
+  DateTime? startDate, finishDate;
 
   FichaActividad(
-      {required this.actividad,
-      required this.presenter});
+      {required this.id, 
+      required this.title,
+      required this.date,
+      required this.notify,
+      required this.presenter,
+      this.finishDate, this.startDate});
 
   @override
   State<FichaActividad> createState() => _FichaActividadState();
@@ -30,8 +38,8 @@ class _FichaActividadState extends State<FichaActividad> {
 
   @override
   Widget build(BuildContext context) {
-    bool isPast = widget.actividad.date.isBefore(DateTime.now());
-    bool isFinished = widget.actividad.finishDate != null;
+    bool isPast = widget.date.isBefore(DateTime.now());
+    bool isFinished = widget.finishDate != null;
 
     Color containerColor = Colors.white70;
 
@@ -40,18 +48,10 @@ class _FichaActividadState extends State<FichaActividad> {
     } else if (isFinished) {
       containerColor = Colors.grey[300] ?? Colors.grey; // Use grey[100] if available, else use default grey
     }
-    bool bell = isPast || isFinished || widget.actividad.startDate != null ;
+    bool bell = isPast || isFinished || widget.startDate != null ;
     return Material(
       child: InkWell(
-        onTap: () {
-          Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: ((context) => InfoActividad(
-                        actividad: widget.actividad,
-                        presenter: widget.presenter,
-                      ))));
-        },
+        onTap:showDetails,
         splashColor: Colors.blueGrey,
           child: Container(
             decoration: BoxDecoration(
@@ -66,33 +66,17 @@ class _FichaActividadState extends State<FichaActividad> {
                   mainAxisSize: MainAxisSize.min,
                   children: <Widget>[
                     ListTile(
-                      title: Text(widget.actividad.title,
+                      title: Text(widget.title,
                           style: const TextStyle(fontSize: 20)),
-                      subtitle: Text(widget.actividad.date.toString()),
+                      subtitle: Text(widget.date.toString()),
                       trailing: bell ? null : IconButton(
-                        icon: widget.actividad.notify ? Icon(Icons.notifications_active) : Icon(Icons.notifications_off),
-                        onPressed: () {
-                          if(widget.actividad.date.isAfter(DateTime.now())){
-                            if(widget.actividad.notify == false){
-                              notificaciones.NotificacionProgramada(
-                              Activity(id: widget.actividad.id, title: widget.actividad.title, date: widget.actividad.date, duration: widget.actividad.duration));
-                            }
-                            else{
-                              notificaciones.cancela(widget.actividad.id);
-                            }
+                        icon: widget.notify ? Icon(Icons.notifications_active) : Icon(Icons.notifications_off),
+                        onPressed: () async {
+                          int id = await widget.presenter.changeSub(context, widget.id);
+                          if(id>0){
                             setState(() {
-                              widget.actividad.notify = !widget.actividad.notify;
-                              ActivityCRUD.instance.update(widget.actividad);
+                              widget.notify = !widget.notify;
                             });
-                          }
-                          else{
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(
-                                content: Text('Recordatorio fallido: actividad en una fecha pasada'),
-                                backgroundColor:
-                                    Colors.red, // Set snackbar color to red
-                              ),
-                            );
                           }
                         },
                       ),
@@ -106,4 +90,9 @@ class _FichaActividadState extends State<FichaActividad> {
       ),
     );
   }
+  showDetails(){
+    widget.presenter.showDetails(context, widget.id);
+  }
+
+  
 }
