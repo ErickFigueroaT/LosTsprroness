@@ -13,6 +13,16 @@ class ActivityPresenter{
 
 late Updatable view;
 final Notificacion notificaciones = Notificacion();
+final List<String> ficha_colums = [
+          'id', 
+          'title',
+          'duration', 
+          'date', 
+          'description', 
+          'finish_date',
+          'start_date',
+          'notify',
+        ];
 ActivityPresenter(){
   notificaciones.initialize();
 }
@@ -66,7 +76,7 @@ ActivityPresenter(){
 
 
   Future<List<Activity>> getActivitys() async{
-    return ActivityCRUD.instance.getAllItems();
+    return ActivityCRUD.instance.getAllItems(ficha_colums);
   }
 
   Future<List<Activity>> getTodayAct() async{

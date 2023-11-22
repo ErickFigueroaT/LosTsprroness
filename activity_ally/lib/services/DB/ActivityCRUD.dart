@@ -15,19 +15,10 @@ class ActivityCRUD {
         conflictAlgorithm: ConflictAlgorithm.replace);
   }
 
-  Future<List<Activity>> getAllItems() async {
+  Future<List<Activity>> getAllItems(List<String>? columns ) async {
     final db = await AADB.instance.database;
     final List<Map<String, dynamic>> maps =
-        await db.query(tabla, columns: [
-          'id', 
-          'title',
-          'duration', 
-          'date', 
-          'description', 
-          'finish_date',
-          'start_date',
-          'notify',
-        ], orderBy: "id desc");
+        await db.query(tabla, columns: columns, orderBy: "id desc");
 
     return List.generate(maps.length, (i) {
       return Activity.fromJson(maps[i]);

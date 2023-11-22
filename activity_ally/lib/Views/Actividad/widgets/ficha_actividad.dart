@@ -1,6 +1,4 @@
-import 'package:activity_ally/Models/Activity.dart';
 import 'package:activity_ally/Presenters/ActivityPresenter.dart';
-import 'package:activity_ally/Views/Actividad/widgets/info_actividad.dart';
 import 'package:activity_ally/services/Notificacion.dart';
 import 'package:flutter/material.dart';
 

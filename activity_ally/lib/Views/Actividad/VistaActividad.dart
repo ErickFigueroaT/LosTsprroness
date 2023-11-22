@@ -1,6 +1,5 @@
 import 'package:activity_ally/Models/Activity.dart';
 import 'package:activity_ally/Presenters/ActivityPresenter.dart';
-import 'package:activity_ally/Views/Actividad/ActivityForm.dart';
 import 'package:activity_ally/Views/Actividad/widgets/ficha_actividad.dart';
 import 'package:activity_ally/Views/Updatable.dart';
 import 'package:flutter/material.dart';
