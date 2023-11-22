@@ -18,7 +18,7 @@ final List<String> ficha_colums = [
           'title',
           'duration', 
           'date', 
-          'description', 
+          //'description', 
           'finish_date',
           'start_date',
           'notify',
@@ -80,7 +80,7 @@ ActivityPresenter(){
   }
 
   Future<List<Activity>> getTodayAct() async{
-    return  ActivityCRUD.instance.getActivitiesForToday();
+    return  ActivityCRUD.instance.getActivitiesForToday(null);
   }
 
   Future<void> cancelar(Activity actividad) async{

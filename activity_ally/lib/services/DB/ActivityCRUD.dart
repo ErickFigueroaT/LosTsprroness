@@ -67,7 +67,7 @@ class ActivityCRUD {
   }
 
 
-  Future<List<Activity>> getActivitiesForToday() async {
+  Future<List<Activity>> getActivitiesForToday(List<String>? columns) async {
     final db = await AADB.instance.database;
 
     // Get the current date in the format "yyyy-MM-dd"
@@ -80,6 +80,7 @@ class ActivityCRUD {
 
     final List<Map<String, dynamic>> maps = await db.query(
       tabla,
+      columns: columns,
       where: 'date BETWEEN ? AND ?',
       whereArgs: [startOfDay, endOfDay],
       orderBy: 'date DESC', // Order by date in ascending order
