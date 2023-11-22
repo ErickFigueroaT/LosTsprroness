@@ -86,8 +86,9 @@ class _MyAppState extends State<VistaMapa> implements Mapas{
       onPressed: () async {
         DateTime? fecha = await pickDate();
         if (fecha != null) {
-          setState(() {
-            widget.presenter.getMarkers(fecha);
+          markers = await widget.presenter.getMarkers(fecha);
+          setState(()  {
+            //markers = widget.presenter.markers;
           });
         }
       },
