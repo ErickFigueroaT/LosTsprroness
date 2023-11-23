@@ -10,10 +10,10 @@ class InfoActividad extends StatefulWidget {
   final Activity actividad; // Added finishDate attribute
   final ActivityPresenter presenter;
 
-  const InfoActividad(
-      {required this.actividad,
-      required this.presenter,
-      });
+  const InfoActividad({
+    required this.actividad,
+    required this.presenter,
+  });
 
   @override
   State<InfoActividad> createState() => _InfoActividadState();
@@ -32,7 +32,7 @@ class _InfoActividadState extends State<InfoActividad> implements Updatable {
     int horas = (widget.actividad.duration / 60).floor();
     int minutos = widget.actividad.duration % 60;
     secs = duracionReal % 60;
-    mins = ((duracionReal/60) % 60).floor();
+    mins = ((duracionReal / 60) % 60).floor();
     hors = (duracionReal / 3600).floor();
 
     return Scaffold(
@@ -44,31 +44,30 @@ class _InfoActividadState extends State<InfoActividad> implements Updatable {
             color: Colors.white70,
             borderRadius: BorderRadius.circular(20),
             border: Border.all(color: Colors.grey, width: 2)),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
+        child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
           //Row(mainAxisAlignment: MainAxisAlignment.start, children: [
-            Container(
-              child: const Text(
-                'Nombre: ',
-                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-              ),
+          Container(
+            child: const Text(
+              'Nombre: ',
+              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
             ),
-            Flexible(
-              child: Text(widget.actividad.title, style: const TextStyle(fontSize: 20)),
-            ),
+          ),
+          Flexible(
+            child: Text(widget.actividad.title,
+                style: const TextStyle(fontSize: 20)),
+          ),
           //]),
           //Row(mainAxisAlignment: MainAxisAlignment.start, children: [
-            Container(
-              child: Text(
-                'Fecha: ',
-                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-              ),
+          Container(
+            child: Text(
+              'Fecha: ',
+              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
             ),
-            Flexible(
-              child: Text(widget.actividad.date.toString(),
-                  style: const TextStyle(fontSize: 20)),
-            ),
+          ),
+          Flexible(
+            child: Text(widget.actividad.date.toString(),
+                style: const TextStyle(fontSize: 20)),
+          ),
           //]),
           Row(mainAxisAlignment: MainAxisAlignment.start, children: [
             Container(
@@ -90,8 +89,8 @@ class _InfoActividadState extends State<InfoActividad> implements Updatable {
               ),
             ),
             Container(
-              child:
-                  Text(widget.actividad.location!, style: const TextStyle(fontSize: 20)),
+              child: Text(widget.actividad.location!,
+                  style: const TextStyle(fontSize: 20)),
             )
           ]),
           Row(mainAxisAlignment: MainAxisAlignment.start, children: [
@@ -109,30 +108,33 @@ class _InfoActividadState extends State<InfoActividad> implements Updatable {
             )
           ]),
           //Row(mainAxisAlignment: MainAxisAlignment.start, children: [
-            Container(
-              child: Text(
-                'Descripcion: ',
-                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-              ),
+          Container(
+            child: Text(
+              'Descripcion: ',
+              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
             ),
-            Flexible(
-              child: Text(widget.actividad.description ?? '',
-                  style: const TextStyle(fontSize: 20)),
-            ),
+          ),
+          Flexible(
+            child: Text(widget.actividad.description ?? '',
+                style: const TextStyle(fontSize: 20)),
+          ),
           //]),
           const SizedBox(height: 50),
-          
-          boton(),
-            
-          const SizedBox(height: 20),
+
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            
             children: [
               botonObjetos(),
               botonEditar(),
-              botonEliminar(),
+              boton(),
             ],
+          ),
+
+          const SizedBox(height: 20),
+
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [botonEliminar()],
           )
         ]),
       ),
@@ -141,9 +143,10 @@ class _InfoActividadState extends State<InfoActividad> implements Updatable {
 
   boton() {
     if (widget.actividad.finishDate == null) {
-      return customIconButton( duracionReal == 0
-              ? Icons.play_arrow
-              : Icons.play_arrow , actualizar, Colors.amber);
+      return customIconButton(
+          duracionReal == 0 ? Icons.play_arrow : Icons.play_arrow,
+          actualizar,
+          Colors.blue);
     } else {
       return const Text('');
     }
@@ -151,31 +154,33 @@ class _InfoActividadState extends State<InfoActividad> implements Updatable {
 
   botonObjetos() {
     if (widget.actividad.finishDate == null) {
-      return customIconButton(Icons.backpack, agregar, Colors.green);
+      return customIconButton(Icons.backpack, agregar, Colors.blue);
     } else {
       return const Text('');
     }
   }
+
   void agregar() async {
     //Navigator.push(context, MaterialPageRoute(builder: (context) => ChecklistMaker(id: widget.actividad.id, presenter: PertenenciaPresenter(),)));
-      Navigator.push(
-      context,
-      MaterialPageRoute(
-          builder: (context) => ChecklistMaker(
-                id: widget.actividad.id,
-                presenter: PertenenciaPresenter(),
-              )));
-  
+    Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: (context) => ChecklistMaker(
+                  id: widget.actividad.id,
+                  presenter: PertenenciaPresenter(),
+                )));
   }
-  botonEliminar(){
+
+  botonEliminar() {
     return customIconButton(Icons.delete, eliminar, Colors.red);
   }
-  eliminar(){
+
+  eliminar() {
     widget.presenter.cancelar(widget.actividad);
     Navigator.of(context).pop();
   }
 
-  botonEditar(){
+  botonEditar() {
     if (duracionReal == 0) {
       return customIconButton(Icons.edit, editar, Colors.blue);
     } else {
@@ -183,14 +188,12 @@ class _InfoActividadState extends State<InfoActividad> implements Updatable {
     }
   }
 
-  void editar() async{
+  void editar() async {
     int? id = await widget.presenter.onChange(context, widget.actividad);
-    if(id == null) return;
-    setState(() {
-    });
+    if (id == null) return;
+    setState(() {});
   }
 
- 
   void actualizar() async {
     widget.presenter.start(widget.actividad);
     updateView();
@@ -214,10 +217,11 @@ class _InfoActividadState extends State<InfoActividad> implements Updatable {
               widget.actividad.id,)));
               
     }
-    *///setState(() => duracionReal = nuevo!);
+    */ //setState(() => duracionReal = nuevo!);
   }
 
-  Container customIconButton(IconData icon, Function onPressed, Color backgroundColor) {
+  Container customIconButton(
+      IconData icon, Function onPressed, Color backgroundColor) {
     return Container(
       decoration: BoxDecoration(
         shape: BoxShape.circle,
@@ -227,11 +231,10 @@ class _InfoActividadState extends State<InfoActividad> implements Updatable {
         onPressed: () => onPressed(),
         style: ElevatedButton.styleFrom(padding: const EdgeInsets.all(15)),
         icon: Icon(icon, color: Colors.white),
-      
       ),
     );
   }
-    
+
   @override
   updateView() {
     setState(() {});

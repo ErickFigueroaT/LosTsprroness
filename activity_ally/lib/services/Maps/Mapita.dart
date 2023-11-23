@@ -13,7 +13,7 @@ class Mapita extends StatefulWidget {
   _MyAppState createState() => _MyAppState();
 }
 
-class _MyAppState extends State<Mapita> implements Mapas{
+class _MyAppState extends State<Mapita> implements Mapas {
   late GoogleMapController mapController;
   Map<String, Marker> markers = {};
   void _onMapCreated(GoogleMapController controller) {
@@ -27,101 +27,95 @@ class _MyAppState extends State<Mapita> implements Mapas{
     super.initState();
   }
 
-
   bool isSearchVisible = false; // Flag to control visibility
 
   @override
   Widget build(BuildContext context) {
-
-    return  Scaffold(
+    return Scaffold(
       appBar: AppBar(
         title: const Text('Coordenadas'),
-        backgroundColor: Colors.green[700],
+        //backgroundColor: Colors.green[700],
       ),
-      
-      body: Stack(
-      alignment: Alignment.center,
-        children: [
-          GoogleMap(
-            onMapCreated: _onMapCreated,
-            onTap: (position){
-              ponMarcador(position);
-            },
-            initialCameraPosition: CameraPosition(
-              target: widget.presenter.getMarkerLocation('1'),
-              zoom: 14.0,
-            ),
-            markers: widget.presenter.markers.values.toSet(),
+      body: Stack(alignment: Alignment.center, children: [
+        GoogleMap(
+          onMapCreated: _onMapCreated,
+          onTap: (position) {
+            ponMarcador(position);
+          },
+          initialCameraPosition: CameraPosition(
+            target: widget.presenter.getMarkerLocation('1'),
+            zoom: 14.0,
           ),
-          Container(
-            padding: EdgeInsets.only(top: 24, right: 12),
-            alignment: Alignment.topRight,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.start, // Align children to the top
-              crossAxisAlignment: CrossAxisAlignment.end, // Align children to the right
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    Visibility(
-                      visible: isSearchVisible,
-                      child: Expanded(
-                        child: Buscador(presenter: widget.presenter),
-                      ),
+          markers: widget.presenter.markers.values.toSet(),
+        ),
+        Container(
+          padding: EdgeInsets.only(top: 24, right: 12),
+          alignment: Alignment.topRight,
+          child: Column(
+            mainAxisAlignment:
+                MainAxisAlignment.start, // Align children to the top
+            crossAxisAlignment:
+                CrossAxisAlignment.end, // Align children to the right
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  Visibility(
+                    visible: isSearchVisible,
+                    child: Expanded(
+                      child: Buscador(presenter: widget.presenter),
                     ),
-                    const SizedBox(width: 8), // Adjust spacing as needed
-                    FloatingActionButton(
-                      heroTag: 'search',
-                      onPressed: () {
-                        setState(() {
-                          isSearchVisible = true;
-                        });
-                      },
-                      backgroundColor: Colors.green,
-                      child: Icon(Icons.search),
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 20),
-                FloatingActionButton(
-                  heroTag: 'loc',
-                  onPressed: () {
-                    widget.presenter.updateMarkerWithCurrentLocation('1');
-                  },
-                  backgroundColor: Colors.deepPurpleAccent,
-                  child: const Icon(Icons.add_location),
-                ),
-                const SizedBox(height: 20),
-                FloatingActionButton(
-                  heroTag: 'paloma',
-                  onPressed: () {
-                    if(widget.presenter.markers.isEmpty){
-                      ScaffoldMessenger.of(context).showSnackBar(
+                  ),
+                  const SizedBox(width: 8), // Adjust spacing as needed
+                  FloatingActionButton(
+                    heroTag: 'search',
+                    onPressed: () {
+                      setState(() {
+                        isSearchVisible = true;
+                      });
+                    },
+                    backgroundColor: Colors.green,
+                    child: Icon(Icons.search),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 20),
+              FloatingActionButton(
+                heroTag: 'loc',
+                onPressed: () {
+                  widget.presenter.updateMarkerWithCurrentLocation('1');
+                },
+                backgroundColor: Colors.deepPurpleAccent,
+                child: const Icon(Icons.add_location),
+              ),
+              const SizedBox(height: 20),
+              FloatingActionButton(
+                heroTag: 'paloma',
+                onPressed: () {
+                  if (widget.presenter.markers.isEmpty) {
+                    ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(
                         content: Text('Primero agrega un marcador'),
                         backgroundColor:
                             Colors.red, // Set snackbar color to red
                       ),
                     );
-                      return;}
-                    else{
-                      Navigator.of(context).pop('1');
-                    }
-                  },
-                  backgroundColor: Colors.deepOrangeAccent,
-                  child: Icon(Icons.done),
-                ),
-              ],
-            ),
-          )
-        ]
-      ),
+                    return;
+                  } else {
+                    Navigator.of(context).pop('1');
+                  }
+                },
+                backgroundColor: Colors.deepOrangeAccent,
+                child: Icon(Icons.done),
+              ),
+            ],
+          ),
+        )
+      ]),
     );
   }
 
-  
-
-  ponMarcador(LatLng position){
+  ponMarcador(LatLng position) {
     //print(position.toString());
     widget.presenter.addMarker('1', position.latitude, position.longitude);
   }
@@ -133,5 +127,4 @@ class _MyAppState extends State<Mapita> implements Mapas{
       mapController.animateCamera(CameraUpdate.newLatLng(position));
     });
   }
-
 }
