@@ -79,6 +79,7 @@ class MapPresenter{
   Future<void> updateMarkerWithCurrentLocation(String id) async {
     LatLng currentPosition = await getCurrentLocation();
     markers[id] =Marker(markerId: MarkerId(id), position: currentPosition);
+    if (mapa == null) return; 
     mapa!.updateView(currentPosition);
   }
 
