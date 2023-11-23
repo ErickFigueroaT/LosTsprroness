@@ -2,7 +2,6 @@
 import 'package:activity_ally/services/DB/PertenenciaCRUD.dart';
 import 'package:activity_ally/Models/Pertenencia.dart';
 import 'package:activity_ally/Views/Updatable.dart';
-import 'package:activity_ally/Views/Mochila/VistaPertenencia.dart';
 import 'package:activity_ally/Views/Mochila/PertenenciaForm.dart';
 import 'package:flutter/material.dart';
 
@@ -10,9 +9,15 @@ class PertenenciaPresenter{
 
 late Updatable view;
 
-  Future <void> onSubmit(String nombre, String descripcion, String? foto) async {
-    int? id = await onSave(nombre, descripcion, foto);
-    view.updateView();
+
+  Future <void> onSubmit(BuildContext context) async {
+    final res = await Navigator.of(context).push(
+              MaterialPageRoute(builder: (context) => PertenenciaForm()));
+    if(res == null){
+      return; 
+    }
+      int? id = await onSave(res['nombre'], res['descripcion'], res['foto']);
+      view.updateView();
   }
 
   Future <int> onSave( String nombre, String descripcion, String? foto) async {
@@ -22,6 +27,25 @@ late Updatable view;
       descripcion: descripcion, 
       foto: foto));
   }
+
+  Future <Pertenencia> onChange(BuildContext context, Pertenencia pertenencia) async {
+    PertenenciaForm form = PertenenciaForm(
+      nombre:  pertenencia.nombre,
+      descripcion: pertenencia.descripcion,
+      foto: pertenencia.foto,
+    );
+    final res = await Navigator.of(context).push(
+              MaterialPageRoute(builder: (context) => form));
+    if(res == null){
+      return pertenencia; 
+    }
+    pertenencia.nombre = res['nombre'];
+    pertenencia.descripcion = res['descripcion'];
+    pertenencia.foto = res['foto'];
+    onUpdate(pertenencia);
+    return pertenencia;
+  }
+  
 
   Future<void> onUpdate(Pertenencia pertenencia)async{
     PertenenciaCRUD.instance.update(pertenencia);

@@ -2,7 +2,6 @@ import 'package:activity_ally/Presenters/PertenenciaPresenter.dart';
 import 'package:activity_ally/Views/Updatable.dart';
 import 'package:flutter/material.dart';
 import 'package:activity_ally/Models/Pertenencia.dart';
-import 'package:activity_ally/Views/Mochila/PertenenciaForm.dart';
 import 'package:activity_ally/Views/Mochila/widgets/FichaPertenencia.dart';
 
 class VistaPertenencia extends StatefulWidget {
@@ -70,8 +69,7 @@ class _VistaPertenenciaState extends State<VistaPertenencia>  implements Updatab
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () async {
-          Navigator.of(context).push(
-              MaterialPageRoute(builder: (context) => PertenenciaForm(widget.presenter)));
+          widget.presenter.onSubmit(context);
         },
         child: const Icon(Icons.add),
       ),

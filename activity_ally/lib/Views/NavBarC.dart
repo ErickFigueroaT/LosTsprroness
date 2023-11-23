@@ -1,6 +1,7 @@
+import 'package:activity_ally/Presenters/MapPresenter.dart';
 import 'package:activity_ally/Presenters/PertenenciaPresenter.dart';
 import 'package:activity_ally/Presenters/ActivityPresenter.dart';
-import 'package:activity_ally/Views/Actividad/Recordatorios.dart';
+import 'package:activity_ally/Views/Actividad/VistaMapa.dart';
 import 'package:activity_ally/Views/Mochila/VistaPertenencia.dart';
 //import 'package:activity_ally/Views/crud.dart';
 import 'package:flutter/material.dart';
@@ -22,7 +23,7 @@ class _NavBarCState extends State<NavBarC> {
 
 
   List<Widget> __screens = [
-    VistaRecordatorio(presenter: ActivityPresenter(),),
+    VistaMapa(presenter: MapPresenter()),
     //ListadoPage(),
     VistaActividad(presenter: ActivityPresenter()),
     VistaPertenencia(PertenenciaPresenter())

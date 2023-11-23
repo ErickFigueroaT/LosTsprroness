@@ -30,8 +30,14 @@ class _TemporizadorState extends State<Temporizador> {
     // Calculate initial duration based on the difference between actividad.startDate and now
     DateTime now = DateTime.now();
     Duration difference = now.difference(widget.actividad.startDate!);
-    duration = Duration(seconds: difference.inSeconds);
-    startTimer();
+    if (widget.actividad.duration_r == null ||
+        widget.actividad.duration_r == 0) {
+      duration = Duration(seconds: difference.inSeconds);
+      startTimer();
+    } else {
+      duration = Duration(seconds: widget.actividad.duration_r!);
+      startTimer(resets: false);
+    }
   }
 
   void addTime() {
@@ -75,32 +81,50 @@ class _TemporizadorState extends State<Temporizador> {
         children: [
           const SizedBox(height: 100),
           buildTime(),
-          const SizedBox(height: 50),
-          ElevatedButton(
-            onPressed: () {
-              widget.actividad.duration_r = duration.inSeconds;
-              setState(() => duration = const Duration());
-              widget.parent.updateView();
-              Navigator.of(context).pop();
-              widget.presenter.finish(widget.actividad, context);
-            },
-            style: ElevatedButton.styleFrom(padding: const EdgeInsets.all(15)),
-            child: const Text("Terminar"),
-          ),
-          const SizedBox(height: 50),
-          ElevatedButton(
-            onPressed: () {
-              if (isRunning) {
-                widget.actividad.duration_r = duration.inSeconds;
-                stopTimer(resets: false);
-                widget.parent.updateView();
-              } else {
-                startTimer(resets: false);
-              }
-            },
-            style: ElevatedButton.styleFrom(padding: const EdgeInsets.all(15)),
-            child: isRunning ? const Text("Pausar") : const Text("Continuar"),
-          ),
+          const SizedBox(height: 200),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 120),
+            child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Container(
+                    decoration: const BoxDecoration(
+                      shape: BoxShape.circle,
+                      color: Colors.blue,
+                    ),
+                    child: IconButton(
+                        onPressed: () {
+                          if (isRunning) {
+                            widget.actividad.duration_r = duration.inSeconds;
+                            stopTimer(resets: false);
+                            widget.parent.updateView();
+                          } else {
+                            startTimer(resets: false);
+                          }
+                        },
+                        icon: isRunning
+                            ? const Icon(Icons.pause, color: Colors.white)
+                            : const Icon(Icons.play_arrow,
+                                color: Colors.white)),
+                  ),
+                  Container(
+                    decoration: const BoxDecoration(
+                      shape: BoxShape.circle,
+                      color: Colors.red,
+                    ),
+                    child: IconButton(
+                      onPressed: () {
+                        widget.actividad.duration_r = duration.inSeconds;
+                        setState(() => duration = const Duration());
+                        widget.parent.updateView();
+                        Navigator.of(context).pop();
+                        widget.presenter.finish(widget.actividad, context);
+                      },
+                      icon: const Icon(Icons.stop, color: Colors.white),
+                    ),
+                  ),
+                ]),
+          )
         ],
       )),
     );

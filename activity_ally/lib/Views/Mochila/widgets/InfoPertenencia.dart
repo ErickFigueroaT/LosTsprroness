@@ -1,16 +1,14 @@
-import 'dart:io';
-
-import 'package:activity_ally/services/DB/PertenenciaCRUD.dart';
+import 'package:activity_ally/ImageLoader.dart';
 import 'package:activity_ally/Models/Pertenencia.dart';
 import 'package:activity_ally/Presenters/PertenenciaPresenter.dart';
 import 'package:flutter/material.dart';
 
 class InfoPertenencia extends StatefulWidget {
-  final String titulo;
-  final String descripcion;
+  String titulo;
+  String descripcion;
   final int id;
   bool estado;
-  final String? foto;
+  String? foto;
   final PertenenciaPresenter presenter;
   InfoPertenencia(
       {required this.titulo,
@@ -25,14 +23,11 @@ class InfoPertenencia extends StatefulWidget {
 }
 
 class _InfoPertenenciaState extends State<InfoPertenencia> {
+
+
   @override
   Widget build(BuildContext context) {
-    var image;
-    if (widget.foto == null) {
-      image = new AssetImage('res/placeholder.jpg');
-    } else {
-      image = FileImage(File(widget.foto!));
-    }
+    var image = ImageLoader.loadImage(widget.foto);
     String estadoActual = "";
     String statusObject() {
       if (widget.estado) {
@@ -52,84 +47,97 @@ class _InfoPertenenciaState extends State<InfoPertenencia> {
             color: Colors.white70,
             borderRadius: BorderRadius.circular(20),
             border: Border.all(color: Colors.grey, width: 2)),
-        child: Column(children: [
+        child: Column(
+          children: [
           SizedBox(
-              child: Image(
-            image: image,
-            height: 400,
-            width: 200,
-          )),
-          Row(mainAxisAlignment: MainAxisAlignment.start, children: [
-            Container(
-              child: const Text(
-                'Nombre: ',
-                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-              ),
+            height:  500, // Adjust the height as needed
+            child: ListView(
+              children: [
+                SizedBox(
+                  child: Image(
+                  image: image,
+                  height: 300,
+                  fit: BoxFit.cover,
+                  //width: 200,
+                )),
+                Container(
+                  child: const Text(
+                    'Nombre: ',
+                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                  ),
+                ),
+                Container(
+                  child: Text(widget.titulo, style: const TextStyle(fontSize: 20)),
+                ),
+                Container(
+                  child: Text(
+                    'Descripcion: ',
+                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                  ),
+                ),
+                Container(
+                  child: Text(widget.descripcion, style: const TextStyle(fontSize: 20)),
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Container(
+                      child: const Text(
+                        'Estado: ',
+                        style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                      ),
+                    ),
+                    Container(
+                      child: Text(
+                        statusObject(),
+                        style: TextStyle(
+                          fontSize: 20,
+                          color: widget.estado == false ? Colors.red : Colors.green,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+                // Add more widgets to the ListView if needed
+              ],
             ),
-            Container(
-              child: Text(widget.titulo, style: const TextStyle(fontSize: 20)),
-            )
-          ]),
-          Row(mainAxisAlignment: MainAxisAlignment.start, children: [
-            const Flexible(
-              child: Text(
-                'Descripcion: ',
-                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-              ),
-            ),
-            Flexible(
-              child: Text(widget.descripcion, style: const TextStyle(fontSize: 20)),
-            ),
-          ]),
-          Row(mainAxisAlignment: MainAxisAlignment.start, children: [
-            Container(
-              child: const Text(
-                'Estado: ',
-                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-              ),
-            ),
-            Container(
-              child: Text(statusObject(),
-                  style: TextStyle(
-                      fontSize: 20,
-                      color: widget.estado == false ? Colors.red : Colors.green)),
-            )
-          ]),
+          ),
+
           const SizedBox(height: 20),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              ElevatedButton(
-                onPressed: () {
-                  setState(()  {
-                    widget.estado = true;
-                  });
-                  widget.presenter.onUpdate(Pertenencia(id: widget.id, nombre: widget.titulo, status: widget.estado, foto: widget.foto));
-                  /*var form = formkey.currentState;
-                    if (form!.validate()) {
-                      form.save();
-                      Navigator.of(context).pop(Objeto(
-                          id: plus(), titulo: titulo, descripcion: descripcion));
-                    }*/
-                },
-                style:
-                    ElevatedButton.styleFrom(padding: const EdgeInsets.all(15)),
-                child: const Text("Recuperar"),
+              Container(
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: Colors.blue, // Set your desired background color here
+                ),
+                child: IconButton(
+                  onPressed: () async {
+                    Pertenencia pertenencia = Pertenencia(id: widget.id, nombre: widget.titulo, descripcion: widget.descripcion, status: widget.estado, foto: widget.foto);
+                    pertenencia = await widget.presenter.onChange(context,pertenencia);
+                    setState(() {
+                      widget.titulo = pertenencia.nombre;
+                      widget.descripcion = pertenencia.descripcion;
+                      widget.foto = pertenencia.foto;
+                      image = ImageLoader.loadImage(widget.foto);
+                    });
+                  },
+                  icon: Icon(Icons.edit, color: Colors.white), // Set the icon color
+                ),
               ),
-              ElevatedButton(
-                onPressed: () {
-                  widget.presenter.Eliminar(widget.id);
-                  Navigator.of(context).pop();
-                  /*var form = formkey.currentState;
-                    if (form!.validate()) {
-                      form.save();
-                      Navigator.of(context).pop(Objeto(
-                          id: plus(), titulo: titulo, descripcion: descripcion));
-                    }*/
-                },
-                style:
-                    ElevatedButton.styleFrom(padding: const EdgeInsets.all(15)),
-                child: const Text("Eliminar"),
+              Container(
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: Colors.red, // Set your desired background color here
+                ),
+                child: IconButton(
+                  onPressed: () {
+                    widget.presenter.Eliminar(widget.id);
+                    Navigator.of(context).pop();
+                  },
+                  icon: Icon(Icons.delete, color: Colors.white), // Set the icon color
+                ),
               ),
             ],
           )
@@ -138,3 +146,16 @@ class _InfoPertenenciaState extends State<InfoPertenencia> {
     );
   }
 }
+/**
+ * ElevatedButton(
+                onPressed: () {
+                  setState(()  {
+                    widget.estado = true;
+                  });
+                  widget.presenter.onUpdate(Pertenencia(id: widget.id, nombre: widget.titulo, status: widget.estado, foto: widget.foto));
+                },
+                style:
+                    ElevatedButton.styleFrom(padding: const EdgeInsets.all(15)),
+                child: const Text("Recuperar"),
+              ),
+ */
