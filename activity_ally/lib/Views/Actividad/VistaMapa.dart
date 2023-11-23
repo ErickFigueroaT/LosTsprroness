@@ -149,4 +149,12 @@ class _MyAppState extends State<VistaMapa> implements Mapas {
       mapController.animateCamera(CameraUpdate.newLatLng(position));
     });
   }
+
+  @override
+  void dispose() {
+    
+    widget.presenter.mapa = null;// TODO: implement dispose
+    super.dispose();
+  }
+
 }

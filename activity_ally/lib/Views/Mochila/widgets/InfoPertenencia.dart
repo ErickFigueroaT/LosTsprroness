@@ -1,6 +1,7 @@
 import 'package:activity_ally/ImageLoader.dart';
 import 'package:activity_ally/Models/Pertenencia.dart';
 import 'package:activity_ally/Presenters/PertenenciaPresenter.dart';
+import 'package:activity_ally/services/DetectionApi.dart';
 import 'package:flutter/material.dart';
 
 class InfoPertenencia extends StatefulWidget {
@@ -139,11 +140,25 @@ class _InfoPertenenciaState extends State<InfoPertenencia> {
                   icon: Icon(Icons.delete, color: Colors.white), // Set the icon color
                 ),
               ),
+          //botonIA(),
             ],
-          )
+          ),
+
         ]),
       ),
     );
+  }
+  
+  botonIA(){
+  return  ElevatedButton(
+    onPressed: () {
+     DetectionApi.instance.detect(widget.foto!);
+     //DetectionApi.instance.decode();
+    },
+    style:
+        ElevatedButton.styleFrom(padding: const EdgeInsets.all(15)),
+    child: const Text("Recuperar"),
+  );
   }
 }
 /**
