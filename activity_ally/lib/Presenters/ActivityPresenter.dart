@@ -1,10 +1,12 @@
 import 'package:activity_ally/Models/Activity.dart';
+import 'package:activity_ally/Presenters/ChecklistPresenter.dart';
 import 'package:activity_ally/Presenters/MapPresenter.dart';
 import 'package:activity_ally/Views/Actividad/ActivityForm.dart';
+import 'package:activity_ally/Views/Actividad/Temporizador.dart';
 import 'package:activity_ally/Views/Actividad/widgets/info_actividad.dart';
 import 'package:activity_ally/Views/Updatable.dart';
 import 'package:activity_ally/services/DB/ActivityCRUD.dart';
-import 'package:activity_ally/Views/checklist/Checklist.dart';
+//import 'package:activity_ally/Views/checklist/Checklist.dart';
 import 'package:activity_ally/services/Notificacion.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -33,7 +35,7 @@ ActivityPresenter(){
     if(res == null){
       return; 
     }
-    int? id = await onSave(Activity(
+    onSave(Activity(
                     id: 0,
                     title: res['title'],
                     date: res['date'],
@@ -42,7 +44,6 @@ ActivityPresenter(){
                     location: res['location'],
                     coords: res['coordenadas'],
                   ));
-    view.updateView();
   }
 
    Future<int> onChange(BuildContext context, Activity activity) async {
@@ -62,7 +63,7 @@ ActivityPresenter(){
     activity.location = res['location'];
     activity.coords = res['coordenadas'];
     int? id = await onUpdate(activity);
-    view.updateView(); 
+    //view.updateView(); 
     if(activity.notify){
       notificaciones.cancela(activity.id);
       notificaciones.NotificacionProgramada(activity);
@@ -71,7 +72,11 @@ ActivityPresenter(){
   }
 
   Future <int> onSave( Activity actividad) async {
-    return await ActivityCRUD.instance.insert(actividad);
+    int id = await ActivityCRUD.instance.insert(actividad);
+    if (id > 0){
+      view.updateView();
+    }
+    return id;
   }
 
 
@@ -94,42 +99,67 @@ ActivityPresenter(){
 
 
   Future<void> Eliminar(int id) async{
-    
     ActivityCRUD.instance.delete(id);
-    //Navigator.of(context).pop();
     view.updateView();
 
   }
 
   Future<int> onUpdate(Activity actividad) async{
-    return ActivityCRUD.instance.update(actividad);
-  }
-
-  Future <void> start(Activity actividad) async{
-    if(actividad.startDate == null){
-      actividad.startDate = DateTime.now();
-      if (actividad.notify && actividad.startDate!.isBefore(actividad.date)){
-        notificaciones.cancela(actividad.id);
-      }
-      notificaciones.NotificacionFin(actividad);
-      onUpdate(actividad);
+    int id = await ActivityCRUD.instance.update(actividad);
+    if(id > 0){
+      view.updateView();
     }
+    return id;
   }
 
-  Future <void> finish(Activity actividad, BuildContext context) async{
-    actividad.finishDate = DateTime.now();
-    if (actividad.finishDate!.isBefore(DateTime.now().add(Duration(minutes: actividad.duration)))){
+  Future<bool> start(Activity actividad, BuildContext context) async {
+  if (actividad.startDate == null) {
+    bool shouldContinue = await openChecklist(context, actividad.id);
+    if (!shouldContinue) {
+      return false;
+    }
+    actividad.startDate = DateTime.now();
+    if (actividad.notify && actividad.startDate!.isBefore(actividad.date)) {
+      notificaciones.cancela(actividad.id);
+    }
+    notificaciones.NotificacionFin(actividad);
+    onUpdate(actividad);
+  }
+  // Open Temporizador directly
+  var result = await Navigator.push(
+    context,
+    MaterialPageRoute(
+      builder: (context) => Temporizador(
+        actividad: actividad,
+        presenter: this,
+      ),
+    ),
+  );
+  return true;
+}
+
+  Future<bool> openChecklist(BuildContext context, int id) async {
+    ChecklistPresenter chPresenter = ChecklistPresenter();
+    bool result = await chPresenter.chelcklistMochila(context, id);
+    return result ; 
+  }
+
+  Future <int> finish(Activity actividad, BuildContext context) async{
+    DateTime finishD = DateTime.now();
+    if (finishD.isBefore(DateTime.now().add(Duration(minutes: actividad.duration)))){
         notificaciones.cancela(actividad.id);
       }
-    onUpdate(actividad);
-    completarCL(context, actividad);
+    bool complete = await completarCL(context, actividad);
+    if(complete){
+      actividad.finishDate = finishD;
+      return onUpdate(actividad);
+    }
+    return 0;
   }
 
-  void completarCL(BuildContext context, Activity actividad) {
-    Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) => ListadoPage(act_id: actividad.id,)), // Specify the new page to navigate to
-    );
+  Future <bool> completarCL(BuildContext context, Activity actividad) async {
+    ChecklistPresenter chPresenter = ChecklistPresenter();
+    return await chPresenter.completarCL(context, actividad);
   }
 
   Future<LatLng?> getCordenadas(BuildContext context, LatLng? coords)async{

@@ -4,19 +4,19 @@ import 'package:activity_ally/Views/checklist/widgets/check_obj.dart';
 import 'package:flutter/material.dart';
 import 'package:activity_ally/services/DB/ChecklistCRUD.dart';
 
-class ListadoPage extends StatefulWidget {
+class Checklist extends StatefulWidget {
   static final nombrePagina = "Checklist";
   final int act_id;
 
 
-  const ListadoPage({required this.act_id});
+  const Checklist({required this.act_id});
 
 
   @override
-  _ListadoPageState createState() => _ListadoPageState();
+  _ChecklistState createState() => _ChecklistState();
 }
 
-class _ListadoPageState extends State<ListadoPage> {
+class _ChecklistState extends State<Checklist> {
 
   late Future<List<Pertenencia>> objetos;
   late List<Pertenencia>? pertenencias;

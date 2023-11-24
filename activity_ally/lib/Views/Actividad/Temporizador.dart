@@ -10,10 +10,10 @@ class Temporizador extends StatefulWidget {
 
   final Activity actividad;
   final ActivityPresenter presenter;
-  final Updatable parent;
+  //final Updatable parent;
 
   const Temporizador(
-      {required this.actividad, required this.presenter, required this.parent});
+      {required this.actividad, required this.presenter, });
 
   @override
   State<Temporizador> createState() => _TemporizadorState();
@@ -33,7 +33,7 @@ class _TemporizadorState extends State<Temporizador> {
     if (widget.actividad.duration_r == null ||
         widget.actividad.duration_r == 0) {
       duration = Duration(seconds: difference.inSeconds);
-      startTimer();
+      startTimer(resets: false);
     } else {
       duration = Duration(seconds: widget.actividad.duration_r!);
       startTimer(resets: false);
@@ -97,7 +97,8 @@ class _TemporizadorState extends State<Temporizador> {
                           if (isRunning) {
                             widget.actividad.duration_r = duration.inSeconds;
                             stopTimer(resets: false);
-                            widget.parent.updateView();
+                            widget.presenter.onUpdate(widget.actividad);
+                            //widget.parent.updateView();
                           } else {
                             startTimer(resets: false);
                           }
@@ -113,12 +114,16 @@ class _TemporizadorState extends State<Temporizador> {
                       color: Colors.red,
                     ),
                     child: IconButton(
-                      onPressed: () {
+                      onPressed: () async {
                         widget.actividad.duration_r = duration.inSeconds;
                         setState(() => duration = const Duration());
-                        widget.parent.updateView();
-                        Navigator.of(context).pop();
-                        widget.presenter.finish(widget.actividad, context);
+                        int changes = await widget.presenter.finish(widget.actividad, context);
+                        if(changes > 0){
+                          Navigator.of(context).pop(changes);
+                        }
+                        else{
+                           duration = Duration(seconds: widget.actividad.duration_r!);
+                        }
                       },
                       icon: const Icon(Icons.stop, color: Colors.white),
                     ),

@@ -7,16 +7,16 @@ import 'package:activity_ally/Models/Pertenencia.dart';
 import 'package:activity_ally/Views/Mochila/PertenenciaForm.dart';
 import 'package:activity_ally/Views/Mochila/widgets/PertenenciaCheckBox.dart';
 
-class ChecklistMaker extends StatefulWidget {
+class MochilaCheclist extends StatefulWidget {
   final int id;
   final PertenenciaPresenter presenter;
-  const ChecklistMaker({required this.id, required this.presenter});
+  const MochilaCheclist({required this.id, required this.presenter});
 
   @override
-  State<ChecklistMaker> createState() => _ChecklistMakerState();
+  State<MochilaCheclist> createState() => _MochilaCheclistState();
 }
 
-class _ChecklistMakerState extends State<ChecklistMaker> implements Updatable {
+class _MochilaCheclistState extends State<MochilaCheclist> implements Updatable {
   late Future<List<Pertenencia>> objetos;
 
   void initState() {

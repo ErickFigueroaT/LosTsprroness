@@ -57,7 +57,7 @@ late Updatable view;
     return PertenenciaCRUD.instance.getAllItems();
   }
    Future<List<Pertenencia>> getPertenenciasOk() async{
-    return PertenenciaCRUD.instance.getNItems(1);
+    return PertenenciaCRUD.instance.getByStatus(1);
   }
 
 
