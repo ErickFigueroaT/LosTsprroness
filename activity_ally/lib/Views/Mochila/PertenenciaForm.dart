@@ -47,7 +47,7 @@ class _PertenenciaFormState extends State<PertenenciaForm> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text(widget.nombre != '' ? 'Editar Actividad' : 'Nueva Actividad')),
+      appBar: AppBar(title: Text(widget.nombre != '' ? 'Editar Pertenencia' : 'Nueva Pertenencia')),
       body: Center(
           child: Form(
         key: formkey,

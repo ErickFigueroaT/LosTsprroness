@@ -140,7 +140,7 @@ ActivityPresenter(){
 
   Future<bool> openChecklist(BuildContext context, int id) async {
     ChecklistPresenter chPresenter = ChecklistPresenter();
-    bool result = await chPresenter.chelcklistMochila(context, id);
+    bool result = await chPresenter.makeChecklist(context, id);
     return result ; 
   }
 

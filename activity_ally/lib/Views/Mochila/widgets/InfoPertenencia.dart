@@ -140,7 +140,8 @@ class _InfoPertenenciaState extends State<InfoPertenencia> {
                   icon: Icon(Icons.delete, color: Colors.white), // Set the icon color
                 ),
               ),
-          //botonIA(),
+              if(!widget.estado) botonIA()
+              //botonIA(),
             ],
           ),
 
@@ -150,15 +151,18 @@ class _InfoPertenenciaState extends State<InfoPertenencia> {
   }
   
   botonIA(){
+  if(widget.estado) return Text('');
   return  ElevatedButton(
-    onPressed: () {
-     DetectionApi.instance.detect(widget.foto!);
-     //DetectionApi.instance.decode();
-    },
-    style:
-        ElevatedButton.styleFrom(padding: const EdgeInsets.all(15)),
-    child: const Text("Recuperar"),
-  );
+                onPressed: () {
+                  setState(()  {
+                    widget.estado = true;
+                  });
+                  widget.presenter.onUpdate(Pertenencia(id: widget.id, nombre: widget.titulo, status: widget.estado, foto: widget.foto));
+                },
+                style:
+                    ElevatedButton.styleFrom(padding: const EdgeInsets.all(15)),
+                child: const Text("Recuperar"),
+              );
   }
 }
 /**
