@@ -164,7 +164,7 @@ class _InfoActividadState extends State<InfoActividad> implements Updatable {
   void agregar() async {
     //Navigator.push(context, MaterialPageRoute(builder: (context) => ChecklistMaker(id: widget.actividad.id, presenter: PertenenciaPresenter(),)));
     ChecklistPresenter presenter = ChecklistPresenter();
-    presenter.chelcklistMochila(context, widget.actividad.id);
+    presenter.makeChecklist(context, widget.actividad.id);
   }
 
   botonEliminar() {

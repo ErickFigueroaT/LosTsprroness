@@ -43,5 +43,29 @@ class ChecklistCRUD {
       });
   }
 
+  Future<int> insertLabelActivity(int act_id, int label_id) async {
+    final db = await AADB.instance.database;
+    return await db.insert('activity_label', {'activity_id':act_id, 'label_id': label_id});
+  }
+
+  Future<int> insertLabels(String name) async {
+    final db = await AADB.instance.database;
+    return await db.insert('labels', {'name': name,});
+  }
+
+  Future<List<String>> getLabelsForActivity(int activityId) async {
+    final db = await AADB.instance.database;
+    final List<Map<String, dynamic>> maps = await db.rawQuery('''
+      SELECT labels.name
+      FROM activity_label
+      JOIN labels ON activity_label.label_id = labels.id
+      WHERE activity_label.activity_id = $activityId
+    ''');
+
+    return List.generate(maps.length, (i) {
+      return maps[i]['name'] as String;
+    });
+  }
+
  
 }
