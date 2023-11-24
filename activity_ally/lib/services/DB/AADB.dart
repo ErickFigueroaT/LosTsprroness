@@ -34,8 +34,8 @@ class AADB {
         start_date DATE,
         duration_r INTEGER,
         notify TEXT,
-        latitude REAL, -- Added latitude field for coords
-        longitude REAL -- Added longitude field for coords
+        latitude REAL,  
+        longitude REAL 
       );
     ''';
 
@@ -48,6 +48,25 @@ class AADB {
           PRIMARY KEY (activity_id, possession_id)
       );
       ''';
+
+    final String labels = '''
+    CREATE TABLE labels (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      name TEXT
+    );
+    ''';
+
+    final String activity_labels = '''
+      CREATE TABLE activity_label (
+        activity_id INTEGER,
+        label_id INTEGER,
+        FOREIGN KEY (activity_id) REFERENCES activity(id),
+        FOREIGN KEY (label_id) REFERENCES label(id),
+        PRIMARY KEY (activity_id, label_id)
+      );
+      ''';
+
+
     /*  
       final String checklist_items = '''
       CREATE TABLE checklist_items (
@@ -75,7 +94,7 @@ class AADB {
 
     return await openDatabase(
       path, 
-      version: 9,
+      version: 10,
       onCreate: _onCreateDB,
       onUpgrade: _onUpgradeDB,
     );
@@ -87,16 +106,22 @@ class AADB {
     await db.execute(pertenencia);
     await db.execute(actividad);
     await db.execute(checklist);
+    await db.execute(labels);
+    await db.execute(activity_labels);
     //await db.execute(checklist_items);
 
   }
 
    Future _onUpgradeDB(Database db, int oldVersion, int newVersion) async {
     // Handle database schema upgrades here
-    if (oldVersion == 8 && newVersion == 9) {
+    if (oldVersion == 8 && newVersion >= 9) {
       // Example: Add a new column to the 'activity' table
       await db.execute('ALTER TABLE activity ADD COLUMN latitude REAL');
       await db.execute('ALTER TABLE activity ADD COLUMN longitude REAL');
+    }
+    if(oldVersion <= 9  && newVersion == 10){
+      await db.execute(labels);
+      await db.execute(activity_labels);
     }
     // Add more upgrade logic as needed for other versions
   }

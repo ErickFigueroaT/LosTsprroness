@@ -1,9 +1,10 @@
 import 'package:activity_ally/Models/Activity.dart';
 import 'package:activity_ally/Presenters/ActivityPresenter.dart';
-import 'package:activity_ally/Presenters/PertenenciaPresenter.dart';
-import 'package:activity_ally/Views/Actividad/Temporizador.dart';
+import 'package:activity_ally/Presenters/ChecklistPresenter.dart';
+//import 'package:activity_ally/Presenters/PertenenciaPresenter.dart';
+//import 'package:activity_ally/Views/Actividad/Temporizador.dart';
 import 'package:activity_ally/Views/Updatable.dart';
-import 'package:activity_ally/Views/checklist/ChecklistMaker.dart';
+//import 'package:activity_ally/Views/checklist/ChecklistMaker.dart';
 import 'package:flutter/material.dart';
 
 class InfoActividad extends StatefulWidget {
@@ -126,7 +127,7 @@ class _InfoActividadState extends State<InfoActividad> implements Updatable {
             children: [
               botonObjetos(),
               botonEditar(),
-              boton(),
+              botonIniciar(),
             ],
           ),
 
@@ -141,11 +142,11 @@ class _InfoActividadState extends State<InfoActividad> implements Updatable {
     );
   }
 
-  boton() {
+  botonIniciar() {
     if (widget.actividad.finishDate == null) {
       return customIconButton(
           duracionReal == 0 ? Icons.play_arrow : Icons.play_arrow,
-          actualizar,
+          comenzar,
           Colors.blue);
     } else {
       return const Text('');
@@ -162,13 +163,8 @@ class _InfoActividadState extends State<InfoActividad> implements Updatable {
 
   void agregar() async {
     //Navigator.push(context, MaterialPageRoute(builder: (context) => ChecklistMaker(id: widget.actividad.id, presenter: PertenenciaPresenter(),)));
-    Navigator.push(
-        context,
-        MaterialPageRoute(
-            builder: (context) => ChecklistMaker(
-                  id: widget.actividad.id,
-                  presenter: PertenenciaPresenter(),
-                )));
+    ChecklistPresenter presenter = ChecklistPresenter();
+    presenter.chelcklistMochila(context, widget.actividad.id);
   }
 
   botonEliminar() {
@@ -181,7 +177,7 @@ class _InfoActividadState extends State<InfoActividad> implements Updatable {
   }
 
   botonEditar() {
-    if (duracionReal == 0) {
+    if (widget.actividad.startDate == null) {
       return customIconButton(Icons.edit, editar, Colors.blue);
     } else {
       return const Text('');
@@ -189,35 +185,19 @@ class _InfoActividadState extends State<InfoActividad> implements Updatable {
   }
 
   void editar() async {
-    int? id = await widget.presenter.onChange(context, widget.actividad);
-    if (id == null) return;
-    setState(() {});
+    int id = await widget.presenter.onChange(context, widget.actividad);
+    if (id >0 ) {
+      updateView();
+    }
   }
 
-  void actualizar() async {
-    widget.presenter.start(widget.actividad);
-    updateView();
-    //Navigator.push(context, MaterialPageRoute(builder: (context) => Temporizador(actividad: widget.actividad, presenter: widget.presenter, parent: this,)));
-    Navigator.push(
-        context,
-        MaterialPageRoute(
-            builder: (context) => Temporizador(
-                  actividad: widget.actividad,
-                  presenter: widget.presenter,
-                  parent: this,
-                )));
-
-    /*
-    if(nuevo != null){
-        setState(() {
-        duracionReal = nuevo;
-      });
-      final nuevo2 = await Navigator.push(
-              context, MaterialPageRoute(builder: (context) => ListadoPage(act_id: 
-              widget.actividad.id,)));
-              
+  void comenzar() async {
+    bool complete = await widget.presenter.start(widget.actividad, context);
+    if (complete) {
+      duracionReal = widget.actividad.duration_r ?? 0;
+      updateView();
     }
-    */ //setState(() => duracionReal = nuevo!);
+    //Navigator.push(context, MaterialPageRoute(builder: (context) => Temporizador(actividad: widget.actividad, presenter: widget.presenter, parent: this,)));
   }
 
   Container customIconButton(

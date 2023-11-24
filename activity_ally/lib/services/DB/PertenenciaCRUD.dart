@@ -25,7 +25,7 @@ class PertenenciaCRUD {
     });
   }
 
-  Future<List<Pertenencia>> getNItems(int n) async {
+  Future<List<Pertenencia>> getByStatus(int n) async {
     final db = await AADB.instance.database;
     final List<Map<String, dynamic>> maps =
         await db.query(tabla, where: 'status = $n', orderBy: 'nombre');
